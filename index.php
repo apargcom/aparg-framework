@@ -6,7 +6,7 @@
  * @todo urlRouter class
  * @todo Image class
  * @todo DB class 
- * 
+ * Investigate how can Config class be implemented as ArrayAccess
  */
 
 require_once 'System/ColdStart.php';
