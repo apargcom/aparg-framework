@@ -18,7 +18,11 @@ class Autoloader {
         if(isset(Config::get('alias')[$class])){           
             return class_alias(Config::get('alias')[$class], $class);
         }
-                
+        self::loadClass($class);        
+    }
+    
+    public static function loadClass($class){
+        
         $packages = explode('\\', $class);
         
         $mainPackage = $packages[0]; 

@@ -8,7 +8,8 @@ class Config{
         return require_once __DIR__.'/../config.php';
     }
     public static function init($array){
-        self::$config = array_replace_recursive(self::defaults(),  $array);
+        self::$config = self::defaults();
+        self::set($array);        
         return true;
     }
     public static function get($key){
