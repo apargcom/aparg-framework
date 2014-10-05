@@ -9,42 +9,62 @@
  */
 
 namespace System\Core;
+
 class Controller {
     
-    private static $instance;
-    private $controller;
-    private $action;
     private function __construct() { }
     
+    public function __clone() { }
+
+    public function __wakeup() { }
+    
+    private static $instance;
+    
+    private $controller;
+    
+    private $route = [
+        'controlelr'=>'',
+        'action'=>''
+        ];
+    
+    private $requestVars = [];
+    
     public static function getInstance() {
+        
         if (!isset(self::$instance)) {
             $className = __CLASS__;
             self::$instance = new $className;
         }
         return self::$instance;
-    }
-
-    public function __clone() {
-        //trigger_error('Clone is not allowed.', E_USER_ERROR);
-    }
-
-    public function __wakeup() {
-        //trigger_error('Unserializing is not allowed.', E_USER_ERROR);
-    }
+    }   
     
     public function init() {
-        $URL = strtolower(trim(strtok($_SERVER['REQUEST_URI'],'?'),'/'));        
-        $splitedURL = preg_split('/[\/]+/', $URL, null, PREG_SPLIT_NO_EMPTY);          
         
-        $controller = $this->controller = ucfirst(strtolower((isset($splitedURL[0]))?$splitedURL[0]:Config::get('default_controller'))).'Controller';
-        $action = $this->action = strtolower((isset($splitedURL[1]))?$splitedURL[1]:'index').'Action';        
-        //class_alias('System\Core\Controller', 'Controller');
+        self::$instance = self::getInstance();
+        self::$instance->parseURI();
+        self::$instance->runAction(self::$instance->route);
+    }
+    
+    private function parseURI(){
         
+        $URI = strtolower(trim(strtok($_SERVER['REQUEST_URI'],'?'),'/'));        
+        $splitedURI = preg_split('/[\/]+/', $URI, null, PREG_SPLIT_NO_EMPTY);          
         
-        require_once Config::get('app_path').'/Controllers/'.$controller.'.php';
+        $this->route['controller'] = ucfirst(strtolower((isset($splitedURI[0]))?$splitedURI[0]:Config::get('default_controller'))).'Controller';
+        $this->route['action'] = strtolower((isset($splitedURI[1]))?$splitedURI[1]:'index').'Action';       
         
-        $controllerObj = new $controller();        
-        $controllerObj->$action();
+        unset($splitedURI[0]);
+        unset($splitedURI[1]);
+        self::$instance->requestVars = $splitedURI;
+    }
+    
+    public function runAction($route = []){
+        //TODO If Controller/Action not exsist or $route array is emptu think some logic where to go(maybe "404 not found" page)
+        
+        require_once Config::get('app_path').'/Controllers/'.$route['controller'].'.php';
+        
+        $controllerObj = new $route['controller']();        
+        $controllerObj->$route['action']();
     }
         
 }

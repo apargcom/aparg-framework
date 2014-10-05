@@ -9,5 +9,5 @@
  * @todo Investigate how can Config class be implemented as ArrayAccess
  */
 
-require_once 'System/ColdStart.php';
-ColdStart::config(require_once 'App/config.php');
+require_once 'System/App.php';
+App::start(require_once 'App/config.php');
