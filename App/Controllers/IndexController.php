@@ -4,13 +4,11 @@
 class IndexController extends Controller {
     
     public function indexAction() {        
-        echo 'index';
         
-      
+        var_dump($this->parent->route);
     }
     public function default404Action() {        
-        echo '404';
         
-      
+        echo '404';
     }
 }

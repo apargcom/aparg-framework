@@ -18,19 +18,19 @@ class Controller {
 
     public function __wakeup() { }
     
-    private static $instance;
+    public static $instance;
     
     protected $controller;
     
     protected $route = [];
     
     protected $requestVars = [];
-    
+        
     public static function getInstance() {
         
         if (!isset(self::$instance)) {
             $className = __CLASS__;
-            self::$instance = new $className;
+            self::$instance = new $className;  
         }
         return self::$instance;
     }   
@@ -60,7 +60,7 @@ class Controller {
         //Split URI        
         $splitedURI = preg_split('/[\/]+/', $URI, null, PREG_SPLIT_NO_EMPTY);          
         
-        $route[0] = ucfirst(strtolower((isset($splitedURI[0]))?$splitedURI[0]:Config::get('default_controller')));
+        $route[0] = strtolower((isset($splitedURI[0]))?$splitedURI[0]:Config::get('default_controller'));
         $route[1] = strtolower((isset($splitedURI[1]))?$splitedURI[1]:'index');       
 
         unset($splitedURI[0]);
@@ -76,14 +76,15 @@ class Controller {
     public function load($route = ''){ 
         
         self::$instance->route = self::$instance->parseURI($route)['route'];
-        
-        if(file_exists(Config::get('app_path').'/Controllers/'.self::$instance->route[0].'Controller.php')){
-            require_once Config::get('app_path').'/Controllers/'.self::$instance->route[0].'Controller.php';            
-            if(class_exists(self::$instance->route[0].'Controller', false)){
-                $tmpController = self::$instance->route[0].'Controller';
-                self::$instance->controller = new $tmpController(); 
-                if(method_exists(self::$instance->controller, self::$instance->route[1].'Action')){
-                    $tmpAction = self::$instance->route[1].'Action';
+        $tmpController = ucfirst(self::$instance->route[0].'Controller');
+        $tmpAction = self::$instance->route[1].'Action';
+        if(file_exists(Config::get('app_path').'/Controllers/'.$tmpController.'.php')){
+            require_once Config::get('app_path').'/Controllers/'.$tmpController.'.php';            
+            if(class_exists($tmpController, false)){                
+                unset(self::$instance->controller);
+                self::$instance->controller = new $tmpController();                 
+                self::$instance->controller->parent = &self::$instance; //TODO: think of some better way to pass data to child controller
+                if(method_exists(self::$instance->controller, $tmpAction)){                    
                     self::$instance->controller->$tmpAction();
                     return true;
                 }
