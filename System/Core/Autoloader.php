@@ -21,7 +21,7 @@ class Autoloader {
     public static function load($class) { 
         
         if(isset(Config::get('alias')[$class])){           
-            return class_alias(Config::get('alias')[$class], $class);
+            return class_alias('\\'.trim(Config::get('alias')[$class],'\\'), $class);
         }
         self::loadClass($class);        
     }

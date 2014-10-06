@@ -11,9 +11,14 @@ return [
 
     'app_path' => $_SERVER['DOCUMENT_ROOT']."/App",
     'system_path' => $_SERVER['DOCUMENT_ROOT']."/System",
-
-    'default_controller' => "index",
-
+    
+    'default_controller' => ($default_controller = "index"),
+    
+    'route_404' => 'index/default404',
+    
+    'routes' => [
+    ],
+    
     'min_php_version' => '5.3.0',
 
     'debug_mode' => false,
@@ -21,8 +26,8 @@ return [
     'output_buffering' => true,
     
     'alias'=> [
-        'Controller' => 'System\Core\Controller',
-        'Config' => 'System\Core\Config',
+        'Controller' => '\\System\Core\Controller',
+        'Config' => '\\\\System\Core\Config',
     ]
     
 ];

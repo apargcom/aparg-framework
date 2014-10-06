@@ -20,14 +20,11 @@ class Controller {
     
     private static $instance;
     
-    private $controller;
+    protected $controller;
     
-    private $route = [
-        'controlelr'=>'',
-        'action'=>''
-        ];
+    protected $route = [];
     
-    private $requestVars = [];
+    protected $requestVars = [];
     
     public static function getInstance() {
         
@@ -41,30 +38,58 @@ class Controller {
     public function init() {
         
         self::$instance = self::getInstance();
-        self::$instance->parseURI();
-        self::$instance->runAction(self::$instance->route);
+        
+        $parsedURI = self::$instance->parseURI($_SERVER['REQUEST_URI']);              
+        self::$instance->route = $parsedURI['route'];
+        self::$instance->requestVars = $parsedURI['requestVars'];
+        
+        if(!self::$instance->load(self::$instance->route[0].'/'.self::$instance->route[0])){
+            self::$instance->load(Config::get('route_404'));            
+        }
     }
     
-    private function parseURI(){
+    private function parseURI($URI){
         
-        $URI = strtolower(trim(strtok($_SERVER['REQUEST_URI'],'?'),'/'));        
+        //Filter URI
+        $URI = strtolower(trim(strtok($URI,'?'),'/')); 
+        //Route URI
+        $tmpURI = $URI;
+        foreach(Config::get('routes') as $from => $to){
+            $URI = preg_replace('/^' . preg_quote($from, '/') . '/', $to, $tmpURI);
+        }                
+        //Split URI        
         $splitedURI = preg_split('/[\/]+/', $URI, null, PREG_SPLIT_NO_EMPTY);          
         
-        $this->route['controller'] = ucfirst(strtolower((isset($splitedURI[0]))?$splitedURI[0]:Config::get('default_controller'))).'Controller';
-        $this->route['action'] = strtolower((isset($splitedURI[1]))?$splitedURI[1]:'index').'Action';       
-        
+        $route[0] = ucfirst(strtolower((isset($splitedURI[0]))?$splitedURI[0]:Config::get('default_controller')));
+        $route[1] = strtolower((isset($splitedURI[1]))?$splitedURI[1]:'index');       
+
         unset($splitedURI[0]);
         unset($splitedURI[1]);
-        self::$instance->requestVars = $splitedURI;
+        $requestVars = $splitedURI;
+        return [
+            'route' => [$route[0], $route[1]],
+            'requestVars' => $requestVars
+        ];
     }
     
-    public function runAction($route = []){
-        //TODO If Controller/Action not exsist or $route array is emptu think some logic where to go(maybe "404 not found" page)
+    
+    public function load($route = ''){ 
         
-        require_once Config::get('app_path').'/Controllers/'.$route['controller'].'.php';
+        self::$instance->route = self::$instance->parseURI($route)['route'];
         
-        $controllerObj = new $route['controller']();        
-        $controllerObj->$route['action']();
+        if(file_exists(Config::get('app_path').'/Controllers/'.self::$instance->route[0].'Controller.php')){
+            require_once Config::get('app_path').'/Controllers/'.self::$instance->route[0].'Controller.php';            
+            if(class_exists(self::$instance->route[0].'Controller', false)){
+                $tmpController = self::$instance->route[0].'Controller';
+                self::$instance->controller = new $tmpController(); 
+                if(method_exists(self::$instance->controller, self::$instance->route[1].'Action')){
+                    $tmpAction = self::$instance->route[1].'Action';
+                    self::$instance->controller->$tmpAction();
+                    return true;
+                }
+            }     
+        }
+        return false;
     }
         
 }
