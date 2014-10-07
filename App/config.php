@@ -5,7 +5,6 @@ return [
     
     'debug_mode' => true,
     
-     'aliases'=> [
-        'popok' => 'ssssssssss',
+    'routes'=> [
     ]
 ];

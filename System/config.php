@@ -25,9 +25,9 @@ return [
 
     'output_buffering' => true,
     
-    'alias'=> [
-        'Controller' => '\\System\Core\Controller',
-        'Config' => '\\\\System\Core\Config',
+    'aliases'=> [
+        //'Controller' => '\\System\Core\Controller',
+       // 'Config' => '\\\\System\Core\Config',
     ]
     
 ];

@@ -1,6 +1,15 @@
 <?php
-use System\Core\Config;
-use System\Core\Alias;
+
+/**
+ * Aparg Framework
+ * 
+ * @author Aparg
+ * @link http://www.aparg.com/
+ * @copyright Aparg
+ */
+
+use \System\Core\Config;
+use \System\Core\Controller;
 
 class App{
     
@@ -31,7 +40,7 @@ class App{
         
         //Setup configs
         require_once __DIR__.'/Core/Config.php';
-        Config::getInstance()->init($config);  
+        Config::init($config);  
         
         //Check compatibility        
         if(phpversion() < Config::get('min_php_version')){ 
@@ -43,9 +52,9 @@ class App{
         
         //Setup autoload
         require_once Config::get('system_path').'/Core/Autoloader.php';
-        spl_autoload_register('System\Core\Autoloader::load');
+        spl_autoload_register('\System\Core\Autoloader::load');
         
         //Start main controller
-        System\Core\Controller::getInstance()->init();
+        Controller::getInstance()->init();
     }
 }

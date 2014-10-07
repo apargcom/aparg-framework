@@ -20,11 +20,13 @@ class Controller {
     
     public static $instance;
     
-    protected $controller;
+    private $controller;
     
-    protected $route = [];
+    private $view;
     
-    protected $requestVars = [];
+    private $route = '';
+    
+    private $requestVars = [];
         
     public static function getInstance() {
         
@@ -37,60 +39,94 @@ class Controller {
     
     public function init() {
         
-        self::$instance = self::getInstance();
+        //self::$instance = self::getInstance();
         
-        $parsedURI = self::$instance->parseURI($_SERVER['REQUEST_URI']);              
+        self::$instance->view = View::getInstance();
+        
+        $URI = $_SERVER['REQUEST_URI'];
+        //Filter URI
+        $URI = self::$instance->filterURI($URI); 
+        //Route URI
+        $URI = self::$instance->routeURI($URI); 
+        //Parse URI
+        $parsedURI = self::$instance->parseURI($URI);
         self::$instance->route = $parsedURI['route'];
         self::$instance->requestVars = $parsedURI['requestVars'];
         
-        if(!self::$instance->load(self::$instance->route[0].'/'.self::$instance->route[0])){
-            self::$instance->load(Config::get('route_404'));            
+        if(!self::$instance->load(self::$instance->route[0], self::$instance->route[1])){
+            $parsedURI = self::$instance->parseURI(Config::get('route_404'));
+            self::$instance->route = $parsedURI['route'];            
+            self::$instance->load(self::$instance->route[0], self::$instance->route[1]);
         }
+        //TODO: This part must be optimised
     }
     
     private function parseURI($URI){
         
-        //Filter URI
-        $URI = strtolower(trim(strtok($URI,'?'),'/')); 
-        //Route URI
-        $tmpURI = $URI;
-        foreach(Config::get('routes') as $from => $to){
-            $URI = preg_replace('/^' . preg_quote($from, '/') . '/', $to, $tmpURI);
-        }                
         //Split URI        
-        $splitedURI = preg_split('/[\/]+/', $URI, null, PREG_SPLIT_NO_EMPTY);          
+        $splitURI = preg_split('/[\/]+/', $URI, null, PREG_SPLIT_NO_EMPTY);          
         
-        $route[0] = strtolower((isset($splitedURI[0]))?$splitedURI[0]:Config::get('default_controller'));
-        $route[1] = strtolower((isset($splitedURI[1]))?$splitedURI[1]:'index');       
+        $route[0] = strtolower((isset($splitURI[0]))?$splitURI[0]:Config::get('default_controller'));
+        $route[1] = strtolower((isset($splitURI[1]))?$splitURI[1]:'index');       
 
-        unset($splitedURI[0]);
-        unset($splitedURI[1]);
-        $requestVars = $splitedURI;
+        unset($splitURI[0]);
+        unset($splitURI[1]);
+        
         return [
             'route' => [$route[0], $route[1]],
-            'requestVars' => $requestVars
+            'requestVars' => $splitURI
         ];
     }
     
-    
-    public function load($route = ''){ 
+    private function filterURI($URI){
         
-        self::$instance->route = self::$instance->parseURI($route)['route'];
-        $tmpController = ucfirst(self::$instance->route[0].'Controller');
-        $tmpAction = self::$instance->route[1].'Action';
+        return strtolower(trim(strtok($URI,'?'),'/')); 
+    }
+    
+    private function routeURI($URI){
+        
+        $tmpURI = $URI;
+        foreach(Config::get('routes') as $from => $to){
+            $URI = preg_replace('/^' . preg_quote($from, '/') . '/', $to, $tmpURI);
+        } 
+        return $URI;
+    }
+    
+    private function load($controller, $view){ 
+        
+       
+        $tmpController = ucfirst($controller.'Controller');
+        $tmpAction = $view.'Action';
+        
+        self::$instance->view->bufferStart();  //TODO: Buffering start/end must be optimised
+                
         if(file_exists(Config::get('app_path').'/Controllers/'.$tmpController.'.php')){
             require_once Config::get('app_path').'/Controllers/'.$tmpController.'.php';            
             if(class_exists($tmpController, false)){                
                 unset(self::$instance->controller);
                 self::$instance->controller = new $tmpController();                 
-                self::$instance->controller->parent = &self::$instance; //TODO: think of some better way to pass data to child controller
+                
                 if(method_exists(self::$instance->controller, $tmpAction)){                    
                     self::$instance->controller->$tmpAction();
+                    self::$instance->view->bufferFlush();   //TODO: Buffering start/end must be optimised 
                     return true;
                 }
-            }     
+            }
         }
         return false;
+    }
+    
+    protected function getRequestVars(){
+        
+        return  self::$instance->requestVars;
+    }
+    
+    protected function view(){
+        
+        $tmpController = (func_num_args() == 2) ? func_get_arg(0) : self::$instance->route[0];
+        $tmpAction = (func_num_args() == 2) ? func_get_arg(1) : ((func_num_args() == 1) ? func_get_arg(0) : self::$instance->route[1]);
+         
+        self::$instance->view->load($tmpController, $tmpAction);
     }
         
 }

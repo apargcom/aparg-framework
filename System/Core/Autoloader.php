@@ -20,8 +20,8 @@ class Autoloader {
 
     public static function load($class) { 
         
-        if(isset(Config::get('alias')[$class])){           
-            return class_alias('\\'.trim(Config::get('alias')[$class],'\\'), $class);
+        if(isset(Config::get('aliases')[$class])){           
+            return class_alias('\\'.trim(Config::get('aliases')[$class],'\\'), $class);
         }
         self::loadClass($class);        
     }

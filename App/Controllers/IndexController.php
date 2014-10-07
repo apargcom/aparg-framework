@@ -1,14 +1,16 @@
 <?php
-//use System\Core\Controller;
-
+use \System\Core\Controller;
 class IndexController extends Controller {
     
     public function indexAction() {        
         
-        var_dump($this->parent->route);
+        $this->view();
+        
+        
     }
     public function default404Action() {        
         
         echo '404';
+        
     }
 }

@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * Aparg Framework
+ * 
+ * @author Aparg
+ * @link http://www.aparg.com/
+ * @copyright Aparg
+ */
+
 namespace System\Core;
 
 class Config{
@@ -22,10 +31,10 @@ class Config{
         return self::$instance;
     }
     
-    public function init($array){
+    public static function init($array){
         
         self::$instance = self::getInstance();
-        self::$instance->config = self::defaults();        
+        self::$instance->config = self::defaults();  
         self::set($array);        
         return true;
     }
