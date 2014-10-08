@@ -29,20 +29,24 @@ class View { //TODO: View class must be optimised
     
     public function init(){
         
-        //self::$instance->bufferStart();
+        self::$instance->bufferStart();
     }
-    public function bufferStart(){
+    
+    private function bufferStart(){
         
-        ob_start('\System\Core\View::bufferCallback'); //TODO: Connect with "outpu_buffering" config
+        ob_start('\System\Core\View::bufferCallback');
         
     }
-    public static function bufferFlush(){
+    
+    public static function bufferCallback($buffer){
+        return $buffer;
+    }
+    
+    private static function bufferFlush(){
         
         ob_end_flush();
     }
-    public function bufferCallback($buffer){
-        return $buffer;
-    }
+    
     public function load($controller, $view){
         
         require (file_exists(Config::get('app_path').'/Views/'.$controller.'/'.$view.'.php')) ? Config::get('app_path').'/Views/'.$controller.'/'.$view.'.php' : '';
