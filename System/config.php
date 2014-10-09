@@ -14,7 +14,7 @@ return [
     
     'default_controller' => ($default_controller = "index"),
     
-    'route_404' => 'index/default404',
+    'route_404' => $default_controller.'/default404',
     
     'routes' => [
     ],
@@ -27,7 +27,7 @@ return [
     
     'aliases'=> [
         //'Controller' => '\\System\Core\Controller',
-       // 'Config' => '\\\\System\Core\Config',
+        //'Config' => '\\\\System\Core\Config',
     ]
     
 ];

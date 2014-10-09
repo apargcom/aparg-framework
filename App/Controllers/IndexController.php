@@ -3,12 +3,7 @@ use \System\Core\Controller;
 class IndexController extends Controller {
     
     public function indexAction() {        
-        echo 'fv';
-      ///  $this->view();
-        
-      //  $this->view->load('header');
-      //  $this->view->load();
-       
+        echo 'index';
     }
     public function default404Action() {        
         
