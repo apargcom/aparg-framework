@@ -40,7 +40,12 @@ class URI {
         unset($splitURI[1]);
         
         $this->route = $route[0].'/'.$route[1];
-        $this->vars = $splitURI;        
+        $this->vars = [
+            'URI' => $splitURI,
+            'GET' => $_GET,
+            'POST' => $_POST
+            ];
+                
     }
     
     public function route($routes = []){

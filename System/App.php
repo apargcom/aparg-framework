@@ -83,7 +83,7 @@ class App{
                 //unset(self::$instance->controller);
                 $this->controller = new $tmpController(self::getInstance());   
                 if(method_exists($this->controller, $tmpAction)){                    
-                    $this->controller->$tmpAction();
+                    $this->controller->$tmpAction($this->URI->vars);
                 //    self::$instance->view->bufferFlush();   //TODO: Buffering start/end must be optimised 
                     return true;
                 }

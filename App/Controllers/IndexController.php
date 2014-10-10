@@ -2,8 +2,8 @@
 use \System\Core\Controller;
 class IndexController extends Controller {
     
-    public function indexAction() {        
-        echo 'index';
+    public function indexAction($vars) {        
+        var_dump($vars);
     }
     public function default404Action() {        
         
