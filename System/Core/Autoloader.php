@@ -17,7 +17,20 @@ class Autoloader {
     public function __clone() { }
 
     public function __wakeup() { }
+    
+    private static $preLoad = [
+        '/Singleton.php',
+        '/Config.php'
+    ];
 
+    public static function init(){
+        
+        foreach(self::$preLoad as $fileName){
+            require_once $fileName;
+        }
+        spl_autoload_register('\System\Core\Autoloader::load');
+    }
+            
     public static function load($class) { 
         
         if(isset(Config::get('aliases')[$class])){           
@@ -25,6 +38,7 @@ class Autoloader {
         }
         self::loadClass($class);        
     }
+    
     
     private static function loadClass($class){
         
@@ -44,5 +58,7 @@ class Autoloader {
             require_once $fileName;
         }
     }
+    
+    
 
 }

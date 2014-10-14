@@ -11,13 +11,26 @@
 namespace System\Core;
 
 class URI {
-    
+        
     public $URI = '';
         
     public $route = '';
     
     public $vars = [];
     
+    
+    
+//    public static function load($URI = []) {
+//                
+//        if(isset(self::instance())) {
+//            return false;
+//        }
+//        self::instance() = self::getInstance();
+//        self::instance()->config = self::defaults();  
+//        self::set($array);        
+//        return true;
+//    }
+        
     public function __construct($URI){
         
         $this->URI = $URI;
@@ -45,7 +58,6 @@ class URI {
             'GET' => $_GET,
             'POST' => $_POST
             ];
-                
     }
     
     public function route($routes = []){
