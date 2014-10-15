@@ -10,7 +10,7 @@
 
 namespace System\Core;
 
-class URI {
+class URI extends Singleton{
         
     public $URI = '';
         
@@ -18,25 +18,16 @@ class URI {
     
     public $vars = [];
     
-    
-    
-//    public static function load($URI = []) {
-//                
-//        if(isset(self::instance())) {
-//            return false;
-//        }
-//        self::instance() = self::getInstance();
-//        self::instance()->config = self::defaults();  
-//        self::set($array);        
-//        return true;
-//    }
+
+    public static function init($URI = ''){
         
-    public function __construct($URI){
-        
-        $this->URI = $URI;
-        $this->filter();
+        self::obj()->URI = $URI;
+        self::obj()->filter();
+        self::obj()->route();
+        self::obj()->parse();
     }
     
+
     private function filter(){
         
         $this->URI = strtolower(trim(strtok($this->URI,'?'),'/')); 
@@ -46,7 +37,7 @@ class URI {
                 
         $splitURI = preg_split('/[\/]+/', $this->URI, null, PREG_SPLIT_NO_EMPTY);          
         
-        $route[0] = strtolower(isset($splitURI[0])?$splitURI[0]:Config::get('default_controller'));
+        $route[0] = strtolower(isset($splitURI[0])?$splitURI[0]:Config::obj()->get('default_controller'));
         $route[1] = strtolower(isset($splitURI[1])?$splitURI[1]:'index');       
 
         unset($splitURI[0]);
@@ -54,7 +45,7 @@ class URI {
         
         $this->route = $route[0].'/'.$route[1];
         $this->vars = [
-            'URI' => $splitURI,
+            'URI' => array_values($splitURI),
             'GET' => $_GET,
             'POST' => $_POST
             ];
@@ -62,7 +53,7 @@ class URI {
     
     public function route($routes = []){
         
-        $routes = empty($routes) ? Config::get('routes') : $routes;
+        $routes = empty($routes) ? Config::obj()->get('routes') : $routes;
         $URI = $this->URI;
         foreach($routes as $from => $to){
             $URI = preg_replace('/^' . preg_quote($from, '/') . '/', $to, $URI);

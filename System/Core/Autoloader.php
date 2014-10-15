@@ -10,37 +10,28 @@
 
 namespace System\Core;
 
-class Autoloader {
-    
-    private function __construct() {}
-    
-    public function __clone() { }
+//Preload classes
+require_once __DIR__ . '/Singleton.php';
+require_once __DIR__ . '/Config.php';
 
-    public function __wakeup() { }
+class Autoloader extends Singleton{
     
-    private static $preLoad = [
-        '/Singleton.php',
-        '/Config.php'
-    ];
-
     public static function init(){
         
-        foreach(self::$preLoad as $fileName){
-            require_once $fileName;
-        }
-        spl_autoload_register('\System\Core\Autoloader::load');
+        //'\System\Core\Autoloader::load'
+        spl_autoload_register(array(self::obj(),'load'));
     }
             
-    public static function load($class) { 
-        
-        if(isset(Config::get('aliases')[$class])){           
-            return class_alias('\\'.trim(Config::get('aliases')[$class],'\\'), $class);
+    public function load($class) { 
+        $aliases = Config::obj()->get('aliases');
+        if(isset($aliases[$class])){           
+            return class_alias('\\'.trim(Config::obj()->get('aliases')[$class],'\\'), $class);
         }
-        self::loadClass($class);        
+        $this->loadClass($class);        
     }
     
     
-    private static function loadClass($class){
+    private function loadClass($class){
         
         $packages = explode('\\', $class);
         
@@ -49,16 +40,13 @@ class Autoloader {
         
         $path = implode('/', $packages);
         if($mainPackage == 'System'){            
-            $fileName = Config::get('system_path') . '/' . $path . ".php";            
+            $fileName = Config::obj()->get('system_path') . '/' . $path . ".php";            
         }else if($mainPackage == 'App'){
-            $fileName = Config::get('app_path') . '/' . $path . ".php";
+            $fileName = Config::obj()->get('app_path') . '/' . $path . ".php";
         }
        
         if (file_exists($fileName)){
             require_once $fileName;
         }
     }
-    
-    
-
 }

@@ -13,7 +13,7 @@ abstract class Singleton {
 
     private static $instances;
 
-    final public static function instance() {
+    final public static function &obj() {
         $className = get_called_class();
 
         if(!isset(self::$instances[$className])) {          

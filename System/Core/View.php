@@ -10,45 +10,59 @@
 
 namespace System\Core;
 
-class View { //TODO: View class must be optimised
+class View extends Singleton{ //TODO: View class must be optimised
     
-    public function __clone() { }
-
-    public function __wakeup() { }
+    private $redirect = [];
     
-    public static $instance;
-    
-    public static function getInstance() {
+    public static function init(){
         
-        if (!isset(self::$instance)) {
-            $className = __CLASS__;
-            self::$instance = new $className;  
-        }
-        return self::$instance;
-    }   
+        self::obj()->bufferStart();
+    }    
     
-    public function init(){
+    public function render(){
+        self::obj()->bufferFlush();
+    }
+    
+    public function redirect($URL, $code = 303){ //TODO: Choose best redirect status code
         
-        self::$instance->bufferStart();
+        $this->redirect = [
+            'URL' => $URL,
+            'code' => $code
+        ];
+        $this->bufferFlush();
     }
     
     private function bufferStart(){
-        
-        ob_start('\System\Core\View::bufferCallback');
+       //'\System\Core\View::bufferCallback'
+        if(Config::obj()->get('output_buffering')){
+            ob_start(array(self::obj(),'bufferCallback'));
+        }
         
     }
-    
-    public static function bufferCallback($buffer){
-        return $buffer;
+
+    private function bufferCallback($buffer){
+        
+        if(!empty($this->redirect)){
+            header('Location: ' . $this->redirect['URL'], true, $this->redirect['code']);
+            exit();
+        }else{            
+            return $buffer;
+        }
     }
     
-    private static function bufferFlush(){
-        
-        ob_end_flush();
+    private  function bufferFlush(){
+        if(Config::obj()->get('output_buffering')){
+            ob_end_flush();
+        }
     }
     
-    public function load($controller, $view){
+    public function load($route){
         
-        require (file_exists(Config::get('app_path').'/Views/'.$controller.'/'.$view.'.php')) ? Config::get('app_path').'/Views/'.$controller.'/'.$view.'.php' : '';
+        $currentRoute = URI::obj()->route;
+        $route = empty ($route) ? $currentRoute : $route;
+        
+        if(file_exists(Config::obj()->get('app_path').'/Views/'.$route.'.php')){
+            require Config::obj()->get('app_path').'/Views/'.$route.'.php';
+        }
     }
 }

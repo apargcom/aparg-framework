@@ -14,33 +14,31 @@ class Config extends Singleton{
     
     private $config;
     
+    
     public static function init($array){
-        
-                
-        self::instance()->config = self::defaults();  
-        self::set($array);        
+                 
+        self::obj()->config = self::obj()->defaults();  
+        self::obj()->set($array);        
         return true;
     }
     
-    
-    
-    private static function defaults(){
+    private function defaults(){
         
-        return require_once __DIR__.'/../config.php';
+        return require_once __DIR__ . '/../config.php';
     }    
     
-    public static function get($key = ''){
+    public function get($key = ''){
         
-        if(isset(self::instance()->config[$key])){
-            return self::instance()->config[$key];
+        if(isset($this->config[$key])){
+            return $this->config[$key];
         }else{
             return false;
         }
     }
-    public static function set($value = []){
+    public function set($value = []){
         
-        self::instance()->config = array_replace_recursive(self::instance()->config,  $value);
-        if(self::instance()->config != null){
+        $this->config = array_replace_recursive($this->config,  $value);
+        if($this->config != null){
             return true;
         }else{
             return false;

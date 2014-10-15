@@ -8,55 +8,36 @@
  * @copyright Aparg
  */
 
+use \System\Core\Autoloader;
 use \System\Core\Config;
 use \System\Core\Controller;
-use \System\Core\URI;
-use \System\Core\Autoloader;
-use \System\Core\Singleton;
 
-require_once '/Core/Autoloader.php';
-Autoloader::init();
 
-class App extends Singleton{
+class App{
     
     
-    private $URI;
-    
-    private $controller;
-    
-    public static function start1(){
-        echo 'dc';
-    }
     public static function start($config = []){ 
          
-        self::instance()->init($config);
+        self::init($config);
     }
     
-    private function init($config = []){      
+    private static function init($config = []){      
         
-               
+        //Init autoload
+        require_once __DIR__ . '/Core/Autoloader.php';
+        Autoloader::init();
+        
+        //Init config
         Config::init($config);  
-        //Setup autoload
-        
         
         //Check compatibility        
-        if(phpversion() < Config::get('min_php_version')){ 
+        if(phpversion() < Config::obj()->get('min_php_version')){ 
             trigger_error('Suported PHP version is 5.3.3 and above.', E_USER_ERROR);                    
         }
  
         //Check debug mode
-        error_reporting((Config::get('debug_mode')) ? -1 : 0);
+        error_reporting((Config::obj()->get('debug_mode')) ? -1 : 0);
         
-        
-        
-        //Start main controller
-        $this->URI = new URI($_SERVER['REQUEST_URI']);  
-        $this->URI->route();
-        $this->URI->parse();
-        //$this->loadAction();
-        Controller::load($this->URI);
+        Controller::init();
     }
-    
-//   
-    
 }

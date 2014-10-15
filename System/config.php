@@ -21,7 +21,7 @@ return [
     
     'min_php_version' => '5.3.0',
 
-    'debug_mode' => false,
+    'debug_mode' => true,
 
     'output_buffering' => true,
     
