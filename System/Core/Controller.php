@@ -21,36 +21,36 @@ abstract class Controller {
         
         $tmpController = ucfirst($route[0].'Controller');
         $tmpAction = $route[1].'Action';
-        
-        if(!self::load(URI::obj()->route, URI::obj()->vars)){
+                        
+        self::load(URI::obj()->route, URI::obj()->vars);
             
-            self::load(Config::obj()->get('route_404'), URI::obj()->vars);
-        }   
         View::obj()->render();
     }
     
     private static function load($route, $vars){
         
-        $route = explode('/', $route);
+        $splitRoute = explode('/', $route);
         
-        $tmpController = ucfirst($route[0].'Controller');
-        $tmpAction = $route[1].'Action';
+        $tmpController = ucfirst($splitRoute[0].'Controller');
+        $tmpAction = $splitRoute[1].'Action';
         
-        //self::$instance->view->bufferStart();  //TODO: Buffering start/end must be optimised
-                
         if(file_exists(Config::obj()->get('app_path').'/Controllers/'.$tmpController.'.php')){
             require_once Config::obj()->get('app_path').'/Controllers/'.$tmpController.'.php';            
             if(class_exists($tmpController, false)){                
                 //unset(self::$instance->controller);
                 $controller = new $tmpController();   
                 if(method_exists($controller, $tmpAction)){                    
-                    $controller->$tmpAction($vars);
-                //    self::$instance->view->bufferFlush();   //TODO: Buffering start/end must be optimised 
+                    $controller->$tmpAction($vars);                
                     return true;
                 }
             }
         }
-        
+        $route_404 = Config::obj()->get('route_404');
+        if($route != $route_404){
+            if(self::load($route_404, URI::obj()->vars)){
+                http_response_code(404); 
+            }
+        }
         return false;
     }
     
@@ -59,8 +59,8 @@ abstract class Controller {
         View::obj()->load($route);
     }
     
-    protected function redirect($URL, $code = 303){ //TODO: Maybe better set View class instance and call $this->view->load() from child controller
-                                                    //TODO: Choose best redirect status code
-        View::obj()->redirect($URL, $code);
+    protected function redirect($URL, $code = 302){ 
+                                                    
+        header('Location: ' . $URL, true, $code);
     }
 }

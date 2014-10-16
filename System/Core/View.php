@@ -10,9 +10,8 @@
 
 namespace System\Core;
 
-class View extends Singleton{ //TODO: View class must be optimised
+class View extends Singleton{ 
     
-    private $redirect = [];
     
     public static function init(){
         
@@ -23,31 +22,16 @@ class View extends Singleton{ //TODO: View class must be optimised
         self::obj()->bufferFlush();
     }
     
-    public function redirect($URL, $code = 303){ //TODO: Choose best redirect status code
-        
-        $this->redirect = [
-            'URL' => $URL,
-            'code' => $code
-        ];
-        $this->bufferFlush();
-    }
-    
     private function bufferStart(){
        //'\System\Core\View::bufferCallback'
         if(Config::obj()->get('output_buffering')){
             ob_start(array(self::obj(),'bufferCallback'));
         }
-        
     }
 
     private function bufferCallback($buffer){
         
-        if(!empty($this->redirect)){
-            header('Location: ' . $this->redirect['URL'], true, $this->redirect['code']);
-            exit();
-        }else{            
-            return $buffer;
-        }
+        return $buffer;        
     }
     
     private  function bufferFlush(){

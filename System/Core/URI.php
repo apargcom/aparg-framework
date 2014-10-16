@@ -60,4 +60,6 @@ class URI extends Singleton{
         } 
         $this->URI = $URI;
     }
+    
+    
 }

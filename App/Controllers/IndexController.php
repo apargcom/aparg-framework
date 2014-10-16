@@ -3,12 +3,11 @@ use \System\Core\Controller;
 class IndexController extends Controller {
     
     public function indexAction($vars) {        
-        
+        //$this->redirect('http://google.com');
         $this->view();   
     }
     public function default404Action() {        
         
-        echo '404';
-        
+        echo '404'; 
     }
 }
