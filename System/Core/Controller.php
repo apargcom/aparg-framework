@@ -10,6 +10,8 @@
 
 namespace System\Core;
 
+use \System\Module\Cache;
+
 abstract class Controller {
     
 
@@ -17,11 +19,7 @@ abstract class Controller {
         
         View::init();
         URI::init($_SERVER['REQUEST_URI']);
-        $route = explode('/', URI::obj()->route);
-        
-        $tmpController = ucfirst($route[0].'Controller');
-        $tmpAction = $route[1].'Action';
-                        
+                                
         self::load(URI::obj()->route, URI::obj()->vars);
             
         View::obj()->render();
@@ -59,8 +57,20 @@ abstract class Controller {
         View::obj()->load($route);
     }
     
-    protected function redirect($URL, $code = 302){ 
+    protected function redirect($URL, $code = 302){ //TODO: Move to URL class
+                                                    //TODO: Maybe better set URL class instance and call $this->URL->redirect() from child controller                    
                                                     
         header('Location: ' . $URL, true, $code);
+    }
+
+    protected function cacheSet($key, $value){ //TODO: Maybe better set Cache class instance and call $this->cache->set() from child controller
+    
+        Cache::init(Config::obj()->get('cache_path'), Config::obj()->get('cache_expire')); //TODO: Call init only once(logic inside Cache class)
+        Cache::obj()->set($key, $value);
+    }
+    protected function cacheGet($key){ //TODO: Maybe better set Cache class instance and call $this->cache->get() from child controller
+    
+        Cache::init(Config::obj()->get('cache_path'), Config::obj()->get('cache_expire')); //TODO: Call init only once(logic inside Cache class)
+        return Cache::obj()->get($key);
     }
 }

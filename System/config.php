@@ -9,7 +9,7 @@ return [
     'base_url' => 'http://' . $_SERVER['SERVER_NAME'],
     'base_path' => $_SERVER['DOCUMENT_ROOT'],
 
-    'app_path' => $_SERVER['DOCUMENT_ROOT']."/App",
+    'app_path' => ($app_path = $_SERVER['DOCUMENT_ROOT']."/App"),
     'system_path' => $_SERVER['DOCUMENT_ROOT']."/System",
     
     'default_controller' => ($default_controller = "index"),
@@ -20,6 +20,10 @@ return [
     ],
     
     'min_php_version' => '5.3.0',
+    
+    'cache_path' => $app_path . '/Cache',
+    
+    'cache_lifetime' => '3600',
 
     'debug_mode' => true,
 
