@@ -1,1 +1,1 @@
-Hello world!
+Output - <?=$data['var1']?>

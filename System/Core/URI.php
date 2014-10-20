@@ -33,7 +33,7 @@ class URI extends Singleton{
         $this->URI = strtolower(trim(strtok($this->URI,'?'),'/')); 
     }  
     
-    public function parse(){
+    private function parse(){
                 
         $splitURI = preg_split('/[\/]+/', $this->URI, null, PREG_SPLIT_NO_EMPTY);          
         
@@ -51,7 +51,7 @@ class URI extends Singleton{
             ];
     }
     
-    public function route($routes = []){
+    private function route($routes = []){
         
         $routes = empty($routes) ? Config::obj()->get('routes') : $routes;
         $URI = $this->URI;
@@ -61,5 +61,10 @@ class URI extends Singleton{
         $this->URI = $URI;
     }
     
+     public function redirect($URL, $code = 302){ //TODO: Move to URL class
+                                                    //TODO: Maybe better set URL class instance and call $this->URL->redirect() from child controller                    
+                                                    
+        header('Location: ' . $URL, true, $code);
+    }
     
 }

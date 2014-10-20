@@ -30,8 +30,8 @@ return [
     'output_buffering' => true,
     
     'aliases'=> [
-        //'Controller' => 'System\Core\Controller',
-        //'Config' => 'System\Core\Config',
+        'Controller' => 'System\Core\Controller',
+        'Config' => 'System\Core\Config',
     ]
     
 ];

@@ -8,25 +8,24 @@
  * @copyright Aparg
  */
 
-namespace System\Module;
+namespace System\Modules;
 
-use \System\Core\Singleton;
+use \System\Core\Config;
 
-class Cache extends Singleton{
+class Cache {
 
     private $expire = 3600;
-    
     private $path = '';
 
-    public static function init($path, $expire){
-        
-        self::obj()->path = $path;
-        self::obj()->expire = $expire;
-        if (!file_exists(self::obj()->path) && !empty(self::obj()->path)) {
-            mkdir(self::obj()->path, 0777, true);
+    public function __construct() {
+
+        $this->path = Config::obj()->get('cache_path');
+        $this->expire = Config::obj()->get('cache_expire');
+        if (!file_exists($this->path) && !empty($this->path)) {
+            mkdir($this->path, 0777, true);
         }
     }
-    
+
     public function get($key) {
         $files = glob($this->path . '/cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.*');
 
@@ -35,17 +34,19 @@ class Cache extends Singleton{
 
             $data = unserialize($cache);
 
-            foreach ($files as $file) {
-                $time = substr(strrchr($file, '.'), 1);
+            array_map(function($file) {
 
+                $time = substr(strrchr($file, '.'), 1);
                 if ($time < time()) {
                     if (file_exists($file)) {
                         unlink($file);
                     }
                 }
-            }
+            }, $files);
 
             return $data;
+        }else{
+            return false;
         }
     }
 
@@ -54,11 +55,7 @@ class Cache extends Singleton{
 
         $file = $this->path . '/cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.' . (time() + $this->expire);
 
-        $handle = fopen($file, 'w');
-
-        fwrite($handle, serialize($value));
-
-        fclose($handle);
+        return file_put_contents($file, serialize($value));
     }
 
     public function delete($key) {
@@ -70,6 +67,9 @@ class Cache extends Singleton{
                     unlink($file);
                 }
             }
+            return true;
+        }else{
+            return false;
         }
     }
 

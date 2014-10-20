@@ -40,13 +40,19 @@ class View extends Singleton{
         }
     }
     
-    public function load($route){
+    public function load($route = '', $data = [], $get = false){
         
-        $currentRoute = URI::obj()->route;
-        $route = empty ($route) ? $currentRoute : $route;
+        
+        $route = empty ($route) ? URI::obj()->route : $route;
         
         if(file_exists(Config::obj()->get('app_path').'/Views/'.$route.'.php')){
+            if($get){
+                ob_start();
+            }                        
             require Config::obj()->get('app_path').'/Views/'.$route.'.php';
+            if($get){
+                return ob_get_clean();                                
+            }            
         }
     }
 }

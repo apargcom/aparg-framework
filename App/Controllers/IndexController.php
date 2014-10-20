@@ -1,10 +1,21 @@
 <?php
-use \System\Core\Controller;
+
+
 class IndexController extends Controller {
     
-    public function indexAction($vars) {        
+    private $cache = null;
+    
+    public function __construct(){
+        $this->cache = $this->module('cache');
+    }
+    
+    public function indexAction($data) {        
         //$this->redirect('http://google.com');
-        $this->view();   
+       
+        if(!$this->cache->get('first')){
+            $this->cache->set('first', $this->view('', ['var1'=>'Hello world!'], true));            
+        }
+        echo $this->cache->get('first');
     }
     public function default404Action() {        
         

@@ -10,8 +10,6 @@
 
 namespace System\Core;
 
-use \System\Module\Cache;
-
 abstract class Controller {
     
 
@@ -52,25 +50,30 @@ abstract class Controller {
         return false;
     }
     
-    protected function view($route = ''){ //TODO: Maybe better set View class instance and call $this->view->load() from child controller
+    protected function view($route = '', $data = [], $get = false){ //TODO: Maybe better set View class instance and call $this->view->load() from child controller
         
-        View::obj()->load($route);
+        return View::obj()->load($route, $data, $get);
     }
     
-    protected function redirect($URL, $code = 302){ //TODO: Move to URL class
-                                                    //TODO: Maybe better set URL class instance and call $this->URL->redirect() from child controller                    
-                                                    
-        header('Location: ' . $URL, true, $code);
+    protected function redirect($URL, $code = 302){ //TODO: Maybe better set URL class instance and call $this->URL->redirect() from child controller                    
+        
+        URL::obj()->redirect($URL, $code);
     }
 
-    protected function cacheSet($key, $value){ //TODO: Maybe better set Cache class instance and call $this->cache->set() from child controller
+    protected function module($name, $system = true){ 
     
-        Cache::init(Config::obj()->get('cache_path'), Config::obj()->get('cache_expire')); //TODO: Call init only once(logic inside Cache class)
-        Cache::obj()->set($key, $value);
+        $name = ucfirst($name);
+        $path = ($system ? Config::obj()->get('system_path') : Config::obj()->get('app_path')) . '/Modules/' . $name . '.php';
+        $class = '\\' . ($system ? 'System': 'App') . '\Modules\\' . $name;
+        if(file_exists($path)){  
+            require_once $path;            
+                if(class_exists($class, false)){  
+                    return new $class();
+                }  
+        }
+        if($system)
+            $this->module($name, false);
+        return false;       
     }
-    protected function cacheGet($key){ //TODO: Maybe better set Cache class instance and call $this->cache->get() from child controller
-    
-        Cache::init(Config::obj()->get('cache_path'), Config::obj()->get('cache_expire')); //TODO: Call init only once(logic inside Cache class)
-        return Cache::obj()->get($key);
-    }
+
 }

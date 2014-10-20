@@ -22,9 +22,9 @@ class Autoloader extends Singleton{
         spl_autoload_register(array(self::obj(),'load'));
     }
             
-    public function load($class) { 
+    public function load($class) {
         $aliases = Config::obj()->get('aliases');
-        if(isset($aliases[$class])){           
+        if(isset($aliases[$class])){          
             return class_alias('\\'.trim(Config::obj()->get('aliases')[$class],'\\'), $class);
         }
         $this->loadClass($class);        
