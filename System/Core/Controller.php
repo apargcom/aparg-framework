@@ -10,70 +10,62 @@
 
 namespace System\Core;
 
-abstract class Controller {
-    
+use \App;
 
-    public static function init(){
+abstract class Controller extends App{
+    
+    protected $view = null;
+
+
+    protected function __construct(){
         
-        View::init();
-        URI::init($_SERVER['REQUEST_URI']);
-                                
-        self::load(URI::obj()->route, URI::obj()->vars);
-            
-        View::obj()->render();
+        parent::__construct();
+        
+        $this->view = new View();
     }
     
-    private static function load($route, $vars){
+    public static function &load($route, $vars){
         
         $splitRoute = explode('/', $route);
         
-        $tmpController = ucfirst($splitRoute[0].'Controller');
+        $tmpController = '\\'.ucfirst($splitRoute[0].'Controller');
         $tmpAction = $splitRoute[1].'Action';
         
         if(file_exists(Config::obj()->get('app_path').'/Controllers/'.$tmpController.'.php')){
             require_once Config::obj()->get('app_path').'/Controllers/'.$tmpController.'.php';            
-            if(class_exists($tmpController, false)){                
-                //unset(self::$instance->controller);
+            if(class_exists($tmpController, false)){                                
                 $controller = new $tmpController();   
                 if(method_exists($controller, $tmpAction)){                    
-                    $controller->$tmpAction($vars);                
-                    return true;
+                    $controller->$tmpAction($vars);  
+                    $controller->view->render();
+                    return $controller;
                 }
             }
         }
         $route_404 = Config::obj()->get('route_404');
         if($route != $route_404){
-            if(self::load($route_404, URI::obj()->vars)){
+            $load_404 = self::load($route_404, $vars);
+            if($load_404 !== false){
                 http_response_code(404); 
+                return $load_404;
             }
         }
         return false;
     }
     
-    protected function view($route = '', $data = [], $get = false){ //TODO: Maybe better set View class instance and call $this->view->load() from child controller
+    protected function view($route = '', $data = [], $return = false){ //TODO: Maybe better set View class instance and call $this->view->load() from child controller
         
-        return View::obj()->load($route, $data, $get);
+        return $this->view->load($route, $data, $return);
     }
     
     protected function redirect($URL, $code = 302){ //TODO: Maybe better set URL class instance and call $this->URL->redirect() from child controller                    
         
-        URL::obj()->redirect($URL, $code);
+        $this->URI->redirect($URL, $code);
     }
 
-    protected function module($name, $system = true){ 
+    protected function module($name){ 
     
-        $name = ucfirst($name);
-        $path = ($system ? Config::obj()->get('system_path') : Config::obj()->get('app_path')) . '/Modules/' . $name . '.php';
-        $class = '\\' . ($system ? 'System': 'App') . '\Modules\\' . $name;
-        if(file_exists($path)){  
-            require_once $path;            
-                if(class_exists($class, false)){  
-                    return new $class();
-                }  
-        }
-        if($system)
-            $this->module($name, false);
-        return false;       
+        return Module::load($name);
     }
 
 }

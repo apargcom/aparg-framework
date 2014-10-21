@@ -11,19 +11,22 @@
 use \System\Core\Autoloader;
 use \System\Core\Config;
 use \System\Core\Controller;
+use \System\Core\URI;
 
-
-class App{
+abstract class App{
     
     
-    public static function start($config = []){ 
-         
-        self::init($config);
+    protected $config = null;    
+    protected $URI = null;
+            
+    protected function __construct(){
+        
+        $this->config = Config::obj();
+        $this->URI = URI::obj();
     }
     
-    private static function init($config = []){      
+    public static function start($config = []){      
         
-        //Init autoload
         require_once __DIR__ . '/Core/Autoloader.php';
         Autoloader::init();
         
@@ -38,6 +41,8 @@ class App{
         //Check debug mode
         error_reporting((Config::obj()->get('debug_mode')) ? -1 : 0);
         
-        Controller::init();
+        URI::init($_SERVER['REQUEST_URI']);                                
+        Controller::load(URI::obj()->route, URI::obj()->vars);
+        
     }
 }

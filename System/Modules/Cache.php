@@ -10,17 +10,18 @@
 
 namespace System\Modules;
 
-use \System\Core\Config;
+use \System\Core\Module;
 
-class Cache {
+class Cache extends Module{
 
     private $expire = 3600;
     private $path = '';
 
     public function __construct() {
+        parent::__construct();
 
-        $this->path = Config::obj()->get('cache_path');
-        $this->expire = Config::obj()->get('cache_expire');
+        $this->path = $this->config->get('cache_path') == true ? $this->config->get('cache_path') : $this->path;
+        $this->expire = $this->config->get('cache_expire') == true ? $this->config->get('cache_expire') : $this->cache_expire;
         if (!file_exists($this->path) && !empty($this->path)) {
             mkdir($this->path, 0777, true);
         }

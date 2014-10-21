@@ -23,7 +23,7 @@ return [
     
     'cache_path' => $app_path . '/Cache',
     
-    'cache_lifetime' => '3600',
+    'cache_expire' => '3600',
 
     'debug_mode' => true,
 
@@ -31,7 +31,8 @@ return [
     
     'aliases'=> [
         'Controller' => 'System\Core\Controller',
-        'Config' => 'System\Core\Config',
+        'Module' => 'System\Core\Module',
+//        'Config' => 'System\Core\Config',
     ]
     
 ];

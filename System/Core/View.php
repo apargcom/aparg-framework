@@ -10,22 +10,24 @@
 
 namespace System\Core;
 
-class View extends Singleton{ 
+use \App;
+
+class View extends App{ 
     
     
     public static function init(){
         
-        self::obj()->bufferStart();
+        $this->bufferStart();
     }    
     
     public function render(){
-        self::obj()->bufferFlush();
+        $this->bufferFlush();
     }
     
     private function bufferStart(){
        //'\System\Core\View::bufferCallback'
-        if(Config::obj()->get('output_buffering')){
-            ob_start(array(self::obj(),'bufferCallback'));
+        if($this->config->get('output_buffering')){
+            ob_start(array($this,'bufferCallback'));
         }
     }
 
@@ -35,24 +37,26 @@ class View extends Singleton{
     }
     
     private  function bufferFlush(){
-        if(Config::obj()->get('output_buffering')){
+        if($this->config->get('output_buffering')){
             ob_end_flush();
         }
     }
     
-    public function load($route = '', $data = [], $get = false){
+    public function load($route = '', $data = [], $return = false){ //TODO: Think if we need integrate Cache module with View to automatically write and load form cache
+                
+        $route = empty ($route) ? $this->URI->route : $route;
         
-        
-        $route = empty ($route) ? URI::obj()->route : $route;
-        
-        if(file_exists(Config::obj()->get('app_path').'/Views/'.$route.'.php')){
-            if($get){
+        if(file_exists($this->config->get('app_path').'/Views/'.$route.'.php')){
+            if($return){
                 ob_start();
             }                        
-            require Config::obj()->get('app_path').'/Views/'.$route.'.php';
-            if($get){
+            require $this->config->get('app_path').'/Views/'.$route.'.php';
+            if($return){
                 return ob_get_clean();                                
-            }            
+            }  
+            return true;
+        }else{
+            return false;
         }
     }
 }
