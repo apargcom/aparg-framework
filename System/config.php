@@ -29,8 +29,11 @@ return [
 
     'output_buffering' => true,
     
+    'default_lang' => 'en',
+    
     'aliases'=> [
         'Controller' => 'System\Core\Controller',
+        'Model' => 'System\Core\Model',
         'Module' => 'System\Core\Module',
 //        'Config' => 'System\Core\Config',
     ]

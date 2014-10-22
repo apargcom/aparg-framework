@@ -8,10 +8,10 @@
  * @copyright Aparg
  */
 
-namespace System\Modules;
-
-use \System\Core\Module;
+namespace System\Core;
 
 class Lang {
-    //put your code here
+    
+    //public function (){}
+    
 }
