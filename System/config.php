@@ -20,8 +20,9 @@ return [
     ],
     
     'min_php_version' => '5.3.0',
-    
+         
     'cache_path' => $app_path . '/Cache',
+    'lang_path' => $app_path . '/Lang',
     
     'cache_expire' => '3600',
 
@@ -30,6 +31,11 @@ return [
     'output_buffering' => true,
     
     'default_lang' => 'en',
+    
+    'lang' => [
+        'en',
+        'am'
+    ],
     
     'aliases'=> [
         'Controller' => 'System\Core\Controller',

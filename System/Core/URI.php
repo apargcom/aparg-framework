@@ -18,6 +18,7 @@ class URI extends Singleton{
     
     public $vars = [];
     
+    public $lang = '';
 
     public static function &init($URI = ''){
         
@@ -38,11 +39,22 @@ class URI extends Singleton{
                 
         $splitURI = preg_split('/[\/]+/', $this->URI, null, PREG_SPLIT_NO_EMPTY);          
         
-        $route[0] = strtolower(isset($splitURI[0])?$splitURI[0]:Config::obj()->get('default_controller'));
-        $route[1] = strtolower(isset($splitURI[1])?$splitURI[1]:'index');       
+        $langI = 0;
+        $controllerI = 0;
+        $actionI = 1;
+        $this->lang = Config::obj()->get('default_lang');
+        if(isset($splitURI[0]) && array_search($splitURI[0], Config::obj()->get('lang')) !== false){
+            $this->lang = $splitURI[0]; 
+            $controllerI = 1;
+            $actionI = 2;             
+        }
+           
+        $route[0] = strtolower(isset($splitURI[$controllerI])?$splitURI[$controllerI]:Config::obj()->get('default_controller'));
+        $route[1] = strtolower(isset($splitURI[$actionI])?$splitURI[$actionI]:'index');      
 
-        unset($splitURI[0]);
-        unset($splitURI[1]);
+        unset($splitURI[$langI]);
+        unset($splitURI[$controllerI]);
+        unset($splitURI[$actionI]);
         
         $this->route = $route[0].'/'.$route[1];
         $this->vars = [

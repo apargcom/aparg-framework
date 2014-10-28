@@ -10,9 +10,8 @@
 
 namespace System\Modules;
 
-use \System\Core\Module;
 
-class Cache extends Module{
+class Cache extends \Module{
 
     private $expire = 3600;
     private $path = '';

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+s:198:"<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -6,8 +6,8 @@
     </head>
 
     <body>
-        <?=$data['var1']?>
-    </body>
+        Բարև աշխարհ!    </body>
 
 </html>
 
+";
