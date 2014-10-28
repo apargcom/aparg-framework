@@ -1,2 +1,3 @@
 /App/Cache/*
 !/App/Cache/.htaccess
+/nbproject/
