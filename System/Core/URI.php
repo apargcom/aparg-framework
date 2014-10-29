@@ -20,13 +20,13 @@ class URI extends Singleton{
     
     public $lang = '';
 
-    public static function &init($URI = ''){
+    public static function init($URI = ''){
         
         self::obj()->URI = $URI;
         self::obj()->filter();
         self::obj()->route();
         self::obj()->parse();
-        return self::obj();
+        return true;
     }
     
 

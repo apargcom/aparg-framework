@@ -15,7 +15,9 @@ use \App;
 class View extends App{ 
     
     
-    public static function init(){
+    public function __construct(){
+        
+        parent::__construct();
         
         $this->bufferStart();
     }    

@@ -30,24 +30,25 @@ class Cache extends \Module{
         $files = glob($this->path . '/cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.*');
 
         if ($files) {
-            $cache = file_get_contents($files[0]);
-
-            $data = unserialize($cache);
-
-            array_map(function($file) {
-
-                $time = substr(strrchr($file, '.'), 1);
+            
+            foreach($files as $key=>$file){
+                 $time = substr(strrchr($file, '.'), 1);
                 if ($time < time()) {
                     if (file_exists($file)) {
                         unlink($file);
+                        unset($files[$key]);
                     }
-                }
-            }, $files);
-
-            return $data;
-        }else{
-            return false;
+                }                
+            }
+            
+            if(isset($files[0])){
+                $cache = file_get_contents($files[0]);
+                $data = unserialize($cache);
+                return $data;
+            }            
         }
+        
+        return false;
     }
 
     public function set($key, $value) {

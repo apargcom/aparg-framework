@@ -15,11 +15,11 @@ class Config extends Singleton{
     private $config;
     
     
-    public static function &init($array){
+    public static function init($array){
                  
         self::obj()->config = self::obj()->defaults();  
         self::obj()->set($array);        
-        return self::obj();
+        return true;
     }
     
     private function defaults(){

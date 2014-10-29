@@ -14,22 +14,30 @@ class Lang extends \Module{
     //TODO: Database storage must be added too
     private $lang = '';
     
+    private $langData = [];
+    
     public function __construct() {
         parent::__construct();
         
         $this->lang = $this->URI->lang;
+        $this->langData = $this->langData($this->lang);
     }
     
     public function get($key, $lang = ''){
-        if(empty($lang)){
-            $lang = $this->lang;
-        }
+        
+        $langData = empty($lang) ? $this->langData : $this->langData($lang);
+        if(isset($langData[$key])){
+            return $langData[$key];
+        }        
+        return false;
+    } 
+    
+    public function &langData($lang){
+        
         $path = $this->config->get('lang_path') . '/' . $lang . '.php';
         if(file_exists($path)){
             $langData = require_once $path;
-            if(isset($langData[$key])){
-                return $langData[$key];
-            }
+            return $langData;           
         }
         return false;
     }    

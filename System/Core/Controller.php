@@ -27,7 +27,7 @@ abstract class Controller extends App{
     public static function &load($route, $vars){
         
         $splitRoute = explode('/', $route);
-        
+       
         $tmpController = '\\'.ucfirst($splitRoute[0].'Controller');
         $tmpAction = $splitRoute[1].'Action';
         
