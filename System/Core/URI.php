@@ -21,7 +21,9 @@ class URI extends Singleton{
     public $lang = '';
 
     public static function init($URI = ''){
-        
+        if(self::isObj()){
+            return true;            
+        }
         self::obj()->URI = $URI;
         self::obj()->filter();
         self::obj()->route();

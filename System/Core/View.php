@@ -14,6 +14,7 @@ use \App;
 
 class View extends App{ 
     
+    private $data = [];
     
     public function __construct(){
         
@@ -46,6 +47,8 @@ class View extends App{
     
     public function load($route = '', $data = [], $return = false){ //TODO: Think if we need integrate Cache module with View to automatically write and load form cache
                 
+        $this->data = $data;
+        
         $route = empty ($route) ? $this->URI->route : $route;
         
         if(file_exists($this->config->get('app_path').'/Views/'.$route.'.php')){
@@ -60,5 +63,14 @@ class View extends App{
         }else{
             return false;
         }
+    }
+    
+    public function __set($name, $value){
+        
+        $this->data[$name] = $value;
+    }
+    public function __get($name){
+        
+        return isset($this->data[$name]) ? $this->data[$name] : null;
     }
 }

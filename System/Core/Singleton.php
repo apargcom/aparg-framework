@@ -22,6 +22,11 @@ abstract class Singleton {
         return self::$instances[$className];
     }
     
+    final public static function isObj(){
+        
+        $className = get_called_class();        
+        return isset(self::$instances[$className]);
+    }
 
     final protected function  __construct() { } //TODO: do we need "final" keyword here
     

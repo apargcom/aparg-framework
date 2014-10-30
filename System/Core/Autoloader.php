@@ -23,6 +23,7 @@ class Autoloader extends Singleton{
     }
             
     public function load($class) {
+        
         $aliases = Config::obj()->get('aliases');
         if(isset($aliases[$class])){          
             return class_alias('\\'.trim(Config::obj()->get('aliases')[$class],'\\'), $class);

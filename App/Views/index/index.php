@@ -6,7 +6,7 @@
     </head>
 
     <body>
-        <?=$data['var1']?>
+        <?=$this->hello?>
     </body>
 
 </html>

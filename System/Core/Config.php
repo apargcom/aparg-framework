@@ -16,7 +16,9 @@ class Config extends Singleton{
     
     
     public static function init($array){
-                 
+        if(self::isObj()){
+            return true;            
+        }         
         self::obj()->config = self::obj()->defaults();  
         self::obj()->set($array);        
         return true;
