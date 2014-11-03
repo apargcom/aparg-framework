@@ -10,8 +10,8 @@
 
 namespace System\Modules;
 
-class Lang extends \Module{
-    //TODO: Database storage must be added too
+class Language extends \Module{
+    
     private $lang = '';
     
     private $langData = [];
