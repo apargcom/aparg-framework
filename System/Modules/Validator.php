@@ -216,7 +216,7 @@ class Validator extends \Module {
         if (preg_match('/^[0-9]+$/', $value) == false) {
             return false;
         }
-        if ($str == 0) {
+        if ($value == 0) {
             return false;
         }
         return true;
