@@ -12,16 +12,7 @@ class IndexController extends Controller {
     }
 
     public function indexAction($data) {
-//        $this->valid->setRules([
-//            'name'=>['pd3cd@dfg.com', ['alpha','valid_email']],
-//            'surname'=>['22', ['alpha', ['min_length', 3]]],
-//            'email'=>[ 'asd@asd.com2', [['max_length', 4]]],
-//        ]);
-//        $this->valid->validateAll();
-//        var_dump($this->valid->errors);
-        
-        //var_dump($this->valid->validate('edcd#de@d.dc',['valid_email']));
-        //TODO: Test validator!
+
         $this->view('', ['hello' => 'Hello World!']);
     }
 

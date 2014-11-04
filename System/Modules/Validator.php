@@ -43,12 +43,12 @@ class Validator extends \Module {
         parent::__construct();
     }
 
-    public function setRules($rules = []) {
+    public function rules($rules = []) {
 
         $this->rules = $rules;
     }
 
-    public function validateAll() {
+    public function validate() {
 
         $valid = true;
         foreach ($this->rules as $input => $data) {
@@ -74,10 +74,10 @@ class Validator extends \Module {
                 }
             }
         }
-        return $valid ? true : $this->errors;
+        return $valid;
     }
 
-    public function validate($inputValue, $inputRules) {
+    public function validateOne($inputValue, $inputRules) {
 
         $valid = true;
         $errors = [];
@@ -161,7 +161,7 @@ class Validator extends \Module {
         return (strlen($value) != $param) ? false : true;
     }
 
-    public function greaterThan($value, $param) {
+    private function greaterThan($value, $param) {
 
         if (!is_numeric($value)) {
             return false;
@@ -191,27 +191,27 @@ class Validator extends \Module {
         return (preg_match("/^([-a-z0-9_-])+$/i", $value) == false) ? false : true;
     }
 
-    public function numeric($value) {
+    private function numeric($value) {
 
         return (preg_match("/^[\-+]?[0-9]*\.?[0-9]+$/", $value) == false) ? false : true;
     }
 
-    public function integer($value) {
+    private function integer($value) {
 
         return (preg_match("/^[\-+]?[0-9]+$/", $value) == false) ? false : true;
     }
 
-    public function decimal($value) {
+    private function decimal($value) {
 
         return (preg_match("/^[\-+]?[0-9]+\.[0-9]+$/", $value) == false) ? false : true;
     }
 
-    public function isNatural($value) {
+    private function isNatural($value) {
 
         return (preg_match("/^[0-9]+$/", $value) == false) ? false : true;
     }
 
-    public function isNaturalNoZero($value) {
+    private function isNaturalNoZero($value) {
 
         if (preg_match('/^[0-9]+$/', $value) == false) {
             return false;
@@ -241,19 +241,19 @@ class Validator extends \Module {
 
         return true;
     }
-    
+
     private function validIP($value, $param) {
-        if($param == 'ipv4'){
+        if ($param == 'ipv4') {
             return (filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) == false) ? false : true;
-        }elseif($param == 'ipv6'){
+        } elseif ($param == 'ipv6') {
             return (filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) == false) ? false : true;
-        }else{
+        } else {
             return false;
         }
     }
-    
+
     private function validBase64($value) {
-        
+        var_dump($value);
         return (preg_match("/[^a-zA-Z0-9\/\+=]/", $value) == false) ? false : true;
     }
 
