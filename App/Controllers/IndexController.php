@@ -9,6 +9,7 @@ class IndexController extends Controller {
         $this->cache = $this->module('cache');
         $this->lang = $this->module('language');
         $this->valid = $this->module('validator');
+        $this->image = $this->module('image');
     }
 
     public function indexAction($data) {

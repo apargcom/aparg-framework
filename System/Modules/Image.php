@@ -21,12 +21,12 @@ class Image extends \Module {
         
         $result = false;
         if (file_exists($this->path)) {
-            $pathInfo = pathinfo($this->path);
-            if ($pathInfo['extension'] == 'png') {
+            $ext = strtolower(pathinfo($path)['extension']);
+            if ($ext == 'png') {
                 $result = imagecreatefrompng($this->path);
-            } else if ($pathInfo['extension'] == 'jpg' || $pathInfo['extension'] == 'jpeg') {
+            } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $result = imagecreatefromjpeg($this->path);
-            } else if ($pathInfo['extension'] == 'gif') {
+            } else if ($ext == 'gif') {
                 $result = imagecreatefromgif($this->path);
             }
             if($result != false){
@@ -41,12 +41,12 @@ class Image extends \Module {
         $path = empty($path) ? $this->path : $path;
 
         $result = false;
-        $pathInfo = pathinfo($path);
-        if ($pathInfo['extension'] == 'png') {                        
+        $ext = strtolower(pathinfo($path)['extension']);
+        if ($ext == 'png') {                        
             $result = is_null($quality) ? imagepng($this->image, $path) : imagepng($this->image, $path, $quality);
-        } else if ($pathInfo['extension'] == 'jpg' || $pathInfo['extension'] == 'jpeg') {
+        } else if ($ext == 'jpg' || $ext == 'jpeg') {
             $result = is_null($quality) ? imagejpeg($this->image, $path) : imagejpeg($this->image, $path, $quality);
-        } else if ($pathInfo['extension'] == 'gif') {
+        } else if ($ext == 'gif') {
             $result = imagegif($this->image, $path);
         }        
         return $result;
@@ -55,14 +55,14 @@ class Image extends \Module {
     public function watermark($path, $position = []) {
 
         $watermark = null;
-        
+        $result = false;
         if (file_exists($path)) {
-            $pathInfo = pathinfo($path);
-            if ($pathInfo['extension'] == 'png') {
+            $ext = strtolower(pathinfo($path)['extension']);
+            if ($ext == 'png') {
                 $result = imagecreatefrompng($path);
-            } else if ($pathInfo['extension'] == 'jpg' || $pathInfo['extension'] == 'jpeg') {
+            } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $result = imagecreatefromjpeg($path);
-            } else if ($pathInfo['extension'] == 'gif') {
+            } else if ($ext == 'gif') {
                 $result = imagecreatefromgif($path);
             }           
             if($result != false){
