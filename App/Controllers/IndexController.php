@@ -14,6 +14,17 @@ class IndexController extends Controller {
 
     public function indexAction($data) {
 
+//        $this->image->open('gayane.jpg');
+//        $this->image->resize(['width' => 500, 'height' => 500], true);
+//        $this->image->rotate(30, '#415E9B');
+//        $this->image->crop(['height' => 450, 'width' => 450]);
+//        $this->image->watermark('watermark.png', ['right' => 20, 'bottom' => 20]);
+//        $this->image->flip();
+//        $this->image->overlay('#00ff00', 80);
+//        $this->image->save('gayane1.jpg');
+//        var_dump($this->image->size());
+//        var_dump($this->image->meta());
+
         $this->view('', ['hello' => 'Hello World!']);
     }
 
@@ -21,7 +32,5 @@ class IndexController extends Controller {
 
         echo '404';
     }
-
-   
 
 }
