@@ -10,6 +10,7 @@ class IndexController extends Controller {
         $this->lang = $this->module('language');
         $this->valid = $this->module('validator');
         $this->image = $this->module('image');
+        $this->user = $this->model('user');
     }
 
     public function indexAction($data) {
@@ -24,7 +25,7 @@ class IndexController extends Controller {
 //        $this->image->save('gayane1.jpg');
 //        var_dump($this->image->size());
 //        var_dump($this->image->meta());
-
+        $this->user->add('poghos', 'poghos@gmail.com');
         $this->view('', ['hello' => 'Hello World!']);
     }
 

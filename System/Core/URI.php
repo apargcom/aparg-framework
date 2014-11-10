@@ -22,13 +22,13 @@ class URI extends Singleton{
 
     public static function init($URI = ''){
         if(self::isObj()){
-            return true;            
+            return self::obj();            
         }
         self::obj()->URI = $URI;
         self::obj()->filter();
         self::obj()->route();
         self::obj()->parse();
-        return true;
+        return self::obj();
     }
     
 

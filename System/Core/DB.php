@@ -19,10 +19,10 @@ class DB extends Singleton {
 
     public static function init($host, $username, $password, $db) {
         if (self::isObj()) {
-            return true;
+            return self::obj();
         }
-        self::obj()->mysql = new \mysqli($host, $username, $password, $db);
-        return true;
+        self::obj()->mysql = new \mysqli($host, $username, $password, $db);        
+        return self::obj();
     }
 
     public function insert($table = '', $columns = [], $values = []) {

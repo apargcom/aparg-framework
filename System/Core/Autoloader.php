@@ -17,9 +17,11 @@ require_once __DIR__ . '/Config.php';
 class Autoloader extends Singleton{
     
     public static function init(){
-        
-        //'\System\Core\Autoloader::load'
+        if(self::isObj()){
+            return self::obj();            
+        }        
         spl_autoload_register(array(self::obj(),'load'));
+        return self::obj();
     }
             
     public function load($class) {
