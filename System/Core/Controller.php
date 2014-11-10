@@ -30,8 +30,8 @@ abstract class Controller extends App {
         $tmpController = '\\' . ucfirst($splitRoute[0] . 'Controller');
         $tmpAction = $splitRoute[1] . 'Action';
 
-        if (file_exists(Config::obj()->get('app_path') . '/Controllers/' . $tmpController . '.php')) {
-            require_once Config::obj()->get('app_path') . '/Controllers/' . $tmpController . '.php';
+        if (file_exists(Config::obj()->get('app_path') . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $tmpController . '.php')) {
+            require_once Config::obj()->get('app_path') . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $tmpController . '.php';
             if (class_exists($tmpController, false)) {
                 $controller = new $tmpController();
                 if (method_exists($controller, $tmpAction)) {

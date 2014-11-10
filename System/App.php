@@ -27,7 +27,7 @@ abstract class App{
     
     public static function start($config = []){      
         
-        require_once __DIR__ . '/Core/Autoloader.php';
+        require_once __DIR__ . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Autoloader.php';
         Autoloader::init();
         
         //Init config

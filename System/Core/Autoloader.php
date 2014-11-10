@@ -11,8 +11,8 @@
 namespace System\Core;
 
 //Preload classes
-require_once __DIR__ . '/Singleton.php';
-require_once __DIR__ . '/Config.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Singleton.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Config.php';
 
 class Autoloader extends Singleton{
     
@@ -41,11 +41,11 @@ class Autoloader extends Singleton{
         $mainPackage = $packages[0]; 
         unset($packages[0]);
         
-        $path = implode('/', $packages);
+        $path = implode(DIRECTORY_SEPARATOR, $packages);
         if($mainPackage == 'System'){            
-            $fileName = Config::obj()->get('system_path') . '/' . $path . ".php";            
+            $fileName = Config::obj()->get('system_path') . DIRECTORY_SEPARATOR . $path . ".php";            
         }else if($mainPackage == 'App'){
-            $fileName = Config::obj()->get('app_path') . '/' . $path . ".php";
+            $fileName = Config::obj()->get('app_path') . DIRECTORY_SEPARATOR . $path . ".php";
         }
        
         if (file_exists($fileName)){

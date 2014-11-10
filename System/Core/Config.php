@@ -26,7 +26,7 @@ class Config extends Singleton{
     
     private function defaults(){
         
-        return require_once __DIR__ . '/../config.php';
+        return require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.php';
     }    
     
     public function get($key = ''){

@@ -34,7 +34,7 @@ class Language extends \Module{
     
     public function &langData($lang){
         
-        $path = $this->config->get('lang_path') . '/' . $lang . '.php';
+        $path = $this->config->get('lang_path') . DIRECTORY_SEPARATOR . $lang . '.php';
         if(file_exists($path)){
             $langData = require_once $path;
             return $langData;           

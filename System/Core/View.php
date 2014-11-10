@@ -51,11 +51,11 @@ class View extends App{
         
         $route = empty ($route) ? $this->URI->route : $route;
         
-        if(file_exists($this->config->get('app_path').'/Views/'.$route.'.php')){
+        if(file_exists($this->config->get('app_path') . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php')){
             if($return){
                 ob_start();
             }                        
-            require $this->config->get('app_path').'/Views/'.$route.'.php';
+            require $this->config->get('app_path') . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php';
             if($return){
                 return ob_get_clean();                                
             }  
