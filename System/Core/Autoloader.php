@@ -16,15 +16,15 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'Config.php';
 
 class Autoloader extends Singleton{
     
-    public static function init(){
+    public static function load(){
         if(self::isObj()){
             return self::obj();            
         }        
-        spl_autoload_register(array(self::obj(),'load'));
+        spl_autoload_register(array(self::obj(),'autoLoad'));
         return self::obj();
     }
             
-    public function load($class) {
+    public function autoLoad($class) {
         
         $aliases = Config::obj()->get('aliases');
         if(isset($aliases[$class])){          

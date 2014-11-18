@@ -32,7 +32,7 @@ class Language extends \Module{
         return false;
     } 
     
-    public function &langData($lang){
+    public function langData($lang){
         
         $path = $this->config->get('lang_path') . DIRECTORY_SEPARATOR . $lang . '.php';
         if(file_exists($path)){

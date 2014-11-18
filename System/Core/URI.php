@@ -20,7 +20,7 @@ class URI extends Singleton{
     
     public $lang = '';
 
-    public static function init($URI = ''){
+    public static function load($URI = ''){
         if(self::isObj()){
             return self::obj();            
         }

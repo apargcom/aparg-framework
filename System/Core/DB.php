@@ -17,7 +17,7 @@ class DB extends Singleton {
     public $error = '';
     public $query = '';
 
-    public static function init($host, $username, $password, $db) {
+    public static function load($host, $username, $password, $db) {
         if (self::isObj()) {
             return self::obj();
         }

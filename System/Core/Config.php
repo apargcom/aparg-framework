@@ -15,7 +15,7 @@ class Config extends Singleton{
     private $config;
     
     
-    public static function init($array){
+    public static function load($array){
         if(self::isObj()){
             return self::obj();            
         }         
