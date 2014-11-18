@@ -25,7 +25,7 @@ class IndexController extends Controller {
 //        $this->image->save('gayane1.jpg');
 //        var_dump($this->image->size());
 //        var_dump($this->image->meta());
-        $this->user->add('poghos', 'poghos@gmail.com');
+//        $this->user->add('poghos', 'poghos@gmail.com');
         $this->view('', ['hello' => 'Hello World!']);
     }
 
