@@ -13,7 +13,7 @@ use \System\Core\Config;
 use \System\Core\Controller;
 use \System\Core\URI;
 
-abstract class App{ //TODO: change App class to singleton and create it's object on start
+abstract class App{ //TODO: change App class to singleton and create it's object on start 
     
     
     protected $config = null;    
