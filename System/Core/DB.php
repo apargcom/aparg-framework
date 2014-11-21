@@ -17,12 +17,13 @@ class DB extends Singleton {
     public $error = '';
     public $query = '';
 
-    public static function load($host, $username, $password, $db) {
-        if (self::isObj()) {
-            return self::obj();
-        }
-        self::obj()->mysql = new \mysqli($host, $username, $password, $db);        
-        return self::obj();
+    public function init($host, $username, $password, $db) {
+//        if (self::isObj()) {
+//            return self::obj();
+//        }
+        $this->mysql = new \mysqli($host, $username, $password, $db);    
+        return true;
+        //return self::obj();
     }
 
     public function insert($table = '', $columns = [], $values = []) {

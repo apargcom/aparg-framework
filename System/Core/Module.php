@@ -21,7 +21,12 @@ abstract class Module extends App {
         parent::__construct();
 
         //Init DB
-        $this->DB = DB::load(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));        
+        //$this->DB = DB::load(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));        
+        
+        if(!DB::isObj()){
+            DB::obj()->init(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));            
+        }
+        $this->DB = DB::obj();
     }
 
     public static function load($name, $system = true) {

@@ -18,7 +18,7 @@ abstract class App{
     
     protected $config = null;    
     protected $URI = null;
-            
+                
     protected function __construct(){
         
         $this->config = Config::obj();
@@ -28,10 +28,10 @@ abstract class App{
     public static function start($config = []){      
         
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Autoloader.php';
-        Autoloader::load();
+        Autoloader::obj()->init();
         
         //Init config
-        Config::load($config);  
+        Config::obj()->init($config);  
         
         //Check compatibility        
         if(phpversion() < Config::obj()->get('min_php_version')){ 
@@ -43,7 +43,8 @@ abstract class App{
         
                        
         //Init URI
-        URI::load($_SERVER['REQUEST_URI']);                                
+        URI::obj()->init($_SERVER['REQUEST_URI']);                                
+        
         
         Controller::load(URI::obj()->route, URI::obj()->vars);
         

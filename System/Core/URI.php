@@ -12,23 +12,20 @@ namespace System\Core;
 
 class URI extends Singleton{
         
-    public $URI = '';
-        
-    public $route = '';
-    
-    public $vars = [];
-    
+    public $URI = '';        
+    public $route = '';    
+    public $vars = [];    
     public $lang = '';
-
-    public static function load($URI = ''){
-        if(self::isObj()){
-            return self::obj();            
-        }
-        self::obj()->URI = $URI;
-        self::obj()->filter();
-        self::obj()->route();
-        self::obj()->parse();
-        return self::obj();
+    
+    public function init($URI = ''){
+//        if(self::isObj()){
+//            return self::obj();            
+//        }
+        $this->URI = $URI;
+        $this->filter();
+        $this->route();
+        $this->parse();
+//        return self::obj();
     }
     
 
