@@ -38,11 +38,6 @@ class Validator extends \Module {
         'valid_base64' => 'validBase64'
     ];
 
-    public function __construct() {
-
-        parent::__construct();
-    }
-
     public function rules($rules = []) {
 
         $this->rules = $rules;
