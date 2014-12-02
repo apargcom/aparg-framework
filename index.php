@@ -9,5 +9,5 @@
  * @todo Investigate how can Config class be implemented as ArrayAccess
  */
 
-require_once __DIR__ . '/System/App.php';
-App::start(require_once __DIR__ . '/App/config.php');
+require_once __DIR__ . '/System/AF.php';
+AF::start(require_once __DIR__ . '/App/config.php');

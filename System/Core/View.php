@@ -10,26 +10,21 @@
 
 namespace System\Core;
 
-use \App;
 
-class View extends App{ 
+class View extends Singleton{ 
     
     private $data = [];
-    
-    public function __construct(){
-        
-        parent::__construct();
-        
+ 
+    public function init(){
         $this->bufferStart();
-    }    
-    
+    }
     public function render(){
         $this->bufferFlush();
     }
     
     private function bufferStart(){
        //'\System\Core\View::bufferCallback'
-        if($this->config->get('output_buffering')){
+        if(Config::obj()->get('output_buffering')){
             ob_start(array($this,'bufferCallback'));
         }
     }
@@ -40,7 +35,7 @@ class View extends App{
     }
     
     private  function bufferFlush(){
-        if($this->config->get('output_buffering')){
+        if(Config::obj()->get('output_buffering')){
             ob_end_flush();
         }
     }
@@ -49,13 +44,13 @@ class View extends App{
                 
         $this->data = $data;
         
-        $route = empty ($route) ? $this->URI->route : $route;
+        $route = empty ($route) ? URI::obj()->route : $route;
         
-        if(file_exists($this->config->get('app_path') . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php')){
+        if(file_exists(Config::obj()->get('app_path') . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php')){
             if($return){
                 ob_start();
             }                        
-            require $this->config->get('app_path') . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php';
+            require Config::obj()->get('app_path') . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php';
             if($return){
                 return ob_get_clean();                                
             }  

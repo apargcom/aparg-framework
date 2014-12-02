@@ -10,38 +10,21 @@
 
 namespace System\Core;
 
-use \App;
-
-abstract class Module extends App {
+abstract class Module {
 
     protected $DB = null;
-    
-    protected function __construct() {
+    protected $config = null;
+    protected $URI = null;
 
-        parent::__construct();
+    public function __construct() {
 
-        //Init DB
-        //$this->DB = DB::load(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));        
-        
-        if(!DB::isObj()){
-            DB::obj()->init(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));            
+
+        $this->config = Config::obj();
+        $this->URI = URI::obj();
+
+        if (!DB::isObj()) {
+            DB::obj()->init(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));
         }
         $this->DB = DB::obj();
     }
-
-    public static function load($name, $system = true) {
-
-        $name = ucfirst($name);
-        // $path = ($system ? Config::obj()->get('system_path') : Config::obj()->get('app_path')) . '/Modules/' . $name . '.php';
-        $class = '\\' . ($system ? 'System' : 'App') . '\Modules\\' . $name;
-
-        if (class_exists($class)) {
-            $classObj = new $class();
-            return $classObj;
-        }
-        if ($system)
-            return self::load($name, false);
-        return false;
-    }
-
 }
