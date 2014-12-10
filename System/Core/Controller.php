@@ -39,4 +39,10 @@ abstract class Controller {
 
         return App::obj()->loadModel($name);
     }
+    
+    protected function log($type, $message) {
+
+        return App::obj()->log($type, $message);
+    }
+
 }

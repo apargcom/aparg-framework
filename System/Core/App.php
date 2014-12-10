@@ -26,7 +26,7 @@ class App extends Singleton{ //TODO: change App class to singleton and create it
             trigger_error('Suported PHP version is 5.3.3 and above.', E_USER_ERROR);                    
         }
  
-        error_reporting((Config::obj()->get('debug_mode')) ? -1 : 0);
+        error_reporting((Config::obj()->get('show_errors')) ? -1 : 0);
         
         $this->URI = URI::obj();  
         $this->view = View::obj();
@@ -37,6 +37,18 @@ class App extends Singleton{ //TODO: change App class to singleton and create it
         $this->controller = $this->loadController(URI::obj()->route, URI::obj()->vars);
         if($this->controller != false){
             $this->view->render();
+        }
+    }
+    
+    public function log($type, $message){
+        
+        $enabled = Config::obj()->get('enable_logs');
+        if($enabled){
+            $path = Config::obj()->get('logs_path');
+            $log = '(' . date("Y-m-d H:i:s") . ') ' . $type . ': ' .  $message;                    
+            return (file_put_contents($path, $log . PHP_EOL, FILE_APPEND) == false) ? false : true;
+        }else{
+            return false;
         }
     }
     

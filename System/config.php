@@ -7,10 +7,14 @@ return [
     'db_engine' => 'innoDB',
 
     'base_url' => 'http://' . $_SERVER['SERVER_NAME'],
-    'base_path' => $_SERVER['DOCUMENT_ROOT'],
+    'base_path' => ($base_path = $_SERVER['DOCUMENT_ROOT']),
 
-    'app_path' => ($app_path = $_SERVER['DOCUMENT_ROOT']."/App"),
-    'system_path' => $_SERVER['DOCUMENT_ROOT']."/System",
+    'app_path' => ($app_path = $base_path . "/App"),
+    'system_path' => $base_path . "/System",
+    'cache_path' => $app_path . '/Cache',
+    'lang_path' => $app_path . '/Lang',
+    'logs_path' => $app_path . '/Logs/logs.txt',
+    'enable_logs' => true,
     
     'default_controller' => ($default_controller = "index"),
     
@@ -20,13 +24,10 @@ return [
     ],
     
     'min_php_version' => '5.3.0',
-         
-    'cache_path' => $app_path . '/Cache',
-    'lang_path' => $app_path . '/Lang',
     
     'cache_expire' => '3600',
 
-    'debug_mode' => true,
+    'show_errors' => true,
 
     'output_buffering' => true,
     

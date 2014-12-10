@@ -27,4 +27,10 @@ abstract class Module {
         }
         $this->DB = DB::obj();
     }
+
+    protected function log($type, $message) {
+
+        return App::obj()->log($type, $message);
+    }
+
 }
