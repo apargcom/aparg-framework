@@ -12,14 +12,15 @@ namespace System\Modules;
 
 class Language extends \Module{
     
-    private $lang = '';
-    
+    private $lang = '';    
     private $langData = [];
+    private $path = '';
     
     public function __construct() {
         parent::__construct();
         
-        $this->lang = $this->URI->lang;
+        $this->path = $this->config->get('lang_path');
+        $this->lang = $this->URI->lang;        
         $this->langData = $this->langData($this->lang);
     }
     
@@ -32,9 +33,9 @@ class Language extends \Module{
         return false;
     } 
     
-    public function langData($lang){
+    private function langData($lang){
         
-        $path = $this->config->get('lang_path') . DIRECTORY_SEPARATOR . $lang . '.php';
+        $path = $this->path . DIRECTORY_SEPARATOR . $lang . '.php';
         if(file_exists($path)){
             $langData = require_once $path;
             return $langData;           

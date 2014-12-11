@@ -16,20 +16,24 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'Config.php';
 
 class Autoloader extends Singleton{
     
+    private $aliases = null;
+    private $systemPath = null;
+    private $appPath = null;
+    
     public function init(){
-//        if(self::isObj()){
-//            return self::obj();            
-//        }        
+        
+        $this->aliases = Config::obj()->get('aliases');        
+        $this->systemPath = Config::obj()->get('system_path');
+        $this->appPath = Config::obj()->get('app_path');
         spl_autoload_register(array($this,'load'));
         return true;
-//        return self::obj();
     }
             
     public function load($class) {
-        
-        $aliases = Config::obj()->get('aliases');
-        if(isset($aliases[$class])){          
-            return class_alias('\\'.trim(Config::obj()->get('aliases')[$class],'\\'), $class);
+                
+        if(isset($this->aliases[$class])){          
+            class_alias('\\'.trim($this->aliases[$class],'\\'), $class);
+            return true;
         }
         $this->loadClass($class);        
     }
@@ -44,9 +48,9 @@ class Autoloader extends Singleton{
         
         $path = implode(DIRECTORY_SEPARATOR, $packages);
         if($mainPackage == 'System'){            
-            $fileName = Config::obj()->get('system_path') . DIRECTORY_SEPARATOR . $path . ".php";            
+            $fileName = $this->systemPath . DIRECTORY_SEPARATOR . $path . ".php";            
         }else if($mainPackage == 'App'){
-            $fileName = Config::obj()->get('app_path') . DIRECTORY_SEPARATOR . $path . ".php";
+            $fileName = $this->appPath . DIRECTORY_SEPARATOR . $path . ".php";
         }
        
         if (file_exists($fileName)){
@@ -54,3 +58,4 @@ class Autoloader extends Singleton{
         }
     }
 }
+

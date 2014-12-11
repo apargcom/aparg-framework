@@ -17,15 +17,22 @@ class URI extends Singleton{
     public $vars = [];    
     public $lang = '';
     
+    private $defaultLanguage = '';
+    private $languages = [];
+    private $defaultController = '';
+    private $routes = [];
+    
     public function init($URI = ''){
-//        if(self::isObj()){
-//            return self::obj();            
-//        }
+        
+        $this->languages = Config::obj()->get('languages');
+        $this->defaultLanguage = Config::obj()->get('default_language');
+        $this->defaultController = Config::obj()->get('default_controller');
+        $this->routes = Config::obj()->get('routes');
         $this->URI = $URI;
+        
         $this->filter();
         $this->route();
         $this->parse();
-//        return self::obj();
     }
     
 
@@ -41,14 +48,14 @@ class URI extends Singleton{
         $langI = 0;
         $controllerI = 0;
         $actionI = 1;
-        $this->lang = Config::obj()->get('default_lang');
-        if(isset($splitURI[0]) && array_search($splitURI[0], Config::obj()->get('lang')) !== false){
+        $this->lang = $this->defaultLanguage;
+        if(isset($splitURI[0]) && array_search($splitURI[0], $this->languages) !== false){
             $this->lang = $splitURI[0]; 
             $controllerI = 1;
             $actionI = 2;             
         }
            
-        $route[0] = strtolower(isset($splitURI[$controllerI])?$splitURI[$controllerI]:Config::obj()->get('default_controller'));
+        $route[0] = strtolower(isset($splitURI[$controllerI])?$splitURI[$controllerI]:$this->defaultController);
         $route[1] = strtolower(isset($splitURI[$actionI])?$splitURI[$actionI]:'index');      
 
         unset($splitURI[$langI]);
@@ -65,7 +72,7 @@ class URI extends Singleton{
     
     private function route($routes = []){
         
-        $routes = empty($routes) ? Config::obj()->get('routes') : $routes;
+        $routes = empty($routes) ? $this->routes : $routes;
         $URI = $this->URI;
         foreach($routes as $from => $to){
             $URI = preg_replace('/^' . preg_quote($from, '/') . '/', $to, $URI);
@@ -73,10 +80,8 @@ class URI extends Singleton{
         $this->URI = $URI;
     }
     
-     public function redirect($URL, $code = 302){ //TODO: Move to URL class
-                                                    //TODO: Maybe better set URL class instance and call $this->URL->redirect() from child controller                    
+     public function redirect($URL, $code = 302){  
                                                     
         header('Location: ' . $URL, true, $code);
     }
-    
 }

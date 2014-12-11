@@ -10,7 +10,7 @@
 
 namespace System\Modules;
 
-class Validator extends \Module {
+class Validator extends \Module { //TODO:add phone number validation
 
     private $rules = [];
     public $errors = [];
@@ -32,6 +32,7 @@ class Validator extends \Module {
         'decimal' => 'decimal',
         'is_natural' => 'isNatural',
         'is_natural_no_zero' => 'isNaturalNoZero',
+        'valid_phone' => 'validPhone',
         'valid_email' => 'validEmail',
         'valid_emails' => 'validEmails',
         'valid_ip' => 'validIP',
@@ -215,8 +216,13 @@ class Validator extends \Module {
             return false;
         }
         return true;
-    }
+    }    
+    
+    private function validPhone($value) {
 
+        return (preg_match("/^[0-9\.\#\+\-\(\)\s]*$/", $value) == false) ? false : true;
+    }
+    
     private function validEmail($value) {
 
         return (preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $value) == false) ? false : true;

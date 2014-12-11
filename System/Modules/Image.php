@@ -16,6 +16,7 @@ class Image extends \Module {
     private $image = null;
     private $size = [];
     private $meta = [];
+    private $mime = '';
 
     public function open($path) {
 
@@ -39,11 +40,12 @@ class Image extends \Module {
                 $this->size['width'] = imagesx($this->image);
                 $this->size['height'] = imagesy($this->image);
                 $this->meta = exif_read_data($path);
+                $this->mime = mime_content_type($path);
             }
         }
         return ($result == false) ? false : true;
     }
-
+    
     public function size() {
 
         return empty($this->size) ? false : $this->size;
@@ -54,7 +56,12 @@ class Image extends \Module {
         return empty($this->meta) ? false : $this->meta;
     }
 
-    public function save($path = '', $destroy = true, $quality = null) {
+    public function mime() {
+
+        return empty($this->mime) ? false : $this->mime;
+    }
+    
+    public function save($path = '', $close = true, $quality = null) {
         if ($this->image == null) {
             return false;
         }
@@ -68,8 +75,8 @@ class Image extends \Module {
             $result = is_null($quality) ? imagejpeg($this->image, $path) : imagejpeg($this->image, $path, $quality);
         } else if ($ext == 'gif') {
             $result = imagegif($this->image, $path);
-        }
-        if ($destroy) {
+        }        
+        if ($close) {
             imagedestroy($this->image);
             $this->image = null;
         }
@@ -206,7 +213,7 @@ class Image extends \Module {
     }
 
     public function flip($mode = IMG_FLIP_HORIZONTAL) {
-        if ($this->image == null) {
+        if ($this->image == null || !function_exists('imageflip')) {
             return false;
         }
         $result = imageflip($this->image, IMG_FLIP_HORIZONTAL);

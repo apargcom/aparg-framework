@@ -31,12 +31,15 @@ return [
 
     'output_buffering' => true,
     
-    'default_lang' => 'en',
+    'default_language' => 'en',
     
-    'lang' => [
+    'languages' => [
         'en',
         'am'
     ],
+    
+    'mail_from' => 'popok@popok.com',
+    
     
     'aliases'=> [
         'Controller' => 'System\Core\Controller',

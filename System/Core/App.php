@@ -10,43 +10,52 @@
 
 namespace System\Core;
 
-require_once __DIR__ .  DIRECTORY_SEPARATOR . 'Autoloader.php';
-Autoloader::obj()->init();
 
-class App extends Singleton{ //TODO: change App class to singleton and create it's object on start 
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Singleton.php';
+
+class App extends Singleton{
     
     public $conroller = null;
-
-    public function init($config = []){
+    
+    
+    private $logsPath = null;
+    private $enableLogs = true;
+    private $appPath = null;
+    private $route404 = null;
+    
+    public function init($config = []){        
         
-        
+        require_once __DIR__ . DIRECTORY_SEPARATOR . 'Config.php';
         Config::obj()->init($config);          
-             
+        
+        require_once __DIR__ .  DIRECTORY_SEPARATOR . 'Autoloader.php';
+        Autoloader::obj()->init();
+        
+        $this->logsPath = Config::obj()->get('logs_path');
+        $this->enableLogs = Config::obj()->get('enable_logs');
+        $this->appPath = Config::obj()->get('app_path');
+        $this->route404 = Config::obj()->get('route_404');
+        
         if(phpversion() < Config::obj()->get('min_php_version')){ 
             trigger_error('Suported PHP version is 5.3.3 and above.', E_USER_ERROR);                    
         }
  
         error_reporting((Config::obj()->get('show_errors')) ? -1 : 0);
         
-        $this->URI = URI::obj();  
-        $this->view = View::obj();
-                       
         URI::obj()->init($_SERVER['REQUEST_URI']);                                
                 
-        $this->view->init();
+        View::obj()->init();
         $this->controller = $this->loadController(URI::obj()->route, URI::obj()->vars);
         if($this->controller != false){
-            $this->view->render();
+            View::obj()->render();
         }
     }
     
     public function log($type, $message){
-        
-        $enabled = Config::obj()->get('enable_logs');
-        if($enabled){
-            $path = Config::obj()->get('logs_path');
+                
+        if($this->logsPath){            
             $log = '(' . date("Y-m-d H:i:s") . ') ' . $type . ': ' .  $message;                    
-            return (file_put_contents($path, $log . PHP_EOL, FILE_APPEND) == false) ? false : true;
+            return (file_put_contents($this->appPath, $log . PHP_EOL, FILE_APPEND) == false) ? false : true;
         }else{
             return false;
         }
@@ -56,11 +65,12 @@ class App extends Singleton{ //TODO: change App class to singleton and create it
 
         $splitRoute = explode('/', $route);
 
-        $tmpController = '\\' . ucfirst($splitRoute[0] . 'Controller');
+        $tmpController = ucfirst($splitRoute[0] . 'Controller');
         $tmpAction = $splitRoute[1] . 'Action';
 
-        if (file_exists(Config::obj()->get('app_path') . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $tmpController . '.php')) {
-            require_once Config::obj()->get('app_path') . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $tmpController . '.php';
+        if (file_exists($this->appPath . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $tmpController . '.php')) {
+            require_once $this->appPath . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $tmpController . '.php';
+            $tmpController = '\\' . $tmpController;
             if (class_exists($tmpController, false)) {
                 $controller = new $tmpController();
                 if (method_exists($controller, $tmpAction)) {
@@ -69,9 +79,9 @@ class App extends Singleton{ //TODO: change App class to singleton and create it
                 }
             }
         }
-        $route_404 = Config::obj()->get('route_404');
-        if ($route != $route_404) {
-            $load_404 = $this->loadController($route_404, $vars);
+        
+        if ($route != $this->route404) {
+            $load_404 = $this->loadController($this->route404, $vars);
             if ($load_404 !== false) {
                 http_response_code(404);
                 return $load_404;
@@ -82,8 +92,7 @@ class App extends Singleton{ //TODO: change App class to singleton and create it
     
     public function loadModel($name){ 
     
-        $name = ucfirst($name);
-       // $path = ($system ? Config::obj()->get('system_path') : Config::obj()->get('app_path')) . '/Modules/' . $name . '.php';
+        $name = ucfirst($name);       
         $class = '\App\Models\\' . $name;        
        
         if(class_exists($class)){ 
@@ -96,7 +105,6 @@ class App extends Singleton{ //TODO: change App class to singleton and create it
     public function loadModule($name, $system = true) {
 
         $name = ucfirst($name);
-        // $path = ($system ? Config::obj()->get('system_path') : Config::obj()->get('app_path')) . '/Modules/' . $name . '.php';
         $class = '\\' . ($system ? 'System' : 'App') . '\Modules\\' . $name;
 
         if (class_exists($class)) {

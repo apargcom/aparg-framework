@@ -16,14 +16,11 @@ class DB extends Singleton {
     public $lastID = 0;
     public $error = '';
     public $query = '';
+    
+    public function init() {
 
-    public function init($host, $username, $password, $db) {
-//        if (self::isObj()) {
-//            return self::obj();
-//        }
-        $this->mysql = new \mysqli($host, $username, $password, $db);    
+        $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));    
         return true;
-        //return self::obj();
     }
 
     public function insert($table = '', $columns = [], $values = []) {
