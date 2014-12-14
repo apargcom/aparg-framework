@@ -28,11 +28,11 @@ abstract class Singleton {
         return isset(self::$instances[$className]);
     }
 
-    final protected function  __construct() { } //TODO: do we need "final" keyword here
+    final protected function  __construct() { } 
     
-    final public function __clone() { } //TODO: do we need "final" keyword here
+    final public function __clone() { }
 
-    final public function __wakeup() { } //TODO: do we need "final" keyword here
+    final public function __wakeup() { }
 
 }
 

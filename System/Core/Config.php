@@ -38,7 +38,7 @@ class Config extends Singleton{
             return false;
         }
     }
-    public function set($value = []){//TODO: Think if we need to set config value or it's safer not to allow this
+    public function set($value = []){
         
         $this->config = array_replace_recursive($this->config,  $value);
         if($this->config != null){

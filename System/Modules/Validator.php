@@ -10,7 +10,7 @@
 
 namespace System\Modules;
 
-class Validator extends \Module { //TODO:add phone number validation
+class Validator extends \Module { 
 
     private $rules = [];
     public $errors = [];

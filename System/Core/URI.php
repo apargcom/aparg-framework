@@ -80,7 +80,7 @@ class URI extends Singleton{
         $this->URI = $URI;
     }
     
-     public function redirect($URL, $code = 302){  
+    public function redirect($URL, $code = 302){  
                                                     
         header('Location: ' . $URL, true, $code);
     }

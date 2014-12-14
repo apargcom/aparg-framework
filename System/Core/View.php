@@ -46,7 +46,7 @@ class View extends Singleton{
         }
     }
     
-    public function load($route = '', $data = [], $return = false){ //TODO: Think if we need integrate Cache module with View to automatically write and load form cache
+    public function load($route = '', $data = [], $return = false){ 
                 
         $this->data = $data;
         

@@ -21,7 +21,7 @@ class App extends Singleton{
     private $logsPath = null;
     private $enableLogs = true;
     private $appPath = null;
-    private $route404 = null;
+    private $notFound = null;
     
     public function init($config = []){        
         
@@ -34,7 +34,8 @@ class App extends Singleton{
         $this->logsPath = Config::obj()->get('logs_path');
         $this->enableLogs = Config::obj()->get('enable_logs');
         $this->appPath = Config::obj()->get('app_path');
-        $this->route404 = Config::obj()->get('route_404');
+        $this->notFound = Config::obj()->get('not_found');
+        $this->notFound = is_array($this->notFound) ? $this->notFound : ['route' => $this->notFound];
         
         if(phpversion() < Config::obj()->get('min_php_version')){ 
             trigger_error('Suported PHP version is 5.3.3 and above.', E_USER_ERROR);                    
@@ -80,11 +81,13 @@ class App extends Singleton{
             }
         }
         
-        if ($route != $this->route404) {
-            $load_404 = $this->loadController($this->route404, $vars);
-            if ($load_404 !== false) {
-                http_response_code(404);
-                return $load_404;
+        if ($route != $this->notFound['route']) {
+            $controller = $this->loadController($this->notFound['route'], $vars);
+            if ($controller !== false) {                   
+                if(!isset($this->notFound['404']) || $this->notFound['404'] ==  true){
+                    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);  
+                }
+                return $controller;
             }
         }
         return false;

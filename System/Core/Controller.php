@@ -21,12 +21,12 @@ abstract class Controller {
         $this->URI = URI::obj();          
     }
 
-    protected function view($route = '', $data = [], $return = false) { //TODO: Maybe better set View class instance and call $this->view->load() from child controller
+    protected function view($route = '', $data = [], $return = false) { 
         
         return View::obj()->load($route, $data, $return);
     }
 
-    protected function redirect($URL, $code = 302) { //TODO: Maybe better set URL class instance and call $this->URL->redirect() from child controller                    
+    protected function redirect($URL, $code = 302) { 
         URI::obj()->redirect($URL, $code);
     }
 

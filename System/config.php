@@ -18,12 +18,15 @@ return [
     
     'default_controller' => ($default_controller = "index"),
     
-    'route_404' => $default_controller.'/default404',
+    'not_found' => [
+        'route'=>$default_controller.'/default404',
+        '404'=>true
+    ],
     
     'routes' => [
     ],
     
-    'min_php_version' => '5.3.0',
+    'min_php' => '5.3.0',
     
     'cache_expire' => '3600',
 
