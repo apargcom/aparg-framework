@@ -66,7 +66,7 @@ class App extends Singleton{
 
         $splitRoute = explode('/', $route);
 
-        $tmpController = ucfirst($splitRoute[0] . 'Controller');
+        $tmpController = $splitRoute[0] . 'Controller';
         $tmpAction = $splitRoute[1] . 'Action';
 
         if (file_exists($this->appPath . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $tmpController . '.php')) {
