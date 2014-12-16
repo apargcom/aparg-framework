@@ -38,7 +38,7 @@ class URI extends Singleton{
 
     private function filter(){
         
-        $this->URI = strtolower(trim(strtok($this->URI,'?'),'/')); 
+        $this->URI = trim(strtok($this->URI,'?'),'/'); 
     }  
     
     private function parse(){
