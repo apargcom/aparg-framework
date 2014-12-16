@@ -55,8 +55,8 @@ class URI extends Singleton{
             $actionI = 2;             
         }
            
-        $route[0] = strtolower(isset($splitURI[$controllerI])?$splitURI[$controllerI]:$this->defaultController);
-        $route[1] = strtolower(isset($splitURI[$actionI])?$splitURI[$actionI]:'index');      
+        $route[0] = isset($splitURI[$controllerI])?$splitURI[$controllerI]:$this->defaultController;
+        $route[1] = isset($splitURI[$actionI])?$splitURI[$actionI]:'index';      
 
         unset($splitURI[$langI]);
         unset($splitURI[$controllerI]);
