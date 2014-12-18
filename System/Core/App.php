@@ -115,7 +115,7 @@ class App extends Singleton{
             return $classObj;
         }
         if ($system)
-            return $this->module($name, false);
+            return $this->loadModule($name, false);
         return false;
     }
 }
