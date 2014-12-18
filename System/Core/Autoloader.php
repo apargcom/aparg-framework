@@ -10,10 +10,6 @@
 
 namespace System\Core;
 
-//Preload classes
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'Singleton.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'Config.php';
-
 class Autoloader extends Singleton{
     
     private $aliases = null;

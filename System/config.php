@@ -48,7 +48,5 @@ return [
         'Controller' => 'System\Core\Controller',
         'Model' => 'System\Core\Model',
         'Module' => 'System\Core\Module',
-//        'Config' => 'System\Core\Config',
-    ]
-    
+    ]    
 ];

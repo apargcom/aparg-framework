@@ -35,6 +35,7 @@ class Language extends \Module{
     
     private function langData($lang){
         
+        $lang = strtolower($lang);
         $path = $this->path . DIRECTORY_SEPARATOR . $lang . '.php';
         if(file_exists($path)){
             $langData = require_once $path;

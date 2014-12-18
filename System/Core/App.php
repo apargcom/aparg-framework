@@ -66,8 +66,8 @@ class App extends Singleton{
 
         $splitRoute = explode('/', $route);
 
-        $tmpController = $splitRoute[0] . 'Controller';
-        $tmpAction = $splitRoute[1] . 'Action';
+        $tmpController = ucfirst(strtolower($splitRoute[0])) . 'Controller';
+        $tmpAction = strtolower($splitRoute[1]) . 'Action';
 
         if (file_exists($this->appPath . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $tmpController . '.php')) {
             require_once $this->appPath . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $tmpController . '.php';
@@ -94,8 +94,8 @@ class App extends Singleton{
     }
     
     public function loadModel($name){ 
-    
-        $name = ucfirst($name);       
+        
+        $name = ucfirst(strtolower($name));
         $class = '\App\Models\\' . $name;        
        
         if(class_exists($class)){ 
@@ -106,8 +106,8 @@ class App extends Singleton{
     }
     
     public function loadModule($name, $system = true) {
-
-        $name = ucfirst($name);
+        
+        $name = ucfirst(strtolower($name));        
         $class = '\\' . ($system ? 'System' : 'App') . '\Modules\\' . $name;
 
         if (class_exists($class)) {

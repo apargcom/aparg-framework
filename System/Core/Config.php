@@ -16,13 +16,10 @@ class Config extends Singleton{
     
     
     public function init($array){
-//        if(self::isObj()){
-//            return self::obj();            
-//        }         
+       
         $this->config = $this->defaults();  
         $this->set($array);  
         return true;
-//        return self::obj();
     }
     
     private function defaults(){
