@@ -1,34 +1,78 @@
 <?php
 
-/**
- * Aparg Framework
- * 
- * @author Aparg
- * @link http://www.aparg.com/
- * @copyright Aparg
- */
-
 namespace System\Modules;
 
+/**
+ * Aparg Framework {@link http://www.aparg.com}
+ * 
+ * Mail class is system module for generating and sending emails
+ *
+ * @version 1.0
+ * @author Aparg <info@aparg.com>
+ * @copyright Aparg
+ * @package System
+ * @subpackage Modules
+ */
 class Mail extends \Module {
-
+    
+    /**
+     * @var array Array with "to" emails 
+     */
     private $to = [];
+    /**
+     * @var array Array with "cc" emails 
+     */
     private $cc = [];
+    /**
+     * @var array Array with "bcc" emails 
+     */
     private $bcc = [];
+    /**
+     * @var string Subject
+     */
     private $subject = '';
+    /**
+     * @var string Message content
+     */
     private $message = '';
+    /**
+     * @var string From email
+     */
     private $from = '';
+    /**
+     * @var array Headers to send with email 
+     */
     private $headers = [];
+    /**
+     * @var string Email charset
+     */
     private $charset = 'utf-8';
+    /**
+     * @var string Email content type
+     */
     private $contentType = 'text/html';
+    /**
+     * @var string Email mime version
+     */
     private $mimeVersion = '1.0';
 
+    /**
+     * Loads some configs
+     * 
+     * @return void
+     */
     public function __construct() {
         parent::__construct();
 
         $this->from = $this->config->get('mail_from');
     }
 
+    /**
+     * Set email charset
+     * 
+     * @param string $charset Email charset
+     * @return void
+     */
     public function charset($charset = '') {
 
         if (!empty($charset)) {
@@ -36,6 +80,12 @@ class Mail extends \Module {
         }
     }
 
+    /**
+     * Set email content type
+     * 
+     * @param string $contentType Email content type
+     * @return void
+     */
     public function contentType($contentType = '') {
 
         if (!empty(trim($contentType))) {
@@ -43,6 +93,12 @@ class Mail extends \Module {
         }
     }
 
+    /**
+     * Set email mime version
+     * 
+     * @param string $mimeVersion Email mime version
+     * @return void
+     */
     public function mimeVersion($mimeVersion = '') {
 
         if (!empty(trim($mimeVersion))) {
@@ -50,6 +106,13 @@ class Mail extends \Module {
         }
     }
 
+    /**
+     * Set Headers to send with email
+     * 
+     * @param array $headers Each value is new headers
+     * @param type $merge Whether to merge with already set headers or remove old
+     * @return void
+     */
     public function headers($headers = [], $merge = true) {
 
         if ($merge) {
@@ -60,11 +123,24 @@ class Mail extends \Module {
         }
     }
 
+    /**
+     * Set "from" email
+     * 
+     * @param string $from From email
+     * @return void
+     */
     public function from($from = '') {
 
         $this->from = $from;
     }
 
+    /**
+     * Set "to" emails
+     * 
+     * @param array $to Each value is email
+     * @param type $merge Whether to merge with already set "to" emails or remove old
+     * @return void
+     */
     public function to($to = [], $merge = true) {
         
         if ($merge) {
@@ -75,6 +151,13 @@ class Mail extends \Module {
         }
     }
 
+    /**
+     * Set "cc" emails
+     * 
+     * @param array $cc Each value is email
+     * @param type $merge Whether to merge with already set "cc" emails or remove old
+     * @return void
+     */
     public function cc($cc = [], $merge = true) {
         
         if ($merge) {
@@ -85,6 +168,13 @@ class Mail extends \Module {
         }
     }
 
+    /**
+     * Set "bcc" emails
+     * 
+     * @param array $bcc Each value is email
+     * @param type $merge Whether to merge with already set "bcc" emails or remove old
+     * @return void
+     */
     public function bcc($bcc = [], $merge = true) {
         
         if ($merge) {
@@ -95,16 +185,34 @@ class Mail extends \Module {
         }
     }
 
+    /**
+     * Set subject for email
+     * 
+     * @param string $subject Subject of email
+     * @return void
+     */
     public function subject($subject = '') {
 
         $this->subject = $subject;
     }
 
+    /**
+     * Set message content
+     * 
+     * @param string $message Message content
+     * @return void
+     */
     public function message($message = '') {
 
         $this->message = $message;
     }
 
+    
+    /**
+     * Send email with set configurations
+     * 
+     * @return boolean  True on success, false on fail
+     */
     public function send() {
 
         $to = implode(',', $this->to);

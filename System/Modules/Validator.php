@@ -1,19 +1,31 @@
 <?php
 
-/**
- * Aparg Framework
- * 
- * @author Aparg
- * @link http://www.aparg.com/
- * @copyright Aparg
- */
-
 namespace System\Modules;
 
-class Validator extends \Module { 
+/**
+ * Aparg Framework {@link http://www.aparg.com}
+ * 
+ * Validator class is system module for validating multiple values for against multiple rules
+ *
+ * @version 1.0
+ * @author Aparg <info@aparg.com>
+ * @copyright Aparg
+ * @package System
+ * @subpackage Modules
+ */
+class Validator extends \Module {
 
+    /**
+     * @var array Array with rules where key is input name, value is array which 0 element is input value 1 element is array with rules
+     */
     private $rules = [];
+    /**
+     * @var array Array with error after validation 
+     */
     public $errors = [];
+    /**
+     * @var array Array with rules where key is rule name value is function name
+     */
     private $rulesMethods = [
         'required' => 'required',
         'matches' => 'matches',
@@ -39,11 +51,22 @@ class Validator extends \Module {
         'valid_base64' => 'validBase64'
     ];
 
+    /**
+     * Sets rules array
+     * 
+     * @param array $rules Array which key is input name, value is array which 0 element is input value 1 element is array with rules     * 
+     * @return void
+     */
     public function rules($rules = []) {
 
         $this->rules = $rules;
     }
 
+    /**
+     * Validates all inputs by all given rules
+     * 
+     * @return boolean True success, false fail
+     */
     public function validate() {
 
         $valid = true;
@@ -73,6 +96,13 @@ class Validator extends \Module {
         return $valid;
     }
 
+    /**
+     * Validates one input
+     * 
+     * @param string $inputValue Input value
+     * @param array $inputRules Input rules
+     * @return boolean|array True on success, array with errors on fail
+     */
     public function validateOne($inputValue, $inputRules) {
 
         $valid = true;
@@ -97,21 +127,46 @@ class Validator extends \Module {
         return $valid ? true : $errors;
     }
 
+    /**
+     * Validate value for required rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function required($value) {
 
         return (trim($value) == '') ? false : true;
     }
 
+    /**
+     * Validate value for regexMatch rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function regexMatch($value, $param) {
 
         return (preg_match($param, $value) == false) ? false : true;
     }
 
+    /**
+     * Validate value for matches rule
+     * 
+     * @param string $value Value
+     * @param string $param Rule option
+     * @return boolean True on success, false on fail
+     */
     private function matches($value, $param) {
 
         return ($value == $this->rules[$param][0]) ? true : false;
     }
 
+    /**
+     * Validate value for isUnique rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function isUnique($value) {
 
         $counter = 0;
@@ -123,6 +178,13 @@ class Validator extends \Module {
         return ($counter > 1) ? false : true;
     }
 
+    /**
+     * Validate value for minLength rule
+     * 
+     * @param string $value Value
+     * @param string $param Rule option
+     * @return boolean True on success, false on fail
+     */
     private function minLength($value, $param) {
 
         if (is_numeric($value)) {
@@ -135,6 +197,13 @@ class Validator extends \Module {
         return (strlen($value) < $param) ? false : true;
     }
 
+    /**
+     * Validate value for maxLength rule
+     * 
+     * @param string $value Value
+     * @param string $param Rule option
+     * @return boolean True on success, false on fail
+     */
     private function maxLength($value, $param) {
         if (is_numeric($value)) {
             return false;
@@ -146,6 +215,13 @@ class Validator extends \Module {
         return (strlen($value) > $param) ? false : true;
     }
 
+    /**
+     * Validate value for exactLength rule
+     * 
+     * @param string $value Value
+     * @param string $param Rule option
+     * @return boolean True on success, false on fail
+     */
     private function exactLength($value, $param) {
         if (is_numeric($value)) {
             return false;
@@ -157,6 +233,13 @@ class Validator extends \Module {
         return (strlen($value) != $param) ? false : true;
     }
 
+    /**
+     * Validate value for greaterThan rule
+     * 
+     * @param string $value Value
+     * @param string $param Rule option
+     * @return boolean True on success, false on fail
+     */
     private function greaterThan($value, $param) {
 
         if (!is_numeric($value)) {
@@ -165,6 +248,13 @@ class Validator extends \Module {
         return $value > $param;
     }
 
+    /**
+     * Validate value for lessThan rule
+     * 
+     * @param string $value Value
+     * @param string $param Rule option
+     * @return boolean True on success, false on fail
+     */
     private function lessThan($value, $param) {
         if (!is_numeric($value)) {
             return false;
@@ -172,41 +262,89 @@ class Validator extends \Module {
         return $value < $param;
     }
 
+    /**
+     * Validate value for alpha rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function alpha($value) {
 
         return (preg_match("/^([a-z])+$/i", $value) == false) ? false : true;
     }
 
+    /**
+     * Validate value for alphaNumeric rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function alphaNumeric($value) {
 
         return (preg_match("/^([a-z0-9])+$/i", $value) == false) ? false : true;
     }
 
+    /**
+     * Validate value for alphaDash rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function alphaDash($value) {
 
         return (preg_match("/^([-a-z0-9_-])+$/i", $value) == false) ? false : true;
     }
 
+    /**
+     * Validate value for numeric rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function numeric($value) {
 
         return (preg_match("/^[\-+]?[0-9]*\.?[0-9]+$/", $value) == false) ? false : true;
     }
 
+    /**
+     * Validate value for integer rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function integer($value) {
 
         return (preg_match("/^[\-+]?[0-9]+$/", $value) == false) ? false : true;
     }
 
+    /**
+     * Validate value for decimal rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function decimal($value) {
 
         return (preg_match("/^[\-+]?[0-9]+\.[0-9]+$/", $value) == false) ? false : true;
     }
 
+    /**
+     * Validate value for isNatural rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function isNatural($value) {
 
         return (preg_match("/^[0-9]+$/", $value) == false) ? false : true;
     }
 
+    /**
+     * Validate value for isNaturalNoZero rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function isNaturalNoZero($value) {
 
         if (preg_match('/^[0-9]+$/', $value) == false) {
@@ -216,18 +354,36 @@ class Validator extends \Module {
             return false;
         }
         return true;
-    }    
-    
+    }
+
+    /**
+     * Validate value for validPhone rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function validPhone($value) {
 
         return (preg_match("/^[0-9\.\#\+\-\(\)\s]*$/", $value) == false) ? false : true;
     }
-    
+
+    /**
+     * Validate value for validEmail rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function validEmail($value) {
 
         return (preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $value) == false) ? false : true;
     }
 
+    /**
+     * Validate value for validEmails rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function validEmails($value) {
 
         if (strpos($value, ',') === false) {
@@ -243,6 +399,13 @@ class Validator extends \Module {
         return true;
     }
 
+    /**
+     * Validate value for validIP rule
+     * 
+     * @param string $value Value
+     * @param string $param Rule option
+     * @return boolean True on success, false on fail
+     */
     private function validIP($value, $param) {
         if ($param == 'ipv4') {
             return (filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) == false) ? false : true;
@@ -253,6 +416,12 @@ class Validator extends \Module {
         }
     }
 
+    /**
+     * Validate value for validBase64 rule
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
     private function validBase64($value) {
         var_dump($value);
         return (preg_match("/[^a-zA-Z0-9\/\+=]/", $value) == false) ? false : true;
