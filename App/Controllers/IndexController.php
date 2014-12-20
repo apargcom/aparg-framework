@@ -8,7 +8,6 @@ class IndexController extends Controller {
     }
 
     public function indexAction($data) {
-var_dump(MYSQLI_ASSOC);
 
         $this->view('', ['hello' => 'Hello World!']);
     }
