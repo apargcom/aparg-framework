@@ -1,28 +1,57 @@
 <?php
 
-/**
- * Aparg Framework
- * 
- * @author Aparg
- * @link http://www.aparg.com/
- * @copyright Aparg
- */
-
 namespace System\Core;
 
+/**
+ * Aparg Framework {@link http://www.aparg.com}
+ * 
+ * DB class is for working with Database
+ *
+ * @version 1.0
+ * @author Aparg <info@aparg.com>
+ * @copyright Aparg
+ * @package System
+ * @subpackage Core
+ */
 class DB extends Singleton {
 
+    /**
+     * @var object Contains object which represents the connection to a database server
+     */
     private $mysql = null;
+    /**
+     * @var integer ID of last insert row
+     */
     public $lastID = 0;
+    /**
+     * @var string Contains database error
+     */
     public $error = '';
+    /**
+     * @var string Last query that was executed
+     */
     public $query = '';
-    
+
+    /**
+     * Initialize the DB
+     *      
+     * @return boolean True on success
+     */
     public function init() {
 
         $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));    
         return true;
     }
 
+    /**
+     * Create INSERT query
+     * 
+     * @param string $table Name of the table
+     * @param array $columns Contains names of the columns Ex.:['col1','col2']
+     * @param type $values Contains values to insert Ex.:[['val1','val2'],['val3','val4']]
+     * @return boolean True on success, false on fail
+     * @see query()
+     */
     public function insert($table = '', $columns = [], $values = []) {
 
         $columnsStr = !empty($columns) ? "(" . implode(',', array_values($columns)) . ")" : "";
@@ -46,6 +75,16 @@ class DB extends Singleton {
         return $this->query($query);
     }
 
+    /**
+     * Create UPDATE query
+     * 
+     * @param string $table Name of the table
+     * @param array $columns Contains names of the columns Ex.:['col1','col2']
+     * @param array $values Contains values to insert Ex.:['val1','val2']
+     * @param string $where Contains WHERE clause
+     * @return boolean True on success, false on fail
+     * @see query()
+     */
     public function update($table = '', $columns = [], $values = [], $where = '') {
         
         if(!empty($columns) && !empty($values)){
@@ -72,6 +111,14 @@ class DB extends Singleton {
         return $this->query($query);
     }
 
+    /**
+     * Create UPDATE query
+     * 
+     * @param string $table Name of the table
+     * @param string $where Contains WHERE clause
+     * @return boolean True on success, false on fail
+     * @see query()
+     */
     public function delete($table = '', $where = '') {
 
         $where = !empty($where) ? ' WHERE ' . $where : '';
@@ -79,6 +126,23 @@ class DB extends Singleton {
         return $this->query($query);
     }
 
+    /**
+     * Create SELECT query
+     * 
+     * @param string $table Name of the table
+     * @param array $columns Contains names of the columns Ex.:['col1','col2']. If empty array passed all columns are selected
+     * @param array $joins Contains JOIN clause which 0 element is join type(INNER,LEFT OR RIGHT), 1 element is table name and 2 element is ON clause.
+     *                     Can contain arrays as elements that are like described before for more then one join cluase.
+     *                     Ex.:[['INNER','table1','col1=col2'],['LEFT','table2','col3=col4']]
+     * @param string $where Contains WHERE clause
+     * @param string $groupBy Contains GROUP BY clause
+     * @param string $orderBy Contains ORDER BY clause
+     * @param string $sort Contains SORT clause
+     * @param integer $limit1 Contains LIMIT clause offset
+     * @param integer $limit2 Contains LIMIT clause count
+     * @return boolean Associative array with selected values, false on fail
+     * @see fetch()
+     */
     public function select($table = '', $columns = [], $joins = [], $where = '', $groupBy = '', $orderBy = '', $sort = 'ASC', $limit1 = 0, $limit2 = 0) {
 
         $columns = !empty($columns) ? implode(',', array_values($columns)) : '*';
@@ -106,17 +170,39 @@ class DB extends Singleton {
         return $this->fetch($query);
     }
 
+    /**
+     * Call runQuery() and return array with selected values
+     * 
+     * @param string $query Query to run
+     * @param integer $type Type of fetching(MYSQLI_ASSOC, MYSQLI_NUM, or MYSQLI_BOTH)
+     * @return array Array with selected values, false on fail
+     * @see runQuery()
+     */
     public function fetch($query, $type = MYSQLI_ASSOC) {
 
         $result = $this->runQuery($query);
         return $result ? $result->fetch_all($type) : false;
     }
 
+    /**
+     * Call runQuery()
+     * 
+     * @param string $query Query to run
+     * @return boolean True on success, false on fail
+     * @see runQuery()
+     */
     public function query($query) {
 
         return !$this->runQuery($query) ? false : true;
     }
 
+    /**
+     * Runs given query and return result
+     * 
+     * @param string $query Query to run
+     * @return object mysqli_result object
+     * @see mysqli_result
+     */
     private function runQuery($query) {
 
         $result = $this->mysql->query($query);
@@ -125,7 +211,13 @@ class DB extends Singleton {
         $this->query = $query;
         return $result;
     }
-
+    
+    /**
+     * Escapes special characters
+     * 
+     * @param string|array $values Values to escape
+     * @return string|array Escaped data
+     */
     public function escape($values = []) {
 
         if (is_array($values)) {
@@ -136,5 +228,4 @@ class DB extends Singleton {
             return $this->mysql->real_escape_string($values);
         }
     }
-
 }

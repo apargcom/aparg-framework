@@ -1,23 +1,47 @@
 <?php
 
-/**
- * Aparg Framework
- * 
- * @author Aparg
- * @link http://www.aparg.com/
- * @copyright Aparg
- */
-
 namespace System\Modules;
 
+/**
+ * Aparg Framework {@link http://www.aparg.com}
+ * 
+ * Image class is system module for editing and adding effects to images
+ *
+ * @version 1.0
+ * @author Aparg <info@aparg.com>
+ * @copyright Aparg
+ * @package System
+ * @subpackage Modules
+ */
 class Image extends \Module {
-
+    
+    /**
+     * @var string Path to image
+     */
     private $path = '';
+    /**
+     * @var resource Image resource
+     */
     private $image = null;
+    /**
+     * @var array Array with image initial sizes
+     */
     private $size = [];
+    /**
+     * @var array Array with image meta information
+     */
     private $meta = [];
+    /**
+     * @var string Image mime type
+     */
     private $mime = '';
 
+    /**
+     * Loads image file
+     * 
+     * @param string $path Path to image file
+     * @return boolean True success, false fail
+     */
     public function open($path) {
 
         if (!extension_loaded('gd') || !function_exists('gd_info')) {
@@ -46,21 +70,45 @@ class Image extends \Module {
         return ($result == false) ? false : true;
     }
     
+    /**
+     * Returns image initial size
+     * 
+     * @return boolean|array Image size on success, false on fail
+     */
     public function size() {
 
         return empty($this->size) ? false : $this->size;
     }
-
+    
+    /**
+     * Returns image meta information
+     * 
+     * @return boolean|array Image meta information on success, false on fail
+     */
     public function meta() {
 
         return empty($this->meta) ? false : $this->meta;
     }
 
+    /**
+     * Returns image mime type
+     * 
+     * @return boolean|array Image mime type on success, false on fail
+     */
     public function mime() {
 
         return empty($this->mime) ? false : $this->mime;
     }
     
+    /**
+     * Saves image to file
+     * 
+     * @param string $path Path to save
+     * @param boolean $close Whether to close current image
+     * @param integer $quality Quality of image regarding to image format. For PNG uses imagepng() and for JPEG imagejpeg() quality parameter
+     * @see imagepng(), imagejpeg() For $quality parameter
+     * @return boolean
+     */
     public function save($path = '', $close = true, $quality = null) {
         if ($this->image == null) {
             return false;
@@ -83,6 +131,13 @@ class Image extends \Module {
         return $result;
     }
 
+    /**
+     * Adds watermark to image
+     * 
+     * @param string $path Path to watermark
+     * @param array $position If empty array watermark will be placed in the middle, else accept array with position Ex: ['top'=>10,'left'=>10]
+     * @return boolean True on success, false on fail
+     */
     public function watermark($path, $position = []) {
         if ($this->image == null) {
             return false;
@@ -126,6 +181,13 @@ class Image extends \Module {
         return $result;
     }
 
+    /**
+     * Resizes image to given sizes
+     * 
+     * @param array $size Array with new image sizes Ex.:['width' => 100, 'height' => 100]
+     * @param array $keepRatio Whether to keep image aspect ratio
+     * @return boolean True on success, false on fail
+     */
     function resize($size = [], $keepRatio = true) {
 
         if ($this->image == null) {
@@ -163,7 +225,14 @@ class Image extends \Module {
         }
         return $result;
     }
-
+    
+    /**
+     * Crops image to given sizes
+     * 
+     * @param array $size New crop size Ex.:['height' => 100, 'width' => 100]
+     * @param array $coordinates Position of cropped area Ex.:['x' => 100, 'y' => 100]
+     * @return boolean True on success, false on fail
+     */
     public function crop($size = [], $coordinates = []) {
 
         if ($this->image == null) {
@@ -194,6 +263,13 @@ class Image extends \Module {
         return $result;
     }
 
+    /**
+     * Rotates image with given angle
+     * 
+     * @param integer $angle Angle to rotate image
+     * @param string $bgColor Background color of empty area Ex.:#415E9B
+     * @return boolean True on success, false on fail
+     */
     public function rotate($angle, $bgColor) {
         if ($this->image == null) {
             return false;
@@ -212,6 +288,12 @@ class Image extends \Module {
         }
     }
 
+    /**
+     * Flips image
+     * 
+     * @param integer $mode Flip method(IMG_FLIP_HORIZONTAL, IMG_FLIP_VERTICAL or IMG_FLIP_BOTH)
+     * @return boolean True on success, false on fail
+     */
     public function flip($mode = IMG_FLIP_HORIZONTAL) {
         if ($this->image == null || !function_exists('imageflip')) {
             return false;
@@ -225,6 +307,13 @@ class Image extends \Module {
         }
     }
 
+    /**
+     * Adds color overlay on image
+     * 
+     * @param string $color Color of overlay Ex.:#ffffff
+     * @param integer $transparency Transparency of overlay
+     * @return boolean True on success, false on fail
+     */
     public function overlay($color = '#ffffff', $transparency = 80){
         if ($this->image == null) {
             return false;

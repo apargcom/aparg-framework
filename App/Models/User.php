@@ -13,7 +13,8 @@
  */
 namespace App\Models;
 class User extends \Model{
-    public function add($name, $email){
-        $this->DB->insert('test',['name','email'],[$name,$email]);
+    public function user(){
+       
+        var_dump( $this->DB->select('test1',[],[['','test3','surname=work']]));
     }
 }

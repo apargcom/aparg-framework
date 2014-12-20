@@ -1,27 +1,59 @@
 <?php
 
-/**
- * Aparg Framework
- * 
- * @author Aparg
- * @link http://www.aparg.com/
- * @copyright Aparg
- */
-
 namespace System\Core;
 
+/**
+ * Aparg Framework {@link http://www.aparg.com}
+ * 
+ * URI class is working with URIs
+ *
+ * @version 1.0
+ * @author Aparg <info@aparg.com>
+ * @copyright Aparg
+ * @package System
+ * @subpackage Core
+ */
 class URI extends Singleton{
         
-    public $URI = '';        
-    public $route = '';    
-    public $vars = [];    
-    public $lang = '';
-    
-    private $defaultLanguage = '';
-    private $languages = [];
-    private $defaultController = '';
+    /**
+     * @var string Current URI
+     */
+    public $URI = '';            
+    /**
+     * @var string Current route
+     */
+    public $route = '';            
+    /**
+     * @var array Array with GET, POST and URI variables
+     */
+    public $vars = [];            
+    /**
+     * @var string Current language
+     */
+    public $lang = '';        
+    /**
+     * @var string Default language
+     */
+    private $defaultLanguage = '';        
+    /**
+     * @var array Array with available language
+     */
+    private $languages = [];        
+    /**
+     * @var string Default controller 
+     */
+    private $defaultController = '';        
+    /**
+     * @var array Array with routes that will be replace in current URI
+     */
     private $routes = [];
     
+    /**
+     * Initialize URI
+     * 
+     * @param string $URI URI to work with
+     * @return void
+     */
     public function init($URI = ''){
         
         $this->languages = Config::obj()->get('languages');
@@ -35,12 +67,21 @@ class URI extends Singleton{
         $this->parse();
     }
     
-
+    /**
+     * Filter current URI
+     * 
+     * @return void
+     */
     private function filter(){
         
         $this->URI = trim(strtok($this->URI,'?'),'/'); 
     }  
     
+    /**
+     * Parse current URI. Grab route and variables
+     * 
+     * @return void
+     */
     private function parse(){
                 
         $splitURI = preg_split('/[\/]+/', $this->URI, null, PREG_SPLIT_NO_EMPTY);          
@@ -70,6 +111,12 @@ class URI extends Singleton{
             ];
     }
     
+    /**
+     * Replace all matched routes in current URI with $routes array
+     * 
+     * @param array $routes Array with routes, if empty local $routes array is used
+     * @see $routes
+     */
     private function route($routes = []){
         
         $routes = empty($routes) ? $this->routes : $routes;
@@ -80,6 +127,13 @@ class URI extends Singleton{
         $this->URI = $URI;
     }
     
+    /**
+     * Set Location header to redirect by given URL
+     * 
+     * @param string $URL URL to redirect
+     * @param int $code Status code to return
+     * @return void
+     */
     public function redirect($URL, $code = 302){  
                                                     
         header('Location: ' . $URL, true, $code);

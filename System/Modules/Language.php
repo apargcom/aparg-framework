@@ -45,7 +45,7 @@ class Language extends \Module{
      * Get translation for key
      * 
      * @param string $key Key of translation
-     * @param string $lang Language for translation(if empty current language is selected)
+     * @param string $lang Language for translation, if empty string given current language is selected
      * @return boolean
      */
     public function get($key, $lang = ''){

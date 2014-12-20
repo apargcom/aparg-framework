@@ -1,48 +1,102 @@
 <?php
 
-/**
- * Aparg Framework
- * 
- * @author Aparg
- * @link http://www.aparg.com/
- * @copyright Aparg
- */
-
 namespace System\Core;
 
+/**
+ * Aparg Framework {@link http://www.aparg.com}
+ * 
+ * Controller abstract class is parent class for app controller classes and contains methods for using in app controller classes
+ *
+ * @version 1.0
+ * @author Aparg <info@aparg.com>
+ * @copyright Aparg
+ * @package System
+ * @subpackage Core
+ * @abstract
+ */
 abstract class Controller {
-
-    protected $config = null;    
+   
+    /**
+     * @var Config Instance of Config class
+     * @see Config
+     */
+    protected $config = null;  
+    /**
+     * @var URI Instance of URI class
+     * #see URI
+     */
     protected $URI = null;
                 
+    /**
+     * Initialize Controller class
+     * @return void
+     */
     public function __construct() {
 
         $this->config = Config::obj();
         $this->URI = URI::obj();          
     }
 
-    protected function view($route = '', $data = [], $return = false) { 
+    /**
+     * Wrapper method for \System\Core\View::load()
+     * 
+     * @param string $route Route of view file to load
+     * @param array $data Array with data to be passed to view file
+     * @param boolean $return Whether to flush or return rendered view
+     * @return string|boolean True or rendered data(if $return=true) on success, false on fail
+     * @see \System\Core\View::load()
+     */
+    public function view($route = '', $data = [], $return = false) { 
         
         return View::obj()->load($route, $data, $return);
     }
 
+    /**
+     * Wrapper method for \System\Core\URI::redirect()
+     * 
+     * @param string $URL URL to redirect
+     * @param int $code Status code to return
+     * @return void
+     * @see \System\Core\URI::redirect()
+     */
     protected function redirect($URL, $code = 302) { 
         URI::obj()->redirect($URL, $code);
     }
 
+    /**
+     * Wrapper method for \System\Core\App::loadModule()
+     * 
+     * @param string $name Name of module to load(case-insensitive)
+     * @return boolean|object Module object on success, false on fail
+     * @see \System\Core\App::loadModule()
+     */
     protected function module($name) {
 
         return App::obj()->loadModule($name);
     }
-
+    
+    /**
+     * Wrapper method for \System\Core\App::loadModel()
+     * 
+     * @param string $name Name of model to load(case-insensitive)
+     * @return boolean|object Model object on success, false on fail
+     * @see \System\Core\App::loadModel()
+     */
     protected function model($name) {
 
         return App::obj()->loadModel($name);
     }
     
+    /**
+     * Wrapper method for \System\Core\App::log()
+     * 
+     * @param string $type Type of log
+     * @param string $message Log message
+     * @return boolean True on success, false on fail
+     * @see \System\Core\App::log()
+     */
     protected function log($type, $message) {
 
         return App::obj()->log($type, $message);
     }
-
 }

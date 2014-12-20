@@ -2,6 +2,11 @@
 
 return [
     
+    'db_name' => '',    
+    'db_username' => '',
+    'db_password' => '',
+    
+    'db_host' => 'localhost',
     'db_charset' => 'utf8',
     'html_charset' => 'utf-8',
     'db_engine' => 'innoDB',

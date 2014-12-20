@@ -1,30 +1,52 @@
 <?php
 
-/**
- * Aparg Framework
- * 
- * @author Aparg
- * @link http://www.aparg.com/
- * @copyright Aparg
- */
-
 namespace System\Core;
 
+/**
+ * Aparg Framework {@link http://www.aparg.com}
+ * 
+ * Autoloader class is for automatically loading class
+ *
+ * @version 1.0
+ * @author Aparg <info@aparg.com>
+ * @copyright Aparg
+ * @package System
+ * @subpackage Core
+ */
 class Autoloader extends Singleton{
     
-    private $aliases = null;
-    private $systemPath = null;
-    private $appPath = null;
+    /**
+     * @var array Aliases of classes
+     */
+    private $aliases = [];
+    /**
+     * @var string Path to system folder
+     */
+    private $systemPath = '';
+    /**
+     * @var string Path to app folder
+     */
+    private $appPath = '';
     
+    /**
+     * Initialize the autoloader
+     * 
+     * @return boolean True on success, false on fail
+     */
     public function init(){
         
         $this->aliases = Config::obj()->get('aliases');        
         $this->systemPath = Config::obj()->get('system_path');
         $this->appPath = Config::obj()->get('app_path');
-        spl_autoload_register(array($this,'load'));
-        return true;
+        return spl_autoload_register(array($this,'load'));
     }
             
+    /**
+     * Callback method of loading class
+     * 
+     * @param string $class Name of the class
+     * @return void
+     */
     public function load($class) {
                 
         if(isset($this->aliases[$class])){          
@@ -34,7 +56,12 @@ class Autoloader extends Singleton{
         $this->loadClass($class);        
     }
     
-    
+    /**
+     * Loads class
+     * 
+     * @param string $class Name of the class
+     * @return void
+     */
     private function loadClass($class){
         
         $packages = explode('\\', $class);

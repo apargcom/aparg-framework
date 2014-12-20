@@ -1,28 +1,49 @@
 <?php
 
-/**
- * Aparg Framework
- * 
- * @author Aparg
- * @link http://www.aparg.com/
- * @copyright Aparg
- */
-
 namespace System\Core;
-
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'Singleton.php';
 
+/**
+ * Aparg Framework {@link http://www.aparg.com}
+ * 
+ * App class is main framework class that initialize the app. Also contains important methods for framework functionality
+ *
+ * @version 1.0
+ * @author Aparg <info@aparg.com>
+ * @copyright Aparg
+ * @package System
+ * @subpackage Core
+ */
 class App extends Singleton{
     
+    /**
+     * @var object Loaded controller 
+     */
     public $conroller = null;
-    
-    
+    /**
+     * @var string Path to logs folder
+     */    
     private $logsPath = null;
+    /**
+     * @var boolean Enable/disable logs
+     */
     private $enableLogs = true;
+    /**
+     * @var string Path to application folder
+     */
     private $appPath = null;
+    /**
+     * @var array Route of not found page, and enable/disable of return 404 status code
+     */
     private $notFound = null;
     
+    /**
+     * Initialize the application
+     * 
+     * @param array $config User defined configs
+     * @return void
+     */
     public function init($config = []){        
         
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'Config.php';
@@ -52,6 +73,13 @@ class App extends Singleton{
         }
     }
     
+    /**
+     * Add log to log file
+     * 
+     * @param string $type Type of log
+     * @param string $message Log message
+     * @return boolean True on success, false on fail
+     */
     public function log($type, $message){
                 
         if($this->logsPath){            
@@ -62,6 +90,13 @@ class App extends Singleton{
         }
     }
     
+    /**
+     * Load controller
+     * 
+     * @param string $route Route to controller(case-insensitive)
+     * @param mixed $vars Variables that are being passed to action
+     * @return boolean|object Controller object on success, false on fail
+     */
     private function loadController($route, $vars) {
 
         $splitRoute = explode('/', $route);
@@ -93,6 +128,12 @@ class App extends Singleton{
         return false;
     }
     
+    /**
+     * Load model
+     * 
+     * @param string $name Name of model to load(case-insensitive)
+     * @return boolean|object Model object on success, false on fail
+     */
     public function loadModel($name){ 
         
         $name = ucfirst(strtolower($name));
@@ -105,6 +146,13 @@ class App extends Singleton{
         return false;       
     }
     
+    /**
+     * Load module
+     * 
+     * @param string $name Name of module to load(case-insensitive)
+     * @param type $system
+     * @return boolean|object Module object on success, false on fail
+     */
     public function loadModule($name, $system = true) {
         
         $name = ucfirst(strtolower($name));        
