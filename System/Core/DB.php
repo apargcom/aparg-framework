@@ -44,11 +44,12 @@ class DB extends Singleton {
     }
 
     /**
-     * Create INSERT query
+     * Generate INSERT query
      * 
      * @param string $table Name of the table
      * @param array $columns Contains names of the columns Ex.:['col1','col2']
      * @param type $values Contains values to insert Ex.:[['val1','val2'],['val3','val4']]
+     *                     For one row Ex.:['val1','val2']
      * @return boolean True on success, false on fail
      * @see query()
      */
@@ -76,11 +77,11 @@ class DB extends Singleton {
     }
 
     /**
-     * Create UPDATE query
+     * Generate UPDATE query
      * 
      * @param string $table Name of the table
      * @param array $columns Contains names of the columns Ex.:['col1','col2']
-     * @param array $values Contains values to insert Ex.:['val1','val2']
+     * @param array $values Contains values to update Ex.:['val1','val2']
      * @param string $where Contains WHERE clause
      * @return boolean True on success, false on fail
      * @see query()
@@ -112,7 +113,7 @@ class DB extends Singleton {
     }
 
     /**
-     * Create UPDATE query
+     * Generate UPDATE query
      * 
      * @param string $table Name of the table
      * @param string $where Contains WHERE clause
@@ -127,13 +128,13 @@ class DB extends Singleton {
     }
 
     /**
-     * Create SELECT query
+     * Generate SELECT query
      * 
      * @param string $table Name of the table
      * @param array $columns Contains names of the columns Ex.:['col1','col2']. If empty array passed all columns are selected
      * @param array $joins Contains JOIN clause which 0 element is join type(INNER,LEFT OR RIGHT), 1 element is table name and 2 element is ON clause.
-     *                     Can contain arrays as elements that are like described before for more then one join cluase.
      *                     Ex.:[['INNER','table1','col1=col2'],['LEFT','table2','col3=col4']]
+     *                     For one JOIN clause Ex.:['INNER','table1','col1=col2']
      * @param string $where Contains WHERE clause
      * @param string $groupBy Contains GROUP BY clause
      * @param string $orderBy Contains ORDER BY clause

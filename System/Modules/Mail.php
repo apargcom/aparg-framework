@@ -44,7 +44,7 @@ class Mail extends \Module {
      */
     private $headers = [];
     /**
-     * @var string Email charset
+     * @var string Email char set
      */
     private $charset = 'utf-8';
     /**

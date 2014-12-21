@@ -55,7 +55,7 @@ abstract class Controller {
      * Wrapper method for \System\Core\URI::redirect()
      * 
      * @param string $URL URL to redirect
-     * @param int $code Status code to return
+     * @param integer $code Status code to send with headers
      * @return void
      * @see \System\Core\URI::redirect()
      */
