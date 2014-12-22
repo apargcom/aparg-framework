@@ -141,7 +141,7 @@ class DB extends Singleton {
      * @param string $sort Contains SORT clause
      * @param integer $limit1 Contains LIMIT clause offset
      * @param integer $limit2 Contains LIMIT clause count
-     * @return boolean Associative array with selected values, false on fail
+     * @return boolean|array Associative array with selected values, false on fail
      * @see fetch()
      */
     public function select($table = '', $columns = [], $joins = [], $where = '', $groupBy = '', $orderBy = '', $sort = 'ASC', $limit1 = 0, $limit2 = 0) {
