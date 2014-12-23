@@ -16,5 +16,4 @@ class IndexController extends Controller {
 
         echo '404';
     }
-
 }

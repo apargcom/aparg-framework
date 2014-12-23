@@ -8,6 +8,4 @@
     <body>
         <?=$this->hello?>
     </body>
-
 </html>
-
