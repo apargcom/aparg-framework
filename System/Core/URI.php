@@ -131,7 +131,7 @@ class URI extends Singleton{
      * Set Location header to redirect by given URL
      * 
      * @param string $URL URL to redirect
-     * @param int $code Status code to return
+     * @param integer $code Status code to send with headers
      * @return void
      */
     public function redirect($URL, $code = 302){  

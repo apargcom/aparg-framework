@@ -75,7 +75,7 @@ class Cache extends \Module{
      * 
      * @param string $key Key of data to set
      * @param mixed $value Data to Store
-     * @return boolen True on success, false on fail
+     * @return boolean True on success, false on fail
      */
     public function set($key, $value) {
         $this->delete($key);

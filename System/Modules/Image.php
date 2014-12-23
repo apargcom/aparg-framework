@@ -136,6 +136,7 @@ class Image extends \Module {
      * 
      * @param string $path Path to watermark
      * @param array $position If empty array watermark will be placed in the middle, else accept array with position Ex: ['top'=>10,'left'=>10]
+     *                        Accept top, right, bottom, left. Any number of parameters can be set, function will adapt
      * @return boolean True on success, false on fail
      */
     public function watermark($path, $position = []) {
@@ -185,6 +186,7 @@ class Image extends \Module {
      * Resizes image to given sizes
      * 
      * @param array $size Array with new image sizes Ex.:['width' => 100, 'height' => 100]
+     *                    Accept width, height. Any number of parameters can be set, function will adapt
      * @param array $keepRatio Whether to keep image aspect ratio
      * @return boolean True on success, false on fail
      */
@@ -230,7 +232,9 @@ class Image extends \Module {
      * Crops image to given sizes
      * 
      * @param array $size New crop size Ex.:['height' => 100, 'width' => 100]
+     *                    Accept width, height. Any number of parameters can be set, function will adapt
      * @param array $coordinates Position of cropped area Ex.:['x' => 100, 'y' => 100]
+     *                           Accept x, y. Any number of parameters can be set, function will adapt
      * @return boolean True on success, false on fail
      */
     public function crop($size = [], $coordinates = []) {

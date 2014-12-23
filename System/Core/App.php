@@ -34,7 +34,8 @@ class App extends Singleton{
      */
     private $appPath = null;
     /**
-     * @var array Route of not found page, and enable/disable of return 404 status code
+     * @var array Array which 0 element is route of not found page,
+     *            1 element is for enable/disable sending 404 status code with headers
      */
     private $notFound = null;
     
@@ -84,7 +85,7 @@ class App extends Singleton{
                 
         if($this->logsPath){            
             $log = '(' . date("Y-m-d H:i:s") . ') ' . $type . ': ' .  $message;                    
-            return (file_put_contents($this->appPath, $log . PHP_EOL, FILE_APPEND) == false) ? false : true;
+            return (file_put_contents($this->logsPath, $log . PHP_EOL, FILE_APPEND) == false) ? false : true;
         }else{
             return false;
         }

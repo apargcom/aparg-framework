@@ -54,8 +54,8 @@ class Validator extends \Module {
     /**
      * Sets rules array
      * 
-     * @param array $rules Array where 0 element is key and 1 element is array where 0 element is value 1 element is array with rules.
-     *                     Ex.:['input_name'=>['input_value',['numeric',['min_length',4]]]]
+     * @param array $rules Array where 0 element is input name and 1 element is array where 0 element is value 1 element is array with rules.
+     *                     Ex.:['input_name'=>['input_value',['alpha_numeric',['min_length',4]]]]
      * @return void
      */
     public function rules($rules = []) {
@@ -101,7 +101,7 @@ class Validator extends \Module {
      * Validates one input
      * 
      * @param string $inputValue Input value
-     * @param array $inputRules Input rules. Ex.:['numeric',['min_length',4]]
+     * @param array $inputRules Input rules. For rules with parameter array must be given. Ex.:['alpha_numeric',['min_length',4]]
      * @return boolean|array True on success, array with errors on fail
      */
     public function validateOne($inputValue, $inputRules) {

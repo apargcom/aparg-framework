@@ -5,7 +5,7 @@ namespace System\Modules;
 /**
  * Aparg Framework {@link http://www.aparg.com}
  * 
- * Language class is system module for adding multilanguage functionality
+ * Language class is system module for adding multi language functionality
  *
  * @version 1.0
  * @author Aparg <info@aparg.com>
