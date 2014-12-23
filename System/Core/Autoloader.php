@@ -81,4 +81,3 @@ class Autoloader extends Singleton{
         }
     }
 }
-

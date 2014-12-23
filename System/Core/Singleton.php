@@ -61,5 +61,3 @@ abstract class Singleton {
     final public function __wakeup() { }
 
 }
-
-

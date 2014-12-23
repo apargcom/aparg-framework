@@ -73,4 +73,3 @@ class Config extends Singleton{
         }
     }
 }
-
