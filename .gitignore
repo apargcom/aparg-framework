@@ -1,4 +1,0 @@
-/App/Cache/*
-!/App/Cache/.htaccess
-/nbproject/
-/App/Logs/logs.txt
