@@ -54,13 +54,13 @@ class DB extends Singleton {
      */
     public function insert($table = '', $columns = [], $values = []) {
 
-        $columnsStr = !empty($columns) ? "(" . implode(',', array_values($columns)) . ")" : "";
+        $columnsStr = !empty($columns) ? " (" . implode(',', array_values($columns)) . ")" : "";
         if(!empty($values)){
             if (is_array($values[0])) {
-                $valuesStr = 'VALUES ';
+                $valuesStr = ' VALUES';
                 foreach ($values as $row) {
                     $row = $this->escape($row);
-                    $valuesStr.= "('" . implode("','", array_values($row)) . "'), ";
+                    $valuesStr.= " ('" . implode("','", array_values($row)) . "'), ";
                 }
                 $valuesStr = rtrim($valuesStr, ', ');
             } else {
