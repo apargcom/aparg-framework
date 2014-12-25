@@ -48,6 +48,7 @@ class Validator extends \Module {
         'valid_email' => 'validEmail',
         'valid_emails' => 'validEmails',
         'valid_ip' => 'validIP',
+        'valid_url' => 'validURL',
         'valid_base64' => 'validBase64'
     ];
 
@@ -417,6 +418,17 @@ class Validator extends \Module {
         }
     }
 
+    /**
+     * Validate value for valid URL
+     * 
+     * @param string $value Value
+     * @return boolean True on success, false on fail
+     */
+    private function validURL($value){
+        
+        return (preg_match("|([A-Za-z]{3,9})://([-;:&=\+\$,\w]+@{1})?([-A-Za-z0-9\.]+)+:?(\d+)?((/[-\+~%/\.\w]+)?\??([-\+=&;%@\.\w]+)?#?([\w]+)?)?|", $value) == false) ? false : true;
+    }
+    
     /**
      * Validate value for validBase64 rule
      * 
