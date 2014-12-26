@@ -195,7 +195,6 @@ class Validator extends \Module {
         if (function_exists('mb_strlen')) {
             return (mb_strlen($value) < $param) ? false : true;
         }
-
         return (strlen($value) < $param) ? false : true;
     }
 
@@ -207,13 +206,13 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function maxLength($value, $param) {
+        
         if (is_numeric($value)) {
             return false;
         }
         if (function_exists('mb_strlen')) {
             return (mb_strlen($value) > $param) ? false : true;
         }
-
         return (strlen($value) > $param) ? false : true;
     }
 
@@ -225,13 +224,13 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function exactLength($value, $param) {
+        
         if (is_numeric($value)) {
             return false;
         }
         if (function_exists('mb_strlen')) {
             return (mb_strlen($value) != $param) ? false : true;
         }
-
         return (strlen($value) != $param) ? false : true;
     }
 
@@ -258,6 +257,7 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function lessThan($value, $param) {
+        
         if (!is_numeric($value)) {
             return false;
         }
@@ -397,7 +397,6 @@ class Validator extends \Module {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -405,10 +404,11 @@ class Validator extends \Module {
      * Validate value for validIP rule
      * 
      * @param string $value Value
-     * @param string $param Rule option
+     * @param string $param Rule option(ipv4 or ipv6)
      * @return boolean True on success, false on fail
      */
     private function validIP($value, $param) {
+        
         if ($param == 'ipv4') {
             return (filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) == false) ? false : true;
         } elseif ($param == 'ipv6') {
@@ -426,7 +426,7 @@ class Validator extends \Module {
      */
     private function validURL($value){
         
-        return (preg_match("|([A-Za-z]{3,9})://([-;:&=\+\$,\w]+@{1})?([-A-Za-z0-9\.]+)+:?(\d+)?((/[-\+~%/\.\w]+)?\??([-\+=&;%@\.\w]+)?#?([\w]+)?)?|", $value) == false) ? false : true;
+        return (filter_var($value, FILTER_VALIDATE_URL) == false) ? false : true;
     }
     
     /**
@@ -436,8 +436,7 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function validBase64($value) {
-        var_dump($value);
+        
         return (preg_match("/[^a-zA-Z0-9\/\+=]/", $value) == false) ? false : true;
     }
-
 }
