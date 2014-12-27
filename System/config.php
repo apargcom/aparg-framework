@@ -1,7 +1,7 @@
 <?php
 /**
- * array['db_name']   
- *      ['af_version']          string      Framework version
+ * array['af_version']          string      Framework version
+ *      ['db_name']             string      Database name
  *      ['db_username']         string      Database username
  *      ['db_password']         string      Database password
  *      ['db_host']             string      Database host
