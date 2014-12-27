@@ -1,4 +1,5 @@
 /nbproject/
-/App/Logs/logs.txt
+/App/Logs/*
+!/App/Logs/.htaccess
 /App/Cache/*
 !/App/Cache/.htaccess

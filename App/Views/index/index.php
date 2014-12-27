@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Title of the document</title>
+        <title>Aparg Framework</title>
     </head>
 
     <body>
