@@ -6,8 +6,7 @@ namespace System\Core;
  * Aparg Framework {@link http://www.aparg.com}
  * 
  * DB class is for working with Database
- *
- * @version 1.0
+ * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
  * @package System

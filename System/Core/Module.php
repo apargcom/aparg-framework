@@ -6,8 +6,7 @@ namespace System\Core;
  * Aparg Framework {@link http://www.aparg.com}
  * 
  * Module abstract class is parent class for app module classes and contains methods for using in module classes
- *
- * @version 1.0
+ * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
  * @package System

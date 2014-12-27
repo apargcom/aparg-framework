@@ -1,6 +1,7 @@
 <?php
 /**
- * array['db_name']             string      Database name
+ * array['db_name']   
+ *      ['af_version']          string      Framework version
  *      ['db_username']         string      Database username
  *      ['db_password']         string      Database password
  *      ['db_host']             string      Database host
@@ -34,6 +35,8 @@
  */
 return [
     
+    'af_version' => '0.0.16',
+    
     'db_name' => '',    
     'db_username' => '',
     'db_password' => '',    
@@ -60,7 +63,7 @@ return [
     'routes' => [
     ],
     
-    'min_php' => '5.3.0',    
+    'min_php' => '5.3.0',
     'cache_expire' => 3600,
     'show_errors' => true,
     'enable_logs' => true,

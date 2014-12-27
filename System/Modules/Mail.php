@@ -6,8 +6,7 @@ namespace System\Modules;
  * Aparg Framework {@link http://www.aparg.com}
  * 
  * Mail class is system module for generating and sending emails
- *
- * @version 1.0
+ * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
  * @package System

@@ -1,6 +1,6 @@
 The MIT License
 
-Copyright 2014 Aparg, http://www.aparg.com.
+Copyright Aparg, http://www.aparg.com.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

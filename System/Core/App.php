@@ -9,7 +9,6 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'Singleton.php';
  * 
  * App class is main framework class that initialize the app. Also contains important methods for framework functionality
  *
- * @version 1.0
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
  * @package System

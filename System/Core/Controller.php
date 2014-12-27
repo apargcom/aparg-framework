@@ -6,8 +6,7 @@ namespace System\Core;
  * Aparg Framework {@link http://www.aparg.com}
  * 
  * Controller abstract class is parent class for app controller classes and contains methods for using in app controller classes
- *
- * @version 1.0
+ * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
  * @package System

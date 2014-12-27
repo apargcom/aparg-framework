@@ -6,8 +6,7 @@ namespace System\Modules;
  * Aparg Framework {@link http://www.aparg.com}
  * 
  * Image class is system module for editing and adding effects to images
- *
- * @version 1.0
+ * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
  * @package System

@@ -7,7 +7,6 @@ use \System\Core\App;
  * 
  * AF class is for starting framework
  *
- * @version 1.0
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
  */
