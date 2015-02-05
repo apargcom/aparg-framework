@@ -18,14 +18,17 @@ class DB extends Singleton {
      * @var object Contains object which represents the connection to a database server
      */
     private $mysql = null;
+
     /**
      * @var integer ID of last insert row
      */
     public $lastID = 0;
+
     /**
      * @var string Contains database error
      */
     public $error = '';
+
     /**
      * @var string Last query that was executed
      */
@@ -38,7 +41,7 @@ class DB extends Singleton {
      */
     public function init() {
 
-        $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));    
+        $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));
         return true;
     }
 
@@ -55,7 +58,7 @@ class DB extends Singleton {
     public function insert($table = '', $columns = [], $values = []) {
 
         $columnsStr = !empty($columns) ? " (" . implode(',', array_values($columns)) . ")" : "";
-        if(!empty($values)){
+        if (!empty($values)) {
             if (is_array($values[0])) {
                 $valuesStr = ' VALUES';
                 foreach ($values as $row) {
@@ -67,7 +70,7 @@ class DB extends Singleton {
                 $row = $this->escape($values);
                 $valuesStr = " VALUES ('" . implode("','", array_values($row)) . "')";
             }
-        }else{
+        } else {
             $valuesStr = "";
         }
         $query = "INSERT INTO " . $table . $columnsStr . $valuesStr;
@@ -86,8 +89,8 @@ class DB extends Singleton {
      * @see query()
      */
     public function update($table = '', $columns = [], $values = [], $where = '') {
-        
-        if(!empty($columns) && !empty($values)){
+
+        if (!empty($columns) && !empty($values)) {
             if (is_array($columns) && is_array($values)) {
 
                 $set = '';
@@ -96,13 +99,13 @@ class DB extends Singleton {
                     $set.= $column . "='" . $row[$key] . "',";
                 }
                 $set = " SET " . rtrim($set, ",");
-            } else if(!is_array($columns) && !is_array($values)){
+            } else if (!is_array($columns) && !is_array($values)) {
                 $value = $this->escape($values);
                 $set = " SET " . $columns . "='" . $value . "'";
-            }else{
+            } else {
                 $set = '';
             }
-        }else{
+        } else {
             $set = '';
         }
         $where = !empty($where) ? ' WHERE ' . $where : '';
@@ -181,7 +184,14 @@ class DB extends Singleton {
     public function fetch($query, $type = MYSQLI_ASSOC) {
 
         $result = $this->runQuery($query);
-        return $result ? $result->fetch_all($type) : false;
+        if ($result == false) {
+            return false;
+        }        
+        $fetchedResult = [];
+        while ($row = $result->fetch_array($type)) {
+            $fetchedResult[] = $row;
+        }
+        return $fetchedResult;
     }
 
     /**
@@ -193,7 +203,7 @@ class DB extends Singleton {
      */
     public function query($query) {
 
-        return !$this->runQuery($query) ? false : true;
+        return ($this->runQuery($query) == false) ? false : true;
     }
 
     /**
@@ -211,7 +221,7 @@ class DB extends Singleton {
         $this->query = $query;
         return $result;
     }
-    
+
     /**
      * Escapes special characters
      * 
@@ -228,4 +238,5 @@ class DB extends Singleton {
             return $this->mysql->real_escape_string($values);
         }
     }
+
 }
