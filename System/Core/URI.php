@@ -121,7 +121,7 @@ class URI extends Singleton{
         $routes = empty($routes) ? $this->routes : $routes;
         $URI = $this->URI;
         foreach($routes as $from => $to){
-            $URI = preg_replace('/^' . preg_quote($from, '/') . '/', $to, $URI);
+            $URI = preg_replace('/^' . preg_quote(strtolower($from), '/') . '/', strtolower($to), strtolower($URI));
         } 
         $this->URI = $URI;
     }
