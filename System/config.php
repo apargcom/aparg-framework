@@ -71,8 +71,7 @@ return [
     
     'default_language' => 'en',    
     'languages' => [
-        'en',
-        'am'
+        'en'
     ],
     
     'mail_from' => 'popok@popok.com',    

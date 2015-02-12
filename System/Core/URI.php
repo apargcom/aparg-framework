@@ -12,120 +12,111 @@ namespace System\Core;
  * @package System
  * @subpackage Core
  */
-class URI extends Singleton{
-        
+class URI extends Singleton {
+
     /**
      * @var string Current URI
      */
-    public $URI = '';            
+    public $URI = '';
+
     /**
      * @var string Current route
      */
-    public $route = '';            
+    public $route = '';
+
     /**
      * @var array Array with GET, POST and URI variables
      */
-    public $vars = [];            
+    public $vars = [];
+
     /**
      * @var string Current language
      */
-    public $lang = '';        
+    public $lang = '';
+
     /**
      * @var string Default language
      */
-    private $defaultLanguage = '';        
+    private $defaultLanguage = '';
+
     /**
      * @var array Array with available language
      */
-    private $languages = [];        
+    private $languages = [];
+
     /**
      * @var string Default controller 
      */
-    private $defaultController = '';        
+    private $defaultController = '';
+
     /**
      * @var array Array with routes that will be replace in current URI
      */
     private $routes = [];
-    
+
     /**
      * Initialize URI
      * 
      * @param string $URI URI to work with
      * @return void
      */
-    public function init($URI = ''){
-        
+    public function init($URI = '') {
+
         $this->languages = Config::obj()->get('languages');
         $this->defaultLanguage = Config::obj()->get('default_language');
         $this->defaultController = Config::obj()->get('default_controller');
         $this->routes = Config::obj()->get('routes');
         $this->URI = $URI;
-        
-        $this->filter();
-        $this->route();
+
         $this->parse();
     }
-    
-    /**
-     * Filter current URI
-     * 
-     * @return void
-     */
-    private function filter(){
-        
-        $this->URI = trim(strtok($this->URI,'?'),'/'); 
-    }  
-    
+
     /**
      * Parse current URI. Grab route and variables
      * 
      * @return void
      */
-    private function parse(){
-                
-        $splitURI = preg_split('/[\/]+/', $this->URI, null, PREG_SPLIT_NO_EMPTY);          
-        
-        $langI = 0;
-        $controllerI = 0;
-        $actionI = 1;
-        $this->lang = $this->defaultLanguage;
-        if(isset($splitURI[0]) && array_search($splitURI[0], $this->languages) !== false){
-            $this->lang = $splitURI[0]; 
-            $controllerI = 1;
-            $actionI = 2;             
-        }
-           
-        $route[0] = isset($splitURI[$controllerI])?$splitURI[$controllerI]:$this->defaultController;
-        $route[1] = isset($splitURI[$actionI])?$splitURI[$actionI]:'index';      
+    private function parse() {
 
-        unset($splitURI[$langI]);
-        unset($splitURI[$controllerI]);
-        unset($splitURI[$actionI]);
-        
-        $this->route = $route[0].'/'.$route[1];
+        $filteredURI = trim(strtok(preg_replace('/[\/]+/', '/', $this->URI), '?'), '/');
+        $filteredURI = $this->route($filteredURI);
+        $splittedURI = explode('/', $filteredURI);
+
+        $this->lang = $this->defaultLanguage;
+        if (isset($splittedURI[0]) && array_search($splittedURI[0], $this->languages) !== false) {
+            $this->lang = $splittedURI[0];
+            unset($splittedURI[0]);
+            $splittedURI = array_values($splittedURI);
+        }
+
+        $route[0] = isset($splittedURI[0]) ? $splittedURI[0] : $this->defaultController;
+        $route[1] = isset($splittedURI[1]) ? $splittedURI[1] : 'index';
+        unset($splittedURI[0]);
+        unset($splittedURI[1]);
+        $splittedURI = array_values($splittedURI);
+
+        $this->route = $route[0] . '/' . $route[1];
         $this->vars = [
-            'URI' => array_values($splitURI),
+            'URI' => array_values($splittedURI),
             'GET' => $_GET,
             'POST' => $_POST
-            ];
+        ];
     }
-    
+
     /**
-     * Replace all matched routes in current URI with $routes array
+     * Replace all matched routes in given URI with $routes array
      * 
-     * @param array $routes Array with routes, if empty local $routes array is used
+     * @param string $URI URI to apply routing
      * @see $routes
      */
-    private function route($routes = []){
-        
-        $routes = empty($routes) ? $this->routes : $routes;
-        $URI = strtolower($this->URI);
-        foreach($routes as $from => $to){
-            $URI = preg_replace('/^' . preg_quote(strtolower($from), '/') . '/', strtolower($to), $URI);
-        } 
-        $this->URI = $URI;
+    private function route($URI) {
+
+        foreach ($this->routes as $from => $to) {
+            $URI = preg_replace('/^' . preg_quote($from, '/') . '/i', $to, $URI);
+        }
+        return $URI;
     }
-    
+
     /**
      * Set Location header to redirect by given URL
      * 
@@ -133,8 +124,9 @@ class URI extends Singleton{
      * @param integer $code Status code to send with headers
      * @return void
      */
-    public function redirect($URL, $code = 302){  
-                                                    
+    public function redirect($URL, $code = 302) {
+
         header('Location: ' . $URL, true, $code);
     }
+
 }
