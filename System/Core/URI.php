@@ -80,22 +80,22 @@ class URI extends Singleton {
 
         $filteredURI = trim(strtok(preg_replace('/[\/]+/', '/', $this->URI), '?'), '/');
         $filteredURI = $this->route($filteredURI);
-        $splittedURI = explode('/', $filteredURI);
+        $splittedURI = array_filter(explode('/', $filteredURI));
 
         $this->lang = $this->defaultLanguage;
-        if (isset($splittedURI[0]) && array_search($splittedURI[0], $this->languages) !== false) {
-            $this->lang = $splittedURI[0];
+        if (isset($splittedURI[0]) && array_search(strtolower($splittedURI[0]), array_map('strtolower', $this->languages)) !== false) {
+            $this->lang = strtolower($splittedURI[0]);
             unset($splittedURI[0]);
             $splittedURI = array_values($splittedURI);
         }
-
+        
         $route[0] = isset($splittedURI[0]) ? $splittedURI[0] : $this->defaultController;
         $route[1] = isset($splittedURI[1]) ? $splittedURI[1] : 'index';
         unset($splittedURI[0]);
         unset($splittedURI[1]);
         $splittedURI = array_values($splittedURI);
 
-        $this->route = $route[0] . '/' . $route[1];
+        $this->route = strtolower($route[0]) . '/' . strtolower($route[1]);
         $this->vars = [
             'URI' => array_values($splittedURI),
             'GET' => $_GET,
