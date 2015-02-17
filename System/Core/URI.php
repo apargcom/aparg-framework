@@ -95,7 +95,7 @@ class URI extends Singleton {
         unset($splittedURI[1]);
         $splittedURI = array_values($splittedURI);
 
-        $this->route = strtolower($route[0]) . '/' . strtolower($route[1]);
+        $this->route = $route[0] . '/' . $route[1];
         $this->vars = [
             'URI' => array_values($splittedURI),
             'GET' => $_GET,
