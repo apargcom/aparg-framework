@@ -7,7 +7,7 @@ Aparg (http://www.aparg.com)
 
 Version
 -------
-0.0.16
+0.0.17
 
 Description
 -----------
