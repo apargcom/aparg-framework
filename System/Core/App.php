@@ -136,7 +136,9 @@ class App extends Singleton{
      */
     public function loadModel($name){ 
         
-        $name = ucfirst(strtolower($name));
+        $name = implode('\\', array_map(function($value) {
+                return ucfirst(strtolower($value));
+            }, explode('\\', $name)));
         $class = '\App\Models\\' . $name;        
        
         if(class_exists($class)){ 
@@ -155,7 +157,9 @@ class App extends Singleton{
      */
     public function loadModule($name, $system = true) {
         
-        $name = ucfirst(strtolower($name));        
+        $name = implode('\\', array_map(function($value) {
+                return ucfirst(strtolower($value));
+            }, explode('\\', $name)));
         $class = '\\' . ($system ? 'System' : 'App') . '\Modules\\' . $name;
 
         if (class_exists($class)) {
