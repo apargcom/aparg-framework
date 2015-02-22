@@ -70,8 +70,8 @@ class DB extends Singleton {
         }else{
             $valuesStr = "";
         }
+        
         $query = "INSERT INTO " . $table . $columnsStr . $valuesStr;
-
         return $this->query($query);
     }
 
@@ -106,8 +106,8 @@ class DB extends Singleton {
             $set = '';
         }
         $where = !empty($where) ? ' WHERE ' . $where : '';
+        
         $query = "UPDATE " . $table . $set . $where;
-
         return $this->query($query);
     }
 
@@ -122,6 +122,7 @@ class DB extends Singleton {
     public function delete($table = '', $where = '') {
 
         $where = !empty($where) ? ' WHERE ' . $where : '';
+        
         $query = "DELETE FROM " . $table . $where;
         return $this->query($query);
     }
@@ -143,7 +144,7 @@ class DB extends Singleton {
      * @return boolean|array Associative array with selected values, false on fail
      * @see fetch()
      */
-    public function select($table = '', $columns = [], $joins = [], $where = '', $groupBy = '', $orderBy = '', $sort = 'ASC', $limit1 = 0, $limit2 = 0) {
+    public function select($table = '', $columns = [], $joins = [], $where = '', $groupBy = '', $orderBy = '', $sort = 'ASC', $limit1 = '', $limit2 = '') {
 
         $columns = !empty($columns) ? implode(',', array_values($columns)) : '*';
         if (!empty($joins)) {
@@ -165,7 +166,8 @@ class DB extends Singleton {
         $where = !empty($where) ? ' WHERE ' . $where : '';
         $groupBy = !empty($groupBy) ? ' GROUP BY ' . $groupBy : '';
         $orderBy = !empty($orderBy) ? ' ORDER BY ' . $orderBy . ' ' . $sort : '';
-        $limit = !empty($limit1) && !empty($limit2) ? ' LIMIT ' . $limit1 . ', ' . $limit2 : (!empty($limit1) ? ' LIMIT ' . $limit1 : '');
+        $limit = ($limit1 !== '' && $limit2 !== '') ? ' LIMIT ' . $limit1 . ', ' . $limit2 : (($limit1 !== '') ? ' LIMIT ' . $limit1 : '');   
+        
         $query = "SELECT " . $columns . " FROM " . $table . $joinStr . $where . $groupBy . $orderBy . $limit;
         return $this->fetch($query);
     }
