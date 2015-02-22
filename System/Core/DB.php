@@ -144,7 +144,7 @@ class DB extends Singleton {
      * @return boolean|array Associative array with selected values, false on fail
      * @see fetch()
      */
-    public function select($table = '', $columns = [], $joins = [], $where = '', $groupBy = '', $orderBy = '', $sort = 'ASC', $limit1 = '', $limit2 = '') {
+    public function select($table = '', $columns = [], $joins = [], $where = '', $groupBy = '', $orderBy = '', $sort = 'ASC', $limit1 = null, $limit2 = null) {
 
         $columns = !empty($columns) ? implode(',', array_values($columns)) : '*';
         if (!empty($joins)) {
@@ -166,7 +166,7 @@ class DB extends Singleton {
         $where = !empty($where) ? ' WHERE ' . $where : '';
         $groupBy = !empty($groupBy) ? ' GROUP BY ' . $groupBy : '';
         $orderBy = !empty($orderBy) ? ' ORDER BY ' . $orderBy . ' ' . $sort : '';
-        $limit = ($limit1 !== '' && $limit2 !== '') ? ' LIMIT ' . $limit1 . ', ' . $limit2 : (($limit1 !== '') ? ' LIMIT ' . $limit1 : '');   
+        $limit = (!is_null($limit1) && !is_null($limit2)) ? ' LIMIT ' . $limit1 . ', ' . $limit2 : (!is_null($limit1) ? ' LIMIT ' . $limit1 : '');   
         
         $query = "SELECT " . $columns . " FROM " . $table . $joinStr . $where . $groupBy . $orderBy . $limit;
         return $this->fetch($query);
