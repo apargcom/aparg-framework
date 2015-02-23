@@ -74,7 +74,7 @@ return [
         'en'
     ],
     
-    'mail_from' => 'popok@popok.com',    
+    'mail_from' => '',    
     
     'aliases'=> [
         'Controller' => 'System\Core\Controller',

@@ -78,7 +78,7 @@ class Mail extends \Module {
      */
     public function charset($charset = '') {
 
-	$charset = trim($charset);
+	$charset = trim($charset);        
         if ($charset != '') {
             $this->charset = $charset;
         }
@@ -141,7 +141,7 @@ class Mail extends \Module {
         } else {
             $this->headers = is_array($headers) ? $headers : [$headers];
         }
-		$this->headers = array_map('trim',$this->headers);
+	$this->headers = array_map('trim',$this->headers);
     }
 
     /**
@@ -220,10 +220,7 @@ class Mail extends \Module {
      */
     public function subject($subject = '') {
         
-	$subject = trim($subject);
-        if ($subject != '') {
-            $this->subject = $subject;
-        }
+	$this->subject = trim($subject);
     }
 
     /**
@@ -234,10 +231,7 @@ class Mail extends \Module {
      */
     public function message($message = '') {
         
-	$message = trim($message);
-        if ($message != '') {
-            $this->message = $message;
-        }
+	$this->message = trim($message);
     }
 
     
@@ -259,7 +253,7 @@ class Mail extends \Module {
         $headers.= ($cc == '') ? '' : 'Cc: ' . $cc . "\r\n";
         $headers.= ($bcc == '') ? '' : 'Bcc: ' . $bcc . "\r\n";
         $headers.= implode("\r\n", $this->headers);
-		
+
         return mail($to, $this->subject, $this->message, $headers, $this->params);
     }
 }
