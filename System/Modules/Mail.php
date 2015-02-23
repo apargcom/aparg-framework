@@ -53,7 +53,11 @@ class Mail extends \Module {
     /**
      * @var string Email mime version
      */
-    private $mimeVersion = '1.0';
+    private $mimeVersion = '1.0';	
+	/**
+     * @var string Additional parameters for mail function
+     */
+    private $params = '';
 
     /**
      * Loads some configs
@@ -74,7 +78,8 @@ class Mail extends \Module {
      */
     public function charset($charset = '') {
 
-        if (!empty($charset)) {
+		$charset = trim($charset);
+        if ($charset != '') {
             $this->charset = $charset;
         }
     }
@@ -88,7 +93,7 @@ class Mail extends \Module {
     public function contentType($contentType = '') {
 
         $contentType = trim($contentType);
-        if (!empty($contentType)) {
+        if ($contentType != '') {
             $this->contentType = $contentType;
         }
     }
@@ -102,8 +107,22 @@ class Mail extends \Module {
     public function mimeVersion($mimeVersion = '') {
 
         $mimeVersion = trim($mimeVersion);
-        if (!empty($mimeVersion)) {
+        if ($mimeVersion != '') {
             $this->mimeVersion = $mimeVersion;
+        }
+    }
+	
+	/**
+     * Set additional parameters for mail function
+     * 
+     * @param string $params String with parameters
+     * @return void
+     */
+    public function params($params = '') {
+
+        $params = trim($params);
+        if ($params != '') {
+            $this->params = $params;
         }
     }
 
@@ -122,6 +141,7 @@ class Mail extends \Module {
         } else {
             $this->headers = is_array($headers) ? $headers : [$headers];
         }
+		$this->headers = array_map('trim',$this->headers);
     }
 
     /**
@@ -132,7 +152,10 @@ class Mail extends \Module {
      */
     public function from($from = '') {
 
-        $this->from = trim($from);
+        $from = trim($from);
+        if ($from != '') {
+            $this->from = $from;
+        }
     }
 
     /**
@@ -150,6 +173,7 @@ class Mail extends \Module {
         } else {
             $this->to = is_array($to) ? $to : [$to];
         }
+		$this->to = array_map('trim',$this->to);
     }
 
     /**
@@ -167,6 +191,7 @@ class Mail extends \Module {
         } else {
             $this->cc = is_array($cc) ? $cc : [$cc];
         }
+		$this->cc = array_map('trim',$this->cc);
     }
 
     /**
@@ -184,6 +209,7 @@ class Mail extends \Module {
         } else {
             $this->bcc = is_array($bcc) ? $bcc : [$bcc];
         }
+		$this->bcc = array_map('trim',$this->bcc);
     }
 
     /**
@@ -193,8 +219,11 @@ class Mail extends \Module {
      * @return void
      */
     public function subject($subject = '') {
-
-        $this->subject = $subject;
+        
+		$subject = trim($subject);
+        if ($subject != '') {
+            $this->subject = $subject;
+        }
     }
 
     /**
@@ -204,8 +233,11 @@ class Mail extends \Module {
      * @return void
      */
     public function message($message = '') {
-
-        $this->message = $message;
+        
+		$message = trim($message);
+        if ($message != '') {
+            $this->message = $message;
+        }
     }
 
     
@@ -215,20 +247,19 @@ class Mail extends \Module {
      * @return boolean  True on success, false on fail
      */
     public function send() {
-
-        $to = implode(',', array_map('trim',$this->to));
-        $cc = implode(',', array_map('trim',$this->cc));
-        $bcc = implode(',', array_map('trim',$this->bcc));
-
+		$to = implode(',', $this->to);
+        $cc = implode(',', $this->cc);
+        $bcc = implode(',',$this->bcc);
+	
         $headers = 'MIME-Version: ' . $this->mimeVersion . "\r\n";
         $headers.= 'Content-type: ' . $this->contentType . '; charset=' . $this->charset . "\r\n";
-        $headers.= empty($to) ? '' : 'To: ' . $to . "\r\n";
-        $headers.= empty($this->from) ? '' : 'From: ' . $this->from . "\r\n";
-        $headers.= empty($cc) ? '' : 'Cc: ' . $cc . "\r\n";
-        $headers .= empty($bcc) ? '' : 'Bcc: ' . $bcc . "\r\n";
+        //$headers.= ($to == '') ? '' : 'To: ' . $to . "\r\n";
+        $headers.= ($this->from == '') ? '' : 'From: ' . $this->from . "\r\n";
+        $headers.= ($cc == '') ? '' : 'Cc: ' . $cc . "\r\n";
+        $headers.= ($bcc == '') ? '' : 'Bcc: ' . $bcc . "\r\n";
         $headers.= implode("\r\n", $this->headers);
-        
-        return mail($to, $this->subject, $this->message, $headers);
+		
+        return mail($to, $this->subject, $this->message, $headers, $this->params);
     }
 
 }

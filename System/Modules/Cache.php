@@ -33,7 +33,7 @@ class Cache extends \Module{
 
         $this->path = $this->config->get('cache_path') == true ? $this->config->get('cache_path') : $this->path;
         $this->expire = $this->config->get('cache_expire') == true ? $this->config->get('cache_expire') : $this->cache_expire;
-        if (!file_exists($this->path) && !empty($this->path)) {
+        if (!file_exists($this->path) && ($this->path!='')) {
             mkdir($this->path, 0777, true);
         }
     }
