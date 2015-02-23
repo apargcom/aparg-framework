@@ -78,7 +78,7 @@ class Mail extends \Module {
      */
     public function charset($charset = '') {
 
-		$charset = trim($charset);
+	$charset = trim($charset);
         if ($charset != '') {
             $this->charset = $charset;
         }
@@ -173,7 +173,7 @@ class Mail extends \Module {
         } else {
             $this->to = is_array($to) ? $to : [$to];
         }
-		$this->to = array_map('trim',$this->to);
+	$this->to = array_map('trim',$this->to);
     }
 
     /**
@@ -191,7 +191,7 @@ class Mail extends \Module {
         } else {
             $this->cc = is_array($cc) ? $cc : [$cc];
         }
-		$this->cc = array_map('trim',$this->cc);
+        $this->cc = array_map('trim',$this->cc);
     }
 
     /**
@@ -209,7 +209,7 @@ class Mail extends \Module {
         } else {
             $this->bcc = is_array($bcc) ? $bcc : [$bcc];
         }
-		$this->bcc = array_map('trim',$this->bcc);
+	$this->bcc = array_map('trim',$this->bcc);
     }
 
     /**
@@ -220,7 +220,7 @@ class Mail extends \Module {
      */
     public function subject($subject = '') {
         
-		$subject = trim($subject);
+	$subject = trim($subject);
         if ($subject != '') {
             $this->subject = $subject;
         }
@@ -234,7 +234,7 @@ class Mail extends \Module {
      */
     public function message($message = '') {
         
-		$message = trim($message);
+	$message = trim($message);
         if ($message != '') {
             $this->message = $message;
         }
@@ -247,7 +247,8 @@ class Mail extends \Module {
      * @return boolean  True on success, false on fail
      */
     public function send() {
-		$to = implode(',', $this->to);
+	
+        $to = implode(',', $this->to);
         $cc = implode(',', $this->cc);
         $bcc = implode(',',$this->bcc);
 	
@@ -261,5 +262,4 @@ class Mail extends \Module {
 		
         return mail($to, $this->subject, $this->message, $headers, $this->params);
     }
-
 }
