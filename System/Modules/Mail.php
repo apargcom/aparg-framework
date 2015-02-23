@@ -87,7 +87,8 @@ class Mail extends \Module {
      */
     public function contentType($contentType = '') {
 
-        if (!empty(trim($contentType))) {
+        $contentType = trim($contentType);
+        if (!empty($contentType)) {
             $this->contentType = $contentType;
         }
     }
@@ -100,7 +101,8 @@ class Mail extends \Module {
      */
     public function mimeVersion($mimeVersion = '') {
 
-        if (!empty(trim($mimeVersion))) {
+        $mimeVersion = trim($mimeVersion);
+        if (!empty($mimeVersion)) {
             $this->mimeVersion = $mimeVersion;
         }
     }
@@ -130,7 +132,7 @@ class Mail extends \Module {
      */
     public function from($from = '') {
 
-        $this->from = $from;
+        $this->from = trim($from);
     }
 
     /**
@@ -214,16 +216,16 @@ class Mail extends \Module {
      */
     public function send() {
 
-        $to = implode(',', $this->to);
-        $cc = implode(',', $this->cc);
-        $bcc = implode(',', $this->bcc);
+        $to = implode(',', array_map('trim',$this->to));
+        $cc = implode(',', array_map('trim',$this->cc));
+        $bcc = implode(',', array_map('trim',$this->bcc));
 
         $headers = 'MIME-Version: ' . $this->mimeVersion . "\r\n";
         $headers.= 'Content-type: ' . $this->contentType . '; charset=' . $this->charset . "\r\n";
-        $headers.= empty(trim($to)) ? '' : 'To: ' . $to . "\r\n";
-        $headers.= empty(trim($this->from)) ? '' : 'From: ' . $this->from . "\r\n";
-        $headers.= empty(trim($cc)) ? '' : 'Cc: ' . $cc . "\r\n";
-        $headers .= empty(trim($bcc)) ? '' : 'Bcc: ' . $bcc . "\r\n";
+        $headers.= empty($to) ? '' : 'To: ' . $to . "\r\n";
+        $headers.= empty($this->from) ? '' : 'From: ' . $this->from . "\r\n";
+        $headers.= empty($cc) ? '' : 'Cc: ' . $cc . "\r\n";
+        $headers .= empty($bcc) ? '' : 'Bcc: ' . $bcc . "\r\n";
         $headers.= implode("\r\n", $this->headers);
         
         return mail($to, $this->subject, $this->message, $headers);
