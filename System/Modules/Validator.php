@@ -81,11 +81,11 @@ class Validator extends \Module {
                     $ruleName = $rule[0];
                     $ruleParam = $rule[1];
                     $method = array_key_exists($ruleName, $this->rulesMethods) ? $this->rulesMethods[$ruleName] : '';
-                    $inputValid = !empty($method) ? $this->$method($inputValue, $ruleParam) : false;
+                    $inputValid = ($method != '') ? $this->$method($inputValue, $ruleParam) : false;
                 } else {
                     $ruleName = $rule;
                     $method = array_key_exists($ruleName, $this->rulesMethods) ? $this->rulesMethods[$ruleName] : '';
-                    $inputValid = !empty($method) ? $this->$method($inputValue) : false;
+                    $inputValid = ($method != '') ? $this->$method($inputValue) : false;
                 }
 
                 if (!$inputValid) {
@@ -113,11 +113,11 @@ class Validator extends \Module {
                 $ruleName = $rule[0];
                 $ruleParam = $rule[1];
                 $method = array_key_exists($ruleName, $this->rulesMethods) ? $this->rulesMethods[$ruleName] : '';
-                $inputValid = !empty($method) ? $this->$method($inputValue, $ruleParam) : false;
+                $inputValid = ($method != '') ? $this->$method($inputValue, $ruleParam) : false;
             } else {
                 $ruleName = $rule;
                 $method = array_key_exists($ruleName, $this->rulesMethods) ? $this->rulesMethods[$ruleName] : '';
-                $inputValid = !empty($method) ? $this->$method($inputValue) : false;
+                $inputValid = ($method != '') ? $this->$method($inputValue) : false;
             }
 
             if (!$inputValid) {

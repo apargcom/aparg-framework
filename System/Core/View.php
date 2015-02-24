@@ -94,7 +94,7 @@ class View extends Singleton{
     public function load($route = '', $data = [], $return = false){ 
                 
         $this->data = $data;        
-        $route = strtolower(($route=='') ? URI::obj()->route : $route);        
+        $route = strtolower(($route == '') ? URI::obj()->route : $route);        
         
         if(file_exists($this->appPath . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php')){
             if($return){

@@ -105,7 +105,7 @@ class DB extends Singleton {
         }else{
             $set = '';
         }
-        $where = !empty($where) ? ' WHERE ' . $where : '';
+        $where = ($where != '') ? ' WHERE ' . $where : '';
         
         $query = "UPDATE " . $table . $set . $where;
         return $this->query($query);
@@ -121,7 +121,7 @@ class DB extends Singleton {
      */
     public function delete($table = '', $where = '') {
 
-        $where = !empty($where) ? ' WHERE ' . $where : '';
+        $where = ($where != '') ? ' WHERE ' . $where : '';
         
         $query = "DELETE FROM " . $table . $where;
         return $this->query($query);
@@ -154,18 +154,18 @@ class DB extends Singleton {
                 if (is_array($joins[0])) {
                     $joinStr = '';
                     foreach ($joins as $join) {
-                        $joinStr.= (empty($join[0]) ? ' INNER' : ' ' . strtoupper($join[0])) . ' JOIN ' . $join[1] . ' ON ' . $join[2];
+                        $joinStr.= (($join[0] == '') ? ' INNER' : ' ' . strtoupper($join[0])) . ' JOIN ' . $join[1] . ' ON ' . $join[2];
                     }
                 } else {
-                    $joinStr = (empty($joins[0]) ? ' INNER' : ' ' . strtoupper($joins[0])) . ' JOIN ' . $joins[1] . ' ON ' . $joins[2];
+                    $joinStr = (($joins[0] == '') ? ' INNER' : ' ' . strtoupper($joins[0])) . ' JOIN ' . $joins[1] . ' ON ' . $joins[2];
                 }
             }
         } else {
             $joinStr = '';
         }
-        $where = !empty($where) ? ' WHERE ' . $where : '';
-        $groupBy = !empty($groupBy) ? ' GROUP BY ' . $groupBy : '';
-        $orderBy = !empty($orderBy) ? ' ORDER BY ' . $orderBy . ' ' . $sort : '';
+        $where = ($where != '') ? ' WHERE ' . $where : '';
+        $groupBy = ($groupBy != '') ? ' GROUP BY ' . $groupBy : '';
+        $orderBy = ($orderBy != '') ? ' ORDER BY ' . $orderBy . ' ' . $sort : '';
         $limit = (!is_null($limit1) && !is_null($limit2)) ? ' LIMIT ' . $limit1 . ', ' . $limit2 : (!is_null($limit1) ? ' LIMIT ' . $limit1 : '');   
         
         $query = "SELECT " . $columns . " FROM " . $table . $joinStr . $where . $groupBy . $orderBy . $limit;

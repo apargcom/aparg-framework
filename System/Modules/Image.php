@@ -96,7 +96,7 @@ class Image extends \Module {
      */
     public function mime() {
 
-        return empty($this->mime) ? false : $this->mime;
+        return ($this->mime == '') ? false : $this->mime;
     }
     
     /**
@@ -112,7 +112,7 @@ class Image extends \Module {
         if ($this->image == null) {
             return false;
         }
-        $path = empty($path) ? $this->path : $path;
+        $path = ($path == '') ? $this->path : $path;
 
         $result = false;
         $ext = strtolower(pathinfo($path)['extension']);

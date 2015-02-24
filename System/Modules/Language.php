@@ -49,7 +49,7 @@ class Language extends \Module{
      */
     public function get($key, $lang = ''){
         
-        $langData = (($lang=='') || $lang == $this->lang) ? $this->langData : $this->langData($lang);
+        $langData = (($lang == '') || $lang == $this->lang) ? $this->langData : $this->langData($lang);
         if(isset($langData[$key])){
             return $langData[$key];
         }        

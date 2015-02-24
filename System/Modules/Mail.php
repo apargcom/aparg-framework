@@ -54,7 +54,7 @@ class Mail extends \Module {
      * @var string Email mime version
      */
     private $mimeVersion = '1.0';	
-	/**
+    /**
      * @var string Additional parameters for mail function
      */
     private $params = '';
@@ -247,8 +247,7 @@ class Mail extends \Module {
         $bcc = implode(',',$this->bcc);
 	
         $headers = 'MIME-Version: ' . $this->mimeVersion . "\r\n";
-        $headers.= 'Content-type: ' . $this->contentType . '; charset=' . $this->charset . "\r\n";
-        //$headers.= ($to == '') ? '' : 'To: ' . $to . "\r\n";
+        $headers.= 'Content-type: ' . $this->contentType . '; charset=' . $this->charset . "\r\n";        
         $headers.= ($this->from == '') ? '' : 'From: ' . $this->from . "\r\n";
         $headers.= ($cc == '') ? '' : 'Cc: ' . $cc . "\r\n";
         $headers.= ($bcc == '') ? '' : 'Bcc: ' . $bcc . "\r\n";
