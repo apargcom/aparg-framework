@@ -1,7 +1,8 @@
 <?php
 
-namespace System\Core;
+namespace System\Core\Components;
 
+use System\Core\Singleton;
 /**
  * Aparg Framework {@link http://www.aparg.com}
  * 
@@ -38,7 +39,7 @@ class Config extends Singleton{
      */
     private function defaults(){
         
-        return require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.php';
+        return require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.php';
     }    
     
     /**

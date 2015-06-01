@@ -1,6 +1,9 @@
 <?php
 
-namespace System\Core;
+namespace System\Core\Components;
+
+use System\Core\Singleton;
+
 
 /**
  * Aparg Framework {@link http://www.aparg.com}
@@ -12,7 +15,7 @@ namespace System\Core;
  * @package System
  * @subpackage Core
  */
-class DB extends Singleton {
+class Db extends Singleton {
 
     /**
      * @var object Contains object which represents the connection to a database server
@@ -37,7 +40,7 @@ class DB extends Singleton {
      * @return boolean True on success
      */
     public function init() {
-
+var_dump('dv');
         $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));    
         return true;
     }

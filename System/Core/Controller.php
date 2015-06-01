@@ -2,6 +2,9 @@
 
 namespace System\Core;
 
+use System\Core\Components\Config;
+use System\Core\Components\Uri;
+
 /**
  * Aparg Framework {@link http://www.aparg.com}
  * 
@@ -14,26 +17,13 @@ namespace System\Core;
  * @abstract
  */
 abstract class Controller {
-   
-    /**
-     * @var Config Instance of Config class
-     * @see Config
-     */
-    protected $config = null;  
-    /**
-     * @var URI Instance of URI class
-     * #see URI
-     */
-    protected $URI = null;
-                
+
     /**
      * Initialize Controller class
      * @return void
      */
     public function __construct() {
 
-        $this->config = Config::obj();
-        $this->URI = URI::obj();          
     }
 
     /**
@@ -45,8 +35,8 @@ abstract class Controller {
      * @return string|boolean True or rendered data(if $return=true) on success, false on fail
      * @see \System\Core\View::load()
      */
-    public function view($route = '', $data = [], $return = false) { 
-        
+    public function view($route = '', $data = [], $return = false) {
+
         return View::obj()->load($route, $data, $return);
     }
 
@@ -58,7 +48,7 @@ abstract class Controller {
      * @return void
      * @see \System\Core\URI::redirect()
      */
-    protected function redirect($URL, $code = 302) { 
+    protected function redirect($URL, $code = 302) {
         URI::obj()->redirect($URL, $code);
     }
 
@@ -73,7 +63,7 @@ abstract class Controller {
 
         return App::obj()->loadModule($name);
     }
-    
+
     /**
      * Wrapper method for \System\Core\App::loadModel()
      * 
@@ -85,7 +75,19 @@ abstract class Controller {
 
         return App::obj()->loadModel($name);
     }
-    
+
+    /**
+     * Wrapper method for \System\Core\App::loadCore()
+     * 
+     * @param string $name Name of core object to load(case-insensitive)
+     * @return boolean|object Core object on success, false on fail
+     * @see \System\Core\App::loadCore()
+     */
+    public function core($name) {
+
+        return App::obj()->loadCore($name);        
+    }
+
     /**
      * Wrapper method for \System\Core\App::log()
      * 
@@ -98,4 +100,5 @@ abstract class Controller {
 
         return App::obj()->log($type, $message);
     }
+
 }

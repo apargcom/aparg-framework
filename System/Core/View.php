@@ -2,6 +2,9 @@
 
 namespace System\Core;
 
+use System\Core\Components\Config;
+use System\Core\Components\Uri;
+
 /**
  * Aparg Framework {@link http://www.aparg.com}
  * 
@@ -94,7 +97,7 @@ class View extends Singleton{
     public function load($route = '', $data = [], $return = false){ 
                 
         $this->data = $data;        
-        $route = strtolower(($route == '') ? URI::obj()->route : $route);        
+        $route = strtolower(($route == '') ? Uri::obj()->route : $route);        
         
         if(file_exists($this->appPath . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php')){
             if($return){

@@ -16,38 +16,25 @@ namespace System\Core;
 abstract class Module {
 
     /**
-     * @var DB Instance of DB class
-     * @see DB
-     */
-    protected $DB = null;
-    /**
-     * @var Config Instance of Config class
-     * @see Config
-     */
-    protected $config = null;
-    /**
-     * @var URI Instance of URI class
-     * #see URI
-     */
-    protected $URI = null;
-
-
-    /**
-     * Initialize Model class
+     * Initialize Module class
      * @return void
      */
     public function __construct() {
-
-
-        $this->config = Config::obj();
-        $this->URI = URI::obj();
-
-        if (!DB::isObj()) {
-            DB::obj()->init();
-        }
-        $this->DB = DB::obj();
+        
     }
-    
+
+    /**
+     * Wrapper method for \System\Core\App::loadCore()
+     * 
+     * @param string $name Name of core object to load(case-insensitive)
+     * @return boolean|object Core object on success, false on fail
+     * @see \System\Core\App::loadCore()
+     */
+    public function core($name) {
+
+        return App::obj()->loadCore($name);        
+    }
+
     /**
      * Wrapper method for \System\Core\App::log()
      * 

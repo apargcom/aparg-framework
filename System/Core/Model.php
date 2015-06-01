@@ -16,23 +16,25 @@ namespace System\Core;
 abstract class Model {
 
     /**
-     * @var DB Instance of DB class
-     * @see DB
-     */
-    protected $DB = null;
-
-    /**
      * Initialize Model class
      * @return void
      */
     public function __construct() {
-
-        if (!DB::isObj()) {
-            DB::obj()->init();
-        }
-        $this->DB = DB::obj();
+        
     }
-    
+
+    /**
+     * Wrapper method for \System\Core\App::loadCore()
+     * 
+     * @param string $name Name of core object to load(case-insensitive)
+     * @return boolean|object Core object on success, false on fail
+     * @see \System\Core\App::loadCore()
+     */
+    public function core($name) {
+
+        return App::obj()->loadCore($name);        
+    }
+
     /**
      * Wrapper method for \System\Core\App::log()
      * 

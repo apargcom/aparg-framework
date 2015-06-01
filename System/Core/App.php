@@ -1,6 +1,10 @@
 <?php
 
 namespace System\Core;
+   
+use System\Core\Components\Config;
+use System\Core\Components\Uri;
+
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'Singleton.php';
 
@@ -45,8 +49,8 @@ class App extends Singleton{
      * @return void
      */
     public function init($config = []){        
-        
-        require_once __DIR__ . DIRECTORY_SEPARATOR . 'Config.php';
+     
+        require_once __DIR__ . DIRECTORY_SEPARATOR . 'Components' . DIRECTORY_SEPARATOR .  'Config.php';
         Config::obj()->init($config);          
         
         require_once __DIR__ .  DIRECTORY_SEPARATOR . 'Autoloader.php';
@@ -64,10 +68,10 @@ class App extends Singleton{
  
         error_reporting((Config::obj()->get('show_errors')) ? -1 : 0);
         
-        URI::obj()->init($_SERVER['REQUEST_URI']);                                
+        Uri::obj()->init($_SERVER['REQUEST_URI']);                                
                 
         View::obj()->init();
-        $this->controller = $this->loadController(URI::obj()->route, URI::obj()->vars);
+        $this->controller = $this->loadController(Uri::obj()->route, Uri::obj()->vars);
         if($this->controller != false){
             View::obj()->render();
         }
@@ -168,6 +172,32 @@ class App extends Singleton{
         }
         if ($system)
             return $this->loadModule($name, false);
+        return false;
+    }
+    
+    /**
+     * Load core object
+     * 
+     * @param string $name Name of core object to load(case-insensitive)
+     * @param type $system
+     * @return boolean|object Core object on success, false on fail
+     */
+    public function loadCore($name, $args = null) {
+
+        //$name = ucfirst(strtolower($name));
+        $name = implode('\\', array_map(function($value) {
+                    return ucfirst(strtolower($value));
+                }, explode('\\', $name)));
+        $class = '\System\Core\Components\\' . $name;
+        
+        if(class_exists($class)){
+            $isObj = call_user_func(array($class, 'isObj'));
+            $obj = call_user_func(array($class, 'obj'));
+            if (!$isObj) {
+                call_user_func_array(array($obj, 'init'), [$args]);
+            }
+            return $obj;
+        }        
         return false;
     }
 }

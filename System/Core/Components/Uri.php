@@ -1,6 +1,8 @@
 <?php
 
-namespace System\Core;
+namespace System\Core\Components;
+
+use System\Core\Singleton;
 
 /**
  * Aparg Framework {@link http://www.aparg.com}
@@ -12,7 +14,7 @@ namespace System\Core;
  * @package System
  * @subpackage Core
  */
-class URI extends Singleton {
+class Uri extends Singleton {
 
     /**
      * @var string Current URI
