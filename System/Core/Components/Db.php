@@ -40,7 +40,7 @@ class Db extends Singleton {
      * @return boolean True on success
      */
     public function init() {
-var_dump('dv');
+
         $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));    
         return true;
     }
