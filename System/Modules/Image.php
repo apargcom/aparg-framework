@@ -9,27 +9,30 @@ namespace System\Modules;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Modules
+ * @package System\Modules
  */
 class Image extends \Module {
-    
+
     /**
      * @var string Path to image
      */
     private $path = '';
+
     /**
      * @var resource Image resource
      */
     private $image = null;
+
     /**
      * @var array Array with image initial sizes
      */
     private $size = [];
+
     /**
      * @var array Array with image meta information
      */
     private $meta = [];
+
     /**
      * @var string Image mime type
      */
@@ -68,7 +71,7 @@ class Image extends \Module {
         }
         return ($result == false) ? false : true;
     }
-    
+
     /**
      * Returns image initial size
      * 
@@ -78,7 +81,7 @@ class Image extends \Module {
 
         return empty($this->size) ? false : $this->size;
     }
-    
+
     /**
      * Returns image meta information
      * 
@@ -98,7 +101,7 @@ class Image extends \Module {
 
         return ($this->mime == '') ? false : $this->mime;
     }
-    
+
     /**
      * Saves image to file
      * 
@@ -122,7 +125,7 @@ class Image extends \Module {
             $result = is_null($quality) ? imagejpeg($this->image, $path) : imagejpeg($this->image, $path, $quality);
         } else if ($ext == 'gif') {
             $result = imagegif($this->image, $path);
-        }        
+        }
         if ($close) {
             imagedestroy($this->image);
             $this->image = null;
@@ -226,7 +229,7 @@ class Image extends \Module {
         }
         return $result;
     }
-    
+
     /**
      * Crops image to given sizes
      * 
@@ -250,7 +253,7 @@ class Image extends \Module {
             $coordinates['y'] = $this->size['height'] / 2 - $size['height'] / 2;
         } else {
             $coordinates['x'] = isset($coordinates['x']) ? ($coordinates['x'] < 0 ? 0 : ($coordinates['x'] > $this->size['width'] ? $this->size['width'] - $size['width'] : $coordinates['x'])) : 0;
-            $coordinates['y'] = isset($coordinates['y']) ? ($coordinates['y'] < 0 ? 0 : ($coordinates['y'] > $this->size['height'] ? $this->size['height'] - $size['height'] : $coordinates['y'])) : 0;            
+            $coordinates['y'] = isset($coordinates['y']) ? ($coordinates['y'] < 0 ? 0 : ($coordinates['y'] > $this->size['height'] ? $this->size['height'] - $size['height'] : $coordinates['y'])) : 0;
             $size['width'] = ($coordinates['x'] + $size['width']) > $this->size['width'] ? ($this->size['width'] - $coordinates['x']) : $size['width'];
             $size['height'] = ($coordinates['y'] + $size['width']) > $this->size['height'] ? ($this->size['height'] - $coordinates['y']) : $size['height'];
         }
@@ -304,7 +307,7 @@ class Image extends \Module {
         $result = imageflip($this->image, IMG_FLIP_HORIZONTAL);
         if ($result != false) {
             $this->size['width'] = imagesx($this->image);
-            $this->size['height'] = imagesy($this->image);   
+            $this->size['height'] = imagesy($this->image);
         } else {
             return false;
         }
@@ -317,18 +320,18 @@ class Image extends \Module {
      * @param integer $transparency Transparency of overlay
      * @return boolean True on success, false on fail
      */
-    public function overlay($color = '#ffffff', $transparency = 80){
+    public function overlay($color = '#ffffff', $transparency = 80) {
         if ($this->image == null) {
             return false;
         }
         list($r, $g, $b) = array_map('hexdec', str_split(ltrim($color, '#'), 2));
-        $alpha = intval(($transparency * 127) / 100);        
+        $alpha = intval(($transparency * 127) / 100);
         $overlay = imagecreatetruecolor($this->size['width'], $this->size['height']);
         $color = imagecolorallocatealpha($overlay, $r, $g, $b, $alpha);
-        imagefill($overlay,0,0,$color);
-        
+        imagefill($overlay, 0, 0, $color);
+
         $result = imagecopy($this->image, $overlay, 0, 0, 0, 0, $this->size['width'], $this->size['height']);
-        
+
         if ($result != false) {
             $this->size['width'] = imagesx($this->image);
             $this->size['height'] = imagesy($this->image);
@@ -336,5 +339,6 @@ class Image extends \Module {
         } else {
             return false;
         }
-    }   
+    }
+
 }

@@ -9,19 +9,24 @@ namespace System\Modules;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Modules
+ * @package System\Modules
  */
-class Cache extends \Module{
+class Cache extends \Module {
 
     /**
      * @var integer Cache file life time
      */
     private $expire = 3600;
+
     /**
      * @var string Path to cache file folder
      */
     private $path = '';
+
+    /**
+     * @var object App config object
+     */
+    private $config = '';
 
     /**
      * Loads some configs and create cache folder if not exist
@@ -29,8 +34,8 @@ class Cache extends \Module{
      * @return void
      */
     public function __construct() {
-        parent::__construct();
 
+        $this->config = $this->core('config');
         $this->path = $this->config->get('cache_path') == true ? $this->config->get('cache_path') : $this->path;
         $this->expire = $this->config->get('cache_expire') == true ? $this->config->get('cache_expire') : $this->cache_expire;
         if (!file_exists($this->path) && ($this->path != '')) {
@@ -48,24 +53,24 @@ class Cache extends \Module{
         $files = glob($this->path . '/cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.*');
 
         if ($files) {
-            
-            foreach($files as $key=>$file){
-                 $time = substr(strrchr($file, '.'), 1);
+
+            foreach ($files as $key => $file) {
+                $time = substr(strrchr($file, '.'), 1);
                 if ($time < time()) {
                     if (file_exists($file)) {
                         unlink($file);
                         unset($files[$key]);
                     }
-                }                
+                }
             }
-            
-            if(isset($files[0])){
+
+            if (isset($files[0])) {
                 $cache = file_get_contents($files[0]);
                 $data = unserialize($cache);
                 return $data;
-            }            
+            }
         }
-        
+
         return false;
     }
 
@@ -100,7 +105,7 @@ class Cache extends \Module{
                 }
             }
             return true;
-        }else{
+        } else {
             return false;
         }
     }

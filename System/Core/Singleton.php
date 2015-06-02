@@ -9,8 +9,7 @@ namespace System\Core;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Core
+ * @package System\Core
  * @abstract
  */
 abstract class Singleton {
@@ -28,35 +27,41 @@ abstract class Singleton {
     final public static function &obj() {
         $className = get_called_class();
 
-        if(!isset(self::$instances[$className])) {          
+        if (!isset(self::$instances[$className])) {
             self::$instances[$className] = new static();
         }
         return self::$instances[$className];
     }
-    
+
     /**
      * Check whether child class instance is created
      * @return boolean True if created, false if not
      */
-    final public static function isObj(){
-        
-        $className = get_called_class();        
+    final public static function isObj() {
+
+        $className = get_called_class();
         return isset(self::$instances[$className]);
     }
 
     /**
      * Disallow to create child class instance from outside
      */
-    final protected function  __construct() { } 
-    
+    protected function __construct() {
+        
+    }
+
     /**
      * Disallow to clone child class instance
      */
-    final public function __clone() { }
+    final public function __clone() {
+        
+    }
 
     /**
      * Disallow to wakeup child class instance
      */
-    final public function __wakeup() { }
+    final public function __wakeup() {
+        
+    }
 
 }

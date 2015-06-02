@@ -11,8 +11,7 @@ use System\Core\Singleton;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Core
+ * @package System\Core\Components
  */
 class Uri extends Singleton {
 
@@ -57,18 +56,17 @@ class Uri extends Singleton {
     private $routes = [];
 
     /**
-     * Initialize URI
+     * Initialize Uri class
      * 
-     * @param string $URI URI to work with
      * @return void
      */
-    public function init($URI = '') {
+    public function __construct() {
 
         $this->languages = Config::obj()->get('languages');
         $this->defaultLanguage = Config::obj()->get('default_language');
         $this->defaultController = Config::obj()->get('default_controller');
         $this->routes = Config::obj()->get('routes');
-        $this->URI = $URI;
+        $this->URI = $_SERVER['REQUEST_URI'];
 
         $this->parse();
     }
@@ -90,7 +88,7 @@ class Uri extends Singleton {
             unset($splittedURI[0]);
             $splittedURI = array_values($splittedURI);
         }
-        
+
         $route[0] = isset($splittedURI[0]) ? $splittedURI[0] : $this->defaultController;
         $route[1] = isset($splittedURI[1]) ? $splittedURI[1] : 'index';
         unset($splittedURI[0]);

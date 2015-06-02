@@ -9,55 +9,69 @@ namespace System\Modules;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Modules
+ * @package System\Modules
  */
 class Mail extends \Module {
-    
+
     /**
      * @var array Array with "to" emails 
      */
     private $to = [];
+
     /**
      * @var array Array with "cc" emails 
      */
     private $cc = [];
+
     /**
      * @var array Array with "bcc" emails 
      */
     private $bcc = [];
+
     /**
      * @var string Subject
      */
     private $subject = '';
+
     /**
      * @var string Message content
      */
     private $message = '';
+
     /**
      * @var string From email
      */
     private $from = '';
+
     /**
      * @var array Headers to send with email 
      */
     private $headers = [];
+
     /**
      * @var string Email char set
      */
     private $charset = 'utf-8';
+
     /**
      * @var string Email content type
      */
     private $contentType = 'text/html';
+
     /**
      * @var string Email mime version
      */
-    private $mimeVersion = '1.0';	
+    private $mimeVersion = '1.0';
+
     /**
      * @var string Additional parameters for mail function
      */
     private $params = '';
+
+    /**
+     * @var object App config object
+     */
+    private $config = '';
 
     /**
      * Loads some configs
@@ -65,8 +79,8 @@ class Mail extends \Module {
      * @return void
      */
     public function __construct() {
-        parent::__construct();
 
+        $this->config = $this->core('config');
         $this->from = $this->config->get('mail_from');
     }
 
@@ -78,7 +92,7 @@ class Mail extends \Module {
      */
     public function charset($charset = '') {
 
-	$charset = trim($charset);        
+        $charset = trim($charset);
         if ($charset != '') {
             $this->charset = $charset;
         }
@@ -111,8 +125,8 @@ class Mail extends \Module {
             $this->mimeVersion = $mimeVersion;
         }
     }
-	
-	/**
+
+    /**
      * Set additional parameters for mail function
      * 
      * @param string $params String with parameters
@@ -141,7 +155,7 @@ class Mail extends \Module {
         } else {
             $this->headers = is_array($headers) ? $headers : [$headers];
         }
-	$this->headers = array_map('trim',$this->headers);
+        $this->headers = array_map('trim', $this->headers);
     }
 
     /**
@@ -166,14 +180,14 @@ class Mail extends \Module {
      * @return void
      */
     public function to($to = [], $merge = true) {
-        
+
         if ($merge) {
             $to = is_array($to) ? $to : [$to];
             $this->to = array_unique(array_merge($this->to, $to));
         } else {
             $this->to = is_array($to) ? $to : [$to];
         }
-	$this->to = array_map('trim',$this->to);
+        $this->to = array_map('trim', $this->to);
     }
 
     /**
@@ -184,14 +198,14 @@ class Mail extends \Module {
      * @return void
      */
     public function cc($cc = [], $merge = true) {
-        
+
         if ($merge) {
             $cc = is_array($cc) ? $cc : [$cc];
             $this->cc = array_unique(array_merge($this->cc, $cc));
         } else {
             $this->cc = is_array($cc) ? $cc : [$cc];
         }
-        $this->cc = array_map('trim',$this->cc);
+        $this->cc = array_map('trim', $this->cc);
     }
 
     /**
@@ -202,14 +216,14 @@ class Mail extends \Module {
      * @return void
      */
     public function bcc($bcc = [], $merge = true) {
-        
+
         if ($merge) {
             $bcc = is_array($bcc) ? $bcc : [$bcc];
             $this->bcc = array_unique(array_merge($this->bcc, $bcc));
         } else {
             $this->bcc = is_array($bcc) ? $bcc : [$bcc];
         }
-	$this->bcc = array_map('trim',$this->bcc);
+        $this->bcc = array_map('trim', $this->bcc);
     }
 
     /**
@@ -219,8 +233,8 @@ class Mail extends \Module {
      * @return void
      */
     public function subject($subject = '') {
-        
-	$this->subject = trim($subject);
+
+        $this->subject = trim($subject);
     }
 
     /**
@@ -230,24 +244,23 @@ class Mail extends \Module {
      * @return void
      */
     public function message($message = '') {
-        
-	$this->message = trim($message);
+
+        $this->message = trim($message);
     }
 
-    
     /**
      * Send email with set configurations
      * 
      * @return boolean  True on success, false on fail
      */
     public function send() {
-	
+
         $to = implode(',', $this->to);
         $cc = implode(',', $this->cc);
-        $bcc = implode(',',$this->bcc);
-	
+        $bcc = implode(',', $this->bcc);
+
         $headers = 'MIME-Version: ' . $this->mimeVersion . "\r\n";
-        $headers.= 'Content-type: ' . $this->contentType . '; charset=' . $this->charset . "\r\n";        
+        $headers.= 'Content-type: ' . $this->contentType . '; charset=' . $this->charset . "\r\n";
         $headers.= ($this->from == '') ? '' : 'From: ' . $this->from . "\r\n";
         $headers.= ($cc == '') ? '' : 'Cc: ' . $cc . "\r\n";
         $headers.= ($bcc == '') ? '' : 'Bcc: ' . $bcc . "\r\n";
@@ -255,4 +268,5 @@ class Mail extends \Module {
 
         return mail($to, $this->subject, $this->message, $headers, $this->params);
     }
+
 }

@@ -12,19 +12,10 @@ use System\Core\Components\Uri;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Core
+ * @package System\Core
  * @abstract
  */
 abstract class Controller {
-
-    /**
-     * Initialize Controller class
-     * @return void
-     */
-    public function __construct() {
-
-    }
 
     /**
      * Wrapper method for \System\Core\View::load()
@@ -85,7 +76,7 @@ abstract class Controller {
      */
     public function core($name) {
 
-        return App::obj()->loadCore($name);        
+        return App::obj()->loadCore($name);
     }
 
     /**

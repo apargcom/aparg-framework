@@ -9,8 +9,7 @@ namespace System\Modules;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Modules
+ * @package System\Modules
  */
 class Validator extends \Module {
 
@@ -18,10 +17,12 @@ class Validator extends \Module {
      * @var array Array with rules where key is input name, value is array which 0 element is input value 1 element is array with rules
      */
     private $rules = [];
+
     /**
      * @var array Array with error after validation 
      */
     public $errors = [];
+
     /**
      * @var array Array with rules where key is rule name value is function name
      */
@@ -205,7 +206,7 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function maxLength($value, $param) {
-        
+
         if (is_numeric($value)) {
             return false;
         }
@@ -223,7 +224,7 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function exactLength($value, $param) {
-        
+
         if (is_numeric($value)) {
             return false;
         }
@@ -256,7 +257,7 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function lessThan($value, $param) {
-        
+
         if (!is_numeric($value)) {
             return false;
         }
@@ -407,7 +408,7 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function validIP($value, $param) {
-        
+
         if ($param == 'ipv4') {
             return (filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) == false) ? false : true;
         } elseif ($param == 'ipv6') {
@@ -423,11 +424,11 @@ class Validator extends \Module {
      * @param string $value Value
      * @return boolean True on success, false on fail
      */
-    private function validURL($value){
-        
+    private function validURL($value) {
+
         return (filter_var($value, FILTER_VALIDATE_URL) == false) ? false : true;
     }
-    
+
     /**
      * Validate value for validBase64 rule
      * 
@@ -435,7 +436,8 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function validBase64($value) {
-        
+
         return (preg_match("/[^a-zA-Z0-9\/\+=]/", $value) == false) ? false : true;
     }
+
 }

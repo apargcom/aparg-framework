@@ -9,19 +9,10 @@ namespace System\Core;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Core
+ * @package System\Core
  * @abstract
  */
 abstract class Model {
-
-    /**
-     * Initialize Model class
-     * @return void
-     */
-    public function __construct() {
-        
-    }
 
     /**
      * Wrapper method for \System\Core\App::loadCore()
@@ -32,7 +23,7 @@ abstract class Model {
      */
     public function core($name) {
 
-        return App::obj()->loadCore($name);        
+        return App::obj()->loadCore($name);
     }
 
     /**

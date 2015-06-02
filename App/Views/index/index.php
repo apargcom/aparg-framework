@@ -6,6 +6,6 @@
     </head>
 
     <body>
-        <?=$this->hello?>
+        <?= $this->hello ?>
     </body>
 </html>

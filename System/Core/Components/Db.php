@@ -4,7 +4,6 @@ namespace System\Core\Components;
 
 use System\Core\Singleton;
 
-
 /**
  * Aparg Framework {@link http://www.aparg.com}
  * 
@@ -12,8 +11,7 @@ use System\Core\Singleton;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Core
+ * @package System\Core\Components
  */
 class Db extends Singleton {
 
@@ -21,28 +19,30 @@ class Db extends Singleton {
      * @var object Contains object which represents the connection to a database server
      */
     private $mysql = null;
+
     /**
      * @var integer ID of last insert row
      */
     public $lastID = 0;
+
     /**
      * @var string Contains database error
      */
     public $error = '';
+
     /**
      * @var string Last query that was executed
      */
     public $query = '';
 
     /**
-     * Initialize the DB
-     *      
-     * @return boolean True on success
+     * Initialize Db class
+     *    
+     * @return void
      */
-    public function init() {
+    public function __construct() {
 
-        $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));    
-        return true;
+        $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));
     }
 
     /**
@@ -58,7 +58,7 @@ class Db extends Singleton {
     public function insert($table = '', $columns = [], $values = []) {
 
         $columnsStr = !empty($columns) ? " (" . implode(',', array_values($columns)) . ")" : "";
-        if(!empty($values)){
+        if (!empty($values)) {
             if (is_array($values[0])) {
                 $valuesStr = ' VALUES';
                 foreach ($values as $row) {
@@ -70,10 +70,10 @@ class Db extends Singleton {
                 $row = $this->escape($values);
                 $valuesStr = " VALUES ('" . implode("','", array_values($row)) . "')";
             }
-        }else{
+        } else {
             $valuesStr = "";
         }
-        
+
         $query = "INSERT INTO " . $table . $columnsStr . $valuesStr;
         return $this->query($query);
     }
@@ -89,8 +89,8 @@ class Db extends Singleton {
      * @see query()
      */
     public function update($table = '', $columns = [], $values = [], $where = '') {
-        
-        if(!empty($columns) && !empty($values)){
+
+        if (!empty($columns) && !empty($values)) {
             if (is_array($columns) && is_array($values)) {
 
                 $set = '';
@@ -99,17 +99,17 @@ class Db extends Singleton {
                     $set.= $column . "='" . $row[$key] . "',";
                 }
                 $set = " SET " . rtrim($set, ",");
-            } else if(!is_array($columns) && !is_array($values)){
+            } else if (!is_array($columns) && !is_array($values)) {
                 $value = $this->escape($values);
                 $set = " SET " . $columns . "='" . $value . "'";
-            }else{
+            } else {
                 $set = '';
             }
-        }else{
+        } else {
             $set = '';
         }
         $where = ($where != '') ? ' WHERE ' . $where : '';
-        
+
         $query = "UPDATE " . $table . $set . $where;
         return $this->query($query);
     }
@@ -125,7 +125,7 @@ class Db extends Singleton {
     public function delete($table = '', $where = '') {
 
         $where = ($where != '') ? ' WHERE ' . $where : '';
-        
+
         $query = "DELETE FROM " . $table . $where;
         return $this->query($query);
     }
@@ -169,8 +169,8 @@ class Db extends Singleton {
         $where = ($where != '') ? ' WHERE ' . $where : '';
         $groupBy = ($groupBy != '') ? ' GROUP BY ' . $groupBy : '';
         $orderBy = ($orderBy != '') ? ' ORDER BY ' . $orderBy . ' ' . $sort : '';
-        $limit = (!is_null($limit1) && !is_null($limit2)) ? ' LIMIT ' . $limit1 . ', ' . $limit2 : (!is_null($limit1) ? ' LIMIT ' . $limit1 : '');   
-        
+        $limit = (!is_null($limit1) && !is_null($limit2)) ? ' LIMIT ' . $limit1 . ', ' . $limit2 : (!is_null($limit1) ? ' LIMIT ' . $limit1 : '');
+
         $query = "SELECT " . $columns . " FROM " . $table . $joinStr . $where . $groupBy . $orderBy . $limit;
         return $this->fetch($query);
     }
@@ -188,7 +188,7 @@ class Db extends Singleton {
         $result = $this->runQuery($query);
         if ($result == false) {
             return false;
-        }        
+        }
         $fetchedResult = [];
         while ($row = $result->fetch_array($type)) {
             $fetchedResult[] = $row;
@@ -223,7 +223,7 @@ class Db extends Singleton {
         $this->query = $query;
         return $result;
     }
-    
+
     /**
      * Escapes special characters
      * 
@@ -240,4 +240,5 @@ class Db extends Singleton {
             return $this->mysql->real_escape_string($values);
         }
     }
+
 }

@@ -12,55 +12,56 @@ use System\Core\Components\Uri;
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
- * @package System
- * @subpackage Core
+ * @package System\Core
  */
-class View extends Singleton{ 
-    
+class View extends Singleton {
+
     /**
      * @var array Contains variables that were passed from controller
      */
     private $data = [];
+
     /**
      * @var boolean Enable/disable output buffering
      */
     private $outputBuffering = true;
+
     /**
      * @var string Path to application folder
      */
     private $appPath = '';
-    
+
     /**
-     * Initialize the view
+     * Initialize View class
      *      
      * @return void
      */
-    public function init(){
-        
+    public function __construct() {
+
         $this->outputBuffering = Config::obj()->get('output_buffering');
         $this->appPath = Config::obj()->get('app_path');
         $this->bufferStart();
     }
-    
+
     /**
      * Render all loaded view files
      * 
      * @return void
      */
-    public function render(){
-        
+    public function render() {
+
         $this->bufferFlush();
     }
-    
+
     /**
      * Starts buffering
      * 
      * @return void
      */
-    private function bufferStart(){
-       
-        if($this->outputBuffering){
-            ob_start(array($this,'bufferCallback'));
+    private function bufferStart() {
+
+        if ($this->outputBuffering) {
+            ob_start([$this, 'bufferCallback']);
         }
     }
 
@@ -70,22 +71,22 @@ class View extends Singleton{
      * @param string $buffer Current data that is in buffer
      * @return string Data to be flushed
      */
-    private function bufferCallback($buffer){
-        
-        return $buffer;        
+    private function bufferCallback($buffer) {
+
+        return $buffer;
     }
-    
+
     /**
      * Flush the buffer
      * 
      * @return void
      */
-    private  function bufferFlush(){
-        if($this->outputBuffering){
+    private function bufferFlush() {
+        if ($this->outputBuffering) {
             ob_end_flush();
         }
     }
-    
+
     /**
      * Loads view file for further render
      * 
@@ -94,43 +95,44 @@ class View extends Singleton{
      * @param boolean $return Whether to flush or return rendered view
      * @return string|boolean True or rendered data(if $return=true) on success, false on fail
      */
-    public function load($route = '', $data = [], $return = false){ 
-                
-        $this->data = $data;        
-        $route = strtolower(($route == '') ? Uri::obj()->route : $route);        
-        
-        if(file_exists($this->appPath . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php')){
-            if($return){
+    public function load($route = '', $data = [], $return = false) {
+
+        $this->data = $data;
+        $route = strtolower(($route == '') ? Uri::obj()->route : $route);
+
+        if (file_exists($this->appPath . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php')) {
+            if ($return) {
                 ob_start();
-            }                        
+            }
             require $this->appPath . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $route . '.php';
-            if($return){
-                return ob_get_clean();                                
-            }  
+            if ($return) {
+                return ob_get_clean();
+            }
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
+
     /**
      * Magic method for setting variable in view files Ex.:$this->variableName = 'variable_value'
      * 
      * @param string $name Name of the variable
      * @param string $value Value of the variable
      */
-    public function __set($name, $value){
-        
+    public function __set($name, $value) {
+
         $this->data[$name] = $value;
     }
-    
+
     /**
      * Magic method for getting variable in view files Ex.:$this->variableName
      * 
      * @param string $name Name of the variable
      */
-    public function __get($name){
-        
+    public function __get($name) {
+
         return isset($this->data[$name]) ? $this->data[$name] : null;
     }
+
 }

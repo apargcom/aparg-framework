@@ -11,7 +11,7 @@ use \System\Core\App;
  * @copyright Aparg
  */
 class AF {
-    
+
     /**
      * Starts framework
      * 
@@ -24,4 +24,5 @@ class AF {
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'App.php';
         App::obj()->init($config);
     }
+
 }
