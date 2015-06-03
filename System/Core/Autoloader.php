@@ -31,7 +31,7 @@ class Autoloader extends Singleton {
     private $appPath = '';
 
     /**
-     * Initialize Autoloader
+     * Initialize Autoloader class
      * 
      * @return void
      */
