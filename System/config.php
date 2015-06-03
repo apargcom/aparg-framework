@@ -36,7 +36,7 @@
  */
 return [
 
-    'af_version' => '0.0.17',
+    'af_version' => '0.0.18',
     'db_name' => '',
     'db_username' => '',
     'db_password' => '',

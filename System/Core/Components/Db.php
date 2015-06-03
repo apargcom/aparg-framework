@@ -44,6 +44,16 @@ class Db extends Singleton {
 
         $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));
     }
+    
+    /**
+     * Terminate Db class
+     *    
+     * @return void
+     */
+    public function __destruct(){
+        
+        $this->mysql->close();
+    }
 
     /**
      * Generate INSERT query
