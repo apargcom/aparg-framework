@@ -34,9 +34,9 @@ class Language extends \Module {
     private $config = '';
 
     /**
-     * @var object App Uri object
+     * @var object App Request object
      */
-    private $URI = '';
+    private $Request = '';
 
     /**
      * Loads some configs and language data for current language
@@ -46,9 +46,9 @@ class Language extends \Module {
     public function __construct() {
 
         $this->config = $this->core('config');
-        $this->URI = $this->core('uri');
+        $this->Request = $this->core('request');
         $this->path = $this->config->get('lang_path');
-        $this->lang = $this->URI->lang;
+        $this->lang = $this->Request->lang;
         $this->langData = $this->langData($this->lang);
     }
 

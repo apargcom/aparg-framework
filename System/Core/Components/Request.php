@@ -7,13 +7,13 @@ use System\Core\Singleton;
 /**
  * Aparg Framework {@link http://www.aparg.com}
  * 
- * URI class is working with URIs
+ * Request class is working with current request
  * 
  * @author Aparg <info@aparg.com>
  * @copyright Aparg
  * @package System\Core\Components
  */
-class Uri extends Singleton {
+class Request extends Singleton {
 
     /**
      * @var string Current URI
@@ -56,7 +56,7 @@ class Uri extends Singleton {
     private $routes = [];
 
     /**
-     * Initialize Uri class
+     * Initialize Request class
      * 
      * @return void
      */
@@ -127,6 +127,16 @@ class Uri extends Singleton {
     public function redirect($URL, $code = 302) {
 
         header('Location: ' . $URL, true, $code);
+    }
+    
+    /**
+     * Check if request is AJAX request
+     * 
+     * @return boolean True on success, false on fail
+     */
+    public function isAjax() {
+        
+        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? true : false;
     }
 
 }

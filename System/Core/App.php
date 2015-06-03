@@ -3,7 +3,7 @@
 namespace System\Core;
 
 use System\Core\Components\Config;
-use System\Core\Components\Uri;
+use System\Core\Components\Request;
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'Singleton.php';
 
@@ -71,7 +71,7 @@ class App extends Singleton {
         error_reporting((Config::obj()->get('show_errors')) ? -1 : 0);
 
         View::obj();
-        $this->controller = $this->loadController(Uri::obj()->route, Uri::obj()->vars);
+        $this->controller = $this->loadController(Request::obj()->route, Request::obj()->vars);
         if ($this->controller != false) {
             View::obj()->render();
         }

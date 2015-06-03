@@ -3,7 +3,7 @@
 namespace System\Core;
 
 use System\Core\Components\Config;
-use System\Core\Components\Uri;
+use System\Core\Components\Request;
 
 /**
  * Aparg Framework {@link http://www.aparg.com}
@@ -32,15 +32,15 @@ abstract class Controller {
     }
 
     /**
-     * Wrapper method for \System\Core\URI::redirect()
+     * Wrapper method for \System\Core\Request::redirect()
      * 
      * @param string $URL URL to redirect
      * @param integer $code Status code to send with headers
      * @return void
-     * @see \System\Core\URI::redirect()
+     * @see \System\Core\Request::redirect()
      */
     protected function redirect($URL, $code = 302) {
-        URI::obj()->redirect($URL, $code);
+        Request::obj()->redirect($URL, $code);
     }
 
     /**
