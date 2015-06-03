@@ -15,6 +15,30 @@ namespace System\Core;
 abstract class Module {
 
     /**
+     * Wrapper method for \System\Core\App::loadModule()
+     * 
+     * @param string $name Name of module to load(case-insensitive)
+     * @return boolean|object Module object on success, false on fail
+     * @see \System\Core\App::loadModule()
+     */
+    protected function module($name) {
+
+        return App::obj()->loadModule($name);
+    }
+
+    /**
+     * Wrapper method for \System\Core\App::loadModel()
+     * 
+     * @param string $name Name of model to load(case-insensitive)
+     * @return boolean|object Model object on success, false on fail
+     * @see \System\Core\App::loadModel()
+     */
+    protected function model($name) {
+
+        return App::obj()->loadModel($name);
+    }
+
+    /**
      * Wrapper method for \System\Core\App::loadCore()
      * 
      * @param string $name Name of core object to load(case-insensitive)
