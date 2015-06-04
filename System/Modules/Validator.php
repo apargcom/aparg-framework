@@ -31,6 +31,7 @@ class Validator extends \Module {
         'matches' => 'matches',
         'regex_match' => 'regexMatch',
         'is_unique' => 'isUnique',
+        'is_equal' => 'isEqual',
         'min_length' => 'minLength',
         'max_length' => 'maxLength',
         'exact_length' => 'exactLength',
@@ -178,6 +179,19 @@ class Validator extends \Module {
             }
         }
         return ($counter > 1) ? false : true;
+    }
+
+    /**
+     * Validate value for isEqual rule
+     * 
+     * @param string $value Value
+     * @param string $param Rule option
+     * @return boolean True on success, false on fail
+     */
+    private function isEqual($value, $param) {
+
+        $param = is_array($param) ? $param : [$param];
+        return (array_search($value, $param) === false) ? false : true;
     }
 
     /**
@@ -393,7 +407,7 @@ class Validator extends \Module {
         }
 
         foreach (explode(',', $value) as $email) {
-            if (trim($email) != '' && $this->email(trim($email)) === false) {
+            if (trim($email) != '' && $this->validEmail(trim($email)) == false) {
                 return false;
             }
         }
