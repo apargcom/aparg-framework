@@ -86,7 +86,7 @@ class App extends Singleton {
      */
     public function log($type, $message) {
 
-        if ($this->logsPath) {
+        if ($this->enableLogs) {
             $log = '(' . date("Y-m-d H:i:s") . ') ' . $type . ': ' . $message;
             return (file_put_contents($this->logsPath, $log . PHP_EOL, FILE_APPEND) == false) ? false : true;
         } else {
