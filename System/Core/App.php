@@ -181,7 +181,7 @@ class App extends Singleton {
      * @param string $name Name of core component to load(case-insensitive)
      * @return boolean|object Core component on success, false on fail
      */
-    public function loadCore($name) {
+    public function loadComponent($name) {
 
         $name = implode('\\', array_map(function($value) {
                     return ucfirst(strtolower($value));

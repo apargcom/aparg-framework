@@ -68,15 +68,15 @@ abstract class Controller {
     }
 
     /**
-     * Wrapper method for \System\Core\App::loadCore()
+     * Wrapper method for \System\Core\App::loadComponent()
      * 
      * @param string $name Name of core object to load(case-insensitive)
      * @return boolean|object Core object on success, false on fail
-     * @see \System\Core\App::loadCore()
+     * @see \System\Core\App::loadComponent()
      */
-    public function core($name) {
+    public function component($name) {
 
-        return App::obj()->loadCore($name);
+        return App::obj()->loadComponent($name);
     }
 
     /**

@@ -80,7 +80,7 @@ class Mail extends \Module {
      */
     public function __construct() {
 
-        $this->config = $this->core('config');
+        $this->config = $this->component('config');
         $this->from = $this->config->get('mail_from');
     }
 

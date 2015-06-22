@@ -45,8 +45,8 @@ class Language extends \Module {
      */
     public function __construct() {
 
-        $this->config = $this->core('config');
-        $this->Request = $this->core('request');
+        $this->config = $this->component('config');
+        $this->Request = $this->component('request');
         $this->path = $this->config->get('lang_path');
         $this->lang = $this->Request->lang;
         $this->langData = $this->langData($this->lang);

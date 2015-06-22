@@ -35,7 +35,7 @@ class Cache extends \Module {
      */
     public function __construct() {
 
-        $this->config = $this->core('config');
+        $this->config = $this->component('config');
         $this->path = $this->config->get('cache_path') == true ? $this->config->get('cache_path') : $this->path;
         $this->expire = $this->config->get('cache_expire') == true ? $this->config->get('cache_expire') : $this->cache_expire;
         if (!file_exists($this->path) && ($this->path != '')) {
