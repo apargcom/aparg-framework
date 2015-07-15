@@ -56,6 +56,8 @@ class Image extends \Module {
             $ext = strtolower(pathinfo($path)['extension']);
             if ($ext == 'png') {
                 $result = imagecreatefrompng($this->path);
+                imagealphablending($result, false);
+                imagesavealpha($result, true);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $result = imagecreatefromjpeg($this->path);
             } else if ($ext == 'gif') {
@@ -64,8 +66,8 @@ class Image extends \Module {
             if ($result != false) {
                 $this->image = $result;
                 $this->size['width'] = imagesx($this->image);
-                $this->size['height'] = imagesy($this->image);                
-                if($ext == 'jpg' || $ext == 'jpeg'){
+                $this->size['height'] = imagesy($this->image);
+                if ($ext == 'jpg' || $ext == 'jpeg') {
                     $this->meta = exif_read_data($path);
                 }
                 $this->mime = mime_content_type($path);
@@ -109,11 +111,10 @@ class Image extends \Module {
      * 
      * @param string $path Path to save
      * @param boolean $close Whether to close current image
-     * @param integer $quality Quality of image regarding to image format. For PNG uses imagepng() and for JPEG imagejpeg() quality parameter
-     * @see imagepng(), imagejpeg() For $quality parameter
+     * @param integer $quality Quality of image regarding to image format(0-100)     
      * @return boolean
      */
-    public function save($path = '', $close = true, $quality = null) {
+    public function save($path = '', $close = true, $compression = null) {
         if ($this->image == null) {
             return false;
         }
@@ -121,10 +122,11 @@ class Image extends \Module {
 
         $result = false;
         $ext = strtolower(pathinfo($path)['extension']);
-        if ($ext == 'png') {
-            $result = is_null($quality) ? imagepng($this->image, $path) : imagepng($this->image, $path, $quality);
-        } else if ($ext == 'jpg' || $ext == 'jpeg') {
-            $result = is_null($quality) ? imagejpeg($this->image, $path) : imagejpeg($this->image, $path, $quality);
+        if ($ext == 'png') {                                    
+            $result = is_null($compression) ? imagepng($this->image, $path) : imagepng($this->image, $path, intval((9 * $compression) / 100));
+        } else if ($ext == 'jpg' || $ext == 'jpeg') {            
+            
+            $result = is_null($compression) ? imagejpeg($this->image, $path) : imagejpeg($this->image, $path, intval(100 - $compression));
         } else if ($ext == 'gif') {
             $result = imagegif($this->image, $path);
         }
@@ -153,6 +155,8 @@ class Image extends \Module {
             $ext = strtolower(pathinfo($path)['extension']);
             if ($ext == 'png') {
                 $result = imagecreatefrompng($path);
+                imagealphablending($result, false);
+                imagesavealpha($result, true);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $result = imagecreatefromjpeg($path);
             } else if ($ext == 'gif') {
@@ -174,11 +178,9 @@ class Image extends \Module {
             $left = isset($position['left']) ? $position['left'] : (isset($position['right']) ? $this->size['width'] - imagesx($watermark) - $position['right'] : 0);
             $top = isset($position['top']) ? $position['top'] : (isset($position['bottom']) ? $this->size['height'] - imagesy($watermark) - $position['bottom'] : 0);
         }
-
+        imagelayereffect($this->image, IMG_EFFECT_ALPHABLEND);
         $result = imagecopy($this->image, $watermark, $left, $top, 0, 0, imagesx($watermark), imagesy($watermark));
-
         imagedestroy($watermark);
-
         if ($result != false) {
             $this->size['width'] = imagesx($this->image);
             $this->size['height'] = imagesy($this->image);
@@ -222,6 +224,8 @@ class Image extends \Module {
         }
 
         $new = imagecreatetruecolor($newSize['width'], $newSize['height']);
+        imagealphablending($new, false);
+        imagesavealpha($new, true);
         $result = imagecopyresampled($new, $this->image, 0, 0, 0, 0, $newSize['width'], $newSize['height'], $this->size['width'], $this->size['height']);
         if ($result != false) {
             $this->size['width'] = imagesx($new);
@@ -261,6 +265,8 @@ class Image extends \Module {
         }
 
         $new = imagecreatetruecolor($size['width'], $size['height']);
+        imagealphablending($new, false);
+        imagesavealpha($new, true);
         $result = imagecopyresampled($new, $this->image, 0, 0, $coordinates['x'], $coordinates['y'], $this->size['width'], $this->size['height'], $this->size['width'], $this->size['height']);
         if ($result != false) {
             $this->size['width'] = imagesx($new);
@@ -285,7 +291,8 @@ class Image extends \Module {
         list($r, $g, $b) = array_map('hexdec', str_split(ltrim($bgColor, '#'), 2));
         $bg = imagecolorallocate($this->image, $r, $g, $b);
         $new = imagerotate($this->image, $angle, $bg);
-
+        imagealphablending($new, false);
+        imagesavealpha($new, true);
         if ($new != false) {
             $this->size['width'] = imagesx($new);
             $this->size['height'] = imagesy($new);
@@ -329,9 +336,11 @@ class Image extends \Module {
         list($r, $g, $b) = array_map('hexdec', str_split(ltrim($color, '#'), 2));
         $alpha = intval(($transparency * 127) / 100);
         $overlay = imagecreatetruecolor($this->size['width'], $this->size['height']);
+        imagealphablending($overlay, false);
+        imagesavealpha($overlay, true);
         $color = imagecolorallocatealpha($overlay, $r, $g, $b, $alpha);
         imagefill($overlay, 0, 0, $color);
-
+        imagelayereffect($this->image, IMG_EFFECT_ALPHABLEND);
         $result = imagecopy($this->image, $overlay, 0, 0, 0, 0, $this->size['width'], $this->size['height']);
 
         if ($result != false) {
