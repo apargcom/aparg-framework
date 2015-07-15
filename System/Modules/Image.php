@@ -64,8 +64,8 @@ class Image extends \Module {
             if ($result != false) {
                 $this->image = $result;
                 $this->size['width'] = imagesx($this->image);
-                $this->size['height'] = imagesy($this->image);
-                if ($ext == 'jpg' || $ext == 'jpeg') {
+                $this->size['height'] = imagesy($this->image);                
+                if($ext == 'jpg' || $ext == 'jpeg'){
                     $this->meta = exif_read_data($path);
                 }
                 $this->mime = mime_content_type($path);
@@ -278,7 +278,7 @@ class Image extends \Module {
      * @param string $bgColor Background color of empty area Ex.:#415E9B
      * @return boolean True on success, false on fail
      */
-    public function rotate($angle, $bgColor) {
+    public function rotate($angle, $bgColor = '#ffffff') {
         if ($this->image == null) {
             return false;
         }
