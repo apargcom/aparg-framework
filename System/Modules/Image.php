@@ -65,7 +65,9 @@ class Image extends \Module {
                 $this->image = $result;
                 $this->size['width'] = imagesx($this->image);
                 $this->size['height'] = imagesy($this->image);
-                $this->meta = exif_read_data($path);
+                if ($ext == 'jpg' || $ext == 'jpeg') {
+                    $this->meta = exif_read_data($path);
+                }
                 $this->mime = mime_content_type($path);
             }
         }
