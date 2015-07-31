@@ -57,7 +57,7 @@ class Language extends \Module {
      * 
      * @param string $key Key of translation
      * @param string $lang Language for translation, if empty string given current language is selected
-     * @return boolean
+     * @return boolean|string Translation on success, false on fail
      */
     public function get($key, $lang = '') {
 
@@ -66,6 +66,17 @@ class Language extends \Module {
             return $langData[$key];
         }
         return false;
+    }
+
+    /**
+     * Get all translations
+     * 
+     * @param string $lang Language for translation, if empty string given current language is selected
+     * @return array All translations
+     */
+    public function getAll($lang = '') {
+
+        return (($lang == '') || $lang == $this->lang) ? $this->langData : $this->langData($lang);
     }
 
     /**
