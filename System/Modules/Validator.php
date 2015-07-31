@@ -202,10 +202,7 @@ class Validator extends \Module {
      * @return boolean True on success, false on fail
      */
     private function minLength($value, $param) {
-
-        if (is_numeric($value)) {
-            return false;
-        }
+        
         if (function_exists('mb_strlen')) {
             return (mb_strlen($value) < $param) ? false : true;
         }
@@ -221,9 +218,6 @@ class Validator extends \Module {
      */
     private function maxLength($value, $param) {
 
-        if (is_numeric($value)) {
-            return false;
-        }
         if (function_exists('mb_strlen')) {
             return (mb_strlen($value) > $param) ? false : true;
         }
@@ -239,9 +233,6 @@ class Validator extends \Module {
      */
     private function exactLength($value, $param) {
 
-        if (is_numeric($value)) {
-            return false;
-        }
         if (function_exists('mb_strlen')) {
             return (mb_strlen($value) != $param) ? false : true;
         }
