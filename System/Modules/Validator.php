@@ -48,8 +48,8 @@ class Validator extends \Module {
         'valid_phone' => 'validPhone',
         'valid_email' => 'validEmail',
         'valid_emails' => 'validEmails',
-        'valid_ip' => 'validIP',
-        'valid_url' => 'validURL',
+        'valid_ip' => 'validIp',
+        'valid_url' => 'validUrl',
         'valid_base64' => 'validBase64'
     ];
 
@@ -412,7 +412,7 @@ class Validator extends \Module {
      * @param string $param Rule option(ipv4 or ipv6)
      * @return boolean True on success, false on fail
      */
-    private function validIP($value, $param) {
+    private function validIp($value, $param) {
 
         if ($param == 'ipv4') {
             return (filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) == false) ? false : true;
@@ -429,7 +429,7 @@ class Validator extends \Module {
      * @param string $value Value
      * @return boolean True on success, false on fail
      */
-    private function validURL($value) {
+    private function validUrl($value) {
 
         return (filter_var($value, FILTER_VALIDATE_URL) == false) ? false : true;
     }

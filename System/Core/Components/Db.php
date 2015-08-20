@@ -23,7 +23,7 @@ class Db extends Singleton {
     /**
      * @var integer ID of last insert row
      */
-    public $lastID = 0;
+    public $lastId = 0;
 
     /**
      * @var string Contains database error
@@ -228,7 +228,7 @@ class Db extends Singleton {
     private function runQuery($query) {
 
         $result = $this->mysql->query($query);
-        $this->lastID = $this->mysql->insert_id;
+        $this->lastId = $this->mysql->insert_id;
         $this->error = $this->mysql->error;
         $this->query = $query;
         return $result;

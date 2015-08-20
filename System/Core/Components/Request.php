@@ -18,7 +18,7 @@ class Request extends Singleton {
     /**
      * @var string Current URI
      */
-    public $URI = '';
+    public $Uri = '';
 
     /**
      * @var string Current route
@@ -66,7 +66,7 @@ class Request extends Singleton {
         $this->defaultLanguage = Config::obj()->get('default_language');
         $this->defaultController = Config::obj()->get('default_controller');
         $this->routes = Config::obj()->get('routes');
-        $this->URI = $_SERVER['REQUEST_URI'];
+        $this->Uri = $_SERVER['REQUEST_URI'];
 
         $this->parse();
     }
@@ -78,26 +78,26 @@ class Request extends Singleton {
      */
     private function parse() {
 
-        $filteredURI = trim(strtok(preg_replace('/[\/]+/', '/', $this->URI), '?'), '/');
-        $filteredURI = $this->route($filteredURI);
-        $splittedURI = array_filter(explode('/', $filteredURI));
+        $filteredUri= trim(strtok(preg_replace('/[\/]+/', '/', $this->Uri), '?'), '/');
+        $filteredUri = $this->route($filteredUri);
+        $splittedUri = array_filter(explode('/', $filteredUri));
 
         $this->lang = $this->defaultLanguage;
-        if (isset($splittedURI[0]) && array_search(strtolower($splittedURI[0]), array_map('strtolower', $this->languages)) !== false) {
-            $this->lang = strtolower($splittedURI[0]);
-            unset($splittedURI[0]);
-            $splittedURI = array_values($splittedURI);
+        if (isset($splittedUri[0]) && array_search(strtolower($splittedUri[0]), array_map('strtolower', $this->languages)) !== false) {
+            $this->lang = strtolower($splittedUri[0]);
+            unset($splittedUri[0]);
+            $splittedUri = array_values($splittedUri);
         }
 
-        $route[0] = isset($splittedURI[0]) ? $splittedURI[0] : $this->defaultController;
-        $route[1] = isset($splittedURI[1]) ? $splittedURI[1] : 'index';
-        unset($splittedURI[0]);
-        unset($splittedURI[1]);
-        $splittedURI = array_values($splittedURI);
+        $route[0] = isset($splittedUri[0]) ? $splittedUri[0] : $this->defaultController;
+        $route[1] = isset($splittedUri[1]) ? $splittedUri[1] : 'index';
+        unset($splittedUri[0]);
+        unset($splittedUri[1]);
+        $splittedUri = array_values($splittedUri);
 
         $this->route = $route[0] . '/' . $route[1];
         $this->vars = [
-            'URI' => array_values($splittedURI),
+            'URI' => array_values($splittedUri),
             'GET' => $_GET,
             'POST' => $_POST
         ];
@@ -109,12 +109,12 @@ class Request extends Singleton {
      * @param string $URI URI to apply routing
      * @see $routes
      */
-    private function route($URI) {
+    private function route($Uri) {
 
         foreach ($this->routes as $from => $to) {
-            $URI = preg_replace('/^' . preg_quote($from, '/') . '/i', $to, $URI);
+            $Uri = preg_replace('/^' . preg_quote($from, '/') . '/i', $to, $Uri);
         }
-        return $URI;
+        return $Uri;
     }
 
     /**
@@ -124,9 +124,9 @@ class Request extends Singleton {
      * @param integer $code Status code to send with headers
      * @return void
      */
-    public function redirect($URL, $code = 302) {
+    public function redirect($Url, $code = 302) {
 
-        header('Location: ' . $URL, true, $code);
+        header('Location: ' . $Url, true, $code);
     }
     
     /**

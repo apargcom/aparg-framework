@@ -39,8 +39,8 @@ abstract class Controller {
      * @return void
      * @see \System\Core\Request::redirect()
      */
-    protected function redirect($URL, $code = 302) {
-        Request::obj()->redirect($URL, $code);
+    protected function redirect($Url, $code = 302) {
+        Request::obj()->redirect($Url, $code);
     }
 
     /**
