@@ -44,7 +44,7 @@ return [
     'db_charset' => 'utf8',
     'db_engine' => 'innoDB',
     'html_charset' => 'utf-8',
-    'base_url' => 'http://' . $_SERVER['SERVER_NAME'],
+    'base_url' => 'https://' . $_SERVER['SERVER_NAME'],
     'base_path' => ($base_path = $_SERVER['DOCUMENT_ROOT']),
     'app_path' => ($app_path = $base_path . DIRECTORY_SEPARATOR . "App"),
     'system_path' => $base_path . DIRECTORY_SEPARATOR . "System",
