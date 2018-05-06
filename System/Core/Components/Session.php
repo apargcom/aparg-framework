@@ -5,7 +5,7 @@ namespace System\Core\Components;
 use System\Core\Singleton;
 
 /**
- * Aparg Framework {@link http://www.aparg.com}
+ * Aparg Framework {@link https://www.aparg.com}
  * 
  * Session class is for working with session
  * 

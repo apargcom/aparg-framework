@@ -6,7 +6,7 @@ use System\Core\Components\Config;
 use System\Core\Components\Request;
 
 /**
- * Aparg Framework {@link http://www.aparg.com}
+ * Aparg Framework {@link https://www.aparg.com}
  * 
  * Controller abstract class is parent class for app controller classes and contains methods for using in app controller classes
  * 

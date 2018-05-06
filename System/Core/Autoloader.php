@@ -5,7 +5,7 @@ namespace System\Core;
 use System\Core\Components\Config;
 
 /**
- * Aparg Framework {@link http://www.aparg.com}
+ * Aparg Framework {@link https://www.aparg.com}
  * 
  * Autoloader class is for automatically loading class
  * 

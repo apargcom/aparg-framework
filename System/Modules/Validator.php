@@ -3,7 +3,7 @@
 namespace System\Modules;
 
 /**
- * Aparg Framework {@link http://www.aparg.com}
+ * Aparg Framework {@link https://www.aparg.com}
  * 
  * Validator class is system module for validating multiple values for against multiple rules
  * 

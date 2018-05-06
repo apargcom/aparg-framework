@@ -3,7 +3,7 @@
 namespace System\Modules;
 
 /**
- * Aparg Framework {@link http://www.aparg.com}
+ * Aparg Framework {@link https://www.aparg.com}
  * 
  * Cache class is system module for fast storing/getting data from cache file
  * 

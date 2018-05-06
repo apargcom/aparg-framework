@@ -8,7 +8,7 @@ use System\Core\Components\Request;
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'Singleton.php';
 
 /**
- * Aparg Framework {@link http://www.aparg.com}
+ * Aparg Framework {@link https://www.aparg.com}
  * 
  * App class is main framework class that initialize the app. Also contains important methods for framework functionality
  *

@@ -3,7 +3,7 @@
 namespace System\Core;
 
 /**
- * Aparg Framework {@link http://www.aparg.com}
+ * Aparg Framework {@link https://www.aparg.com}
  * 
  * Singleton abstract class parent class for all singleton classes
  * 

@@ -3,7 +3,7 @@ Aparg Framework (AF)
 
 Author
 ------
-Aparg (http://www.aparg.com)
+Aparg (https://www.aparg.com)
 
 Version
 -------

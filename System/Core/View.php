@@ -6,7 +6,7 @@ use System\Core\Components\Config;
 use System\Core\Components\Request;
 
 /**
- * Aparg Framework {@link http://www.aparg.com}
+ * Aparg Framework {@link https://www.aparg.com}
  * 
  * View class is for rendering view files
  * 

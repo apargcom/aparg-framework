@@ -3,7 +3,7 @@
 use \System\Core\App;
 
 /**
- * Aparg Framework {@link http://www.aparg.com}
+ * Aparg Framework {@link https://www.aparg.com}
  * 
  * AF class is for starting framework
  *
