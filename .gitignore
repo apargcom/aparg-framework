@@ -1,3 +1,4 @@
+/.idea/
 /App/Logs/*
 !/App/Logs/.htaccess
 /App/Cache/*

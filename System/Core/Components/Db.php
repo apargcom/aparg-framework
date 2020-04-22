@@ -31,6 +31,11 @@ class Db extends Singleton {
     public $error = '';
 
     /**
+     * @var string Contains database error number
+     */
+    public $errno = '';
+
+    /**
      * @var string Last query that was executed
      */
     public $query = '';
@@ -230,6 +235,7 @@ class Db extends Singleton {
         $result = $this->mysql->query($query);
         $this->lastId = $this->mysql->insert_id;
         $this->error = $this->mysql->error;
+        $this->errno = $this->mysql->errno;
         $this->query = $query;
         return $result;
     }

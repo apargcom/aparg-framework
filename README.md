@@ -7,7 +7,7 @@ Aparg (https://www.aparg.com)
 
 Version
 -------
-0.0.18
+0.0.19
 
 Description
 -----------
