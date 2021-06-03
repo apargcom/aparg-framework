@@ -36,7 +36,7 @@
  */
 return [
 
-    'af_version' => '0.0.19',
+    'af_version' => '0.0.20',
     'db_name' => '',
     'db_username' => '',
     'db_password' => '',
@@ -45,7 +45,7 @@ return [
     'db_engine' => 'innoDB',
     'html_charset' => 'utf-8',
     'base_url' => 'https://' . $_SERVER['SERVER_NAME'],
-    'base_path' => ($base_path = $_SERVER['DOCUMENT_ROOT']),
+    'base_path' => ($base_path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '..'),
     'app_path' => ($app_path = $base_path . DIRECTORY_SEPARATOR . "App"),
     'system_path' => $base_path . DIRECTORY_SEPARATOR . "System",
     'cache_path' => $app_path . DIRECTORY_SEPARATOR . 'Cache',
