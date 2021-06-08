@@ -58,6 +58,9 @@ class App extends Singleton {
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'Autoloader.php';
         Autoloader::obj();
 
+        $this->loadModule('dotenv')->load();
+        Config::obj()->set($_ENV);
+
         $this->logsPath = Config::obj()->get('logs_path');
         $this->enableLogs = Config::obj()->get('enable_logs');
         $this->appPath = Config::obj()->get('app_path');

@@ -47,7 +47,7 @@ class Db extends Singleton {
      */
     public function __construct() {
 
-        $this->mysql = new \mysqli(Config::obj()->get('db_host'), Config::obj()->get('db_username'), Config::obj()->get('db_password'), Config::obj()->get('db_name'));
+        $this->mysql = new \mysqli(Config::obj()->get('DB_HOST'), Config::obj()->get('DB_USERNAME'), Config::obj()->get('DB_PASSWORD'), Config::obj()->get('DB_NAME'));
     }
     
     /**

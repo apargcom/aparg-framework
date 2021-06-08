@@ -3,3 +3,4 @@
 !/app/Logs/.htaccess
 /app/Cache/*
 !/app/Cache/.htaccess
+.env

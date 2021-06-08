@@ -2,10 +2,6 @@
 
 /**
  * array['af_version']          string      Framework version
- *      ['db_name']             string      Database name
- *      ['db_username']         string      Database username
- *      ['db_password']         string      Database password
- *      ['db_host']             string      Database host
  *      ['db_charset']          string      Database character set
  *      ['db_engine']           string      Database engine
  *      ['html_charset']        string      HTML character set
@@ -37,10 +33,6 @@
 return [
 
     'af_version' => '0.0.20',
-    'db_name' => '',
-    'db_username' => '',
-    'db_password' => '',
-    'db_host' => 'localhost',
     'db_charset' => 'utf8',
     'db_engine' => 'innoDB',
     'html_charset' => 'utf-8',
